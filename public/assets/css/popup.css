@@ -1,0 +1,91 @@
+.my-swal-popup{
+    background-color: #ffff;
+    width: 500px;
+    border-radius: 20px;
+}
+
+.my-swal-title{
+    font-size: 18px;
+}
+
+.my-confirm-btn, .my-cancel-btn {
+    font-size: 14px;
+}
+
+.my-cancel-btn{
+    background-color: #ffff;
+    color: #2D336B;
+    outline: 2px solid #7886C7;
+}
+
+.my-cancel-btn:hover{
+    background-color: white !important;
+}
+
+.my-cancel-btn:active{
+    outline: 2px solid #7886C7;
+}
+
+.my-cancel-btn:active{
+    outline: none;
+    border: none;
+    box-shadow: none !important;
+}
+
+.my-confirm-btn{
+    background-color: #118B50;
+    color: #fff
+}
+
+.my-swal-popup-error{
+    width: 500px;
+    border-radius: 20px;
+    outline: 2px solid #FA4032;
+}
+
+.my-swal-title-error{
+    color: #FA4032;
+    font-size: 18px;
+}
+
+.my-cancel-btn-error{
+    background-color: #ffff;
+    color: #2D336B;
+    outline: 2px solid #7886C7;
+    font-size: 14px;
+}
+
+.dataTables_length label{
+    color: black !important;
+}
+
+.dataTables_wrapper > div:first-child{
+    background-color: #ffff !important;
+    padding: 10px !important;
+}
+
+.dataTables_wrapper > div:last-child{
+    background-color: #ffff !important;
+    padding: 10px !important;
+}
+
+/* .select2-container .select2-choice {
+    padding: 5px 10px !important;
+    height: 40px !important;
+    width: 132px !important; 
+    font-size: 1.2em !important;  
+}
+
+.select2-container .select2-choice .select2-arrow {
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#424242), to(#030303)) !important;
+    background-image: -moz-linear-gradient(top, #424242, #030303) !important;
+    background-image: -ms-linear-gradient(top, #424242, #030303) !important;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #424242), color-stop(100%, #030303)) !important;
+    background-image: -webkit-linear-gradient(top, #424242, #030303) !important;
+    background-image: -o-linear-gradient(top, #424242, #030303) !important;
+    background-image: linear-gradient(#424242, #030303) !important;
+    width: 40px !important;
+    color: #fff !important;
+    font-size: 1.3em !important;
+    padding: 4px 12px !important;
+} */
