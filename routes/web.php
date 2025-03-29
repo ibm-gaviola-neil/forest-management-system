@@ -38,6 +38,12 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
     Route::prefix('donors')->controller(\App\Http\Controllers\Admin\DonorController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/register', 'addDonor');
+        Route::get('/{donor}/edit', 'edit');
+        Route::post('/{donor}/edit-confirm', 'editConfirm');
+        Route::post('/{donor}/update', 'update');
+        Route::delete('/{donor}/delete', 'delete');
+        Route::get('/{donor}/view', 'donor');
+        Route::post('/{donor}/confirm-donate', 'confirmDondate');
         Route::post('/store', 'store');
         Route::post('/store-confirm', 'confirm');
         // Route::delete('/delete/{user}', 'delete');

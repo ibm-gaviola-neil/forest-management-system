@@ -24,6 +24,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        app()->bind('App\Repositories\DepartmentRepository', function(){
+            return new \App\Http\Repositories\DepartmentRepository(new \App\Models\Department());
+        });
+
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });

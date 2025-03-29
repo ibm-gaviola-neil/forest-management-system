@@ -3,15 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\DepartmentService;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class DepartmentConroller extends Controller
 {
-    public function index(){
-        $departments = Department::orderBy('department_name', 'asc')->get();
+    protected $department_service;
 
+    public function __construct(DepartmentService $department_service){
+        $this->department_service = $department_service;
+    }
+
+    public function index(){
+        $departments = $this->department_service->getDepartments();
         return view('pages.admin.departments', compact('departments'));
     }
 

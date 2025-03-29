@@ -59,98 +59,98 @@ async function confirmDonor (data){
     }
 }
 
-// document.getElementById('add-donor-form').addEventListener('submit', async function(event) {
-//     event.preventDefault(); // Prevent form submission
-//     const button = document.getElementById('submit-btn')
-//     button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving';
+document.getElementById('add-donor-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent form submission
+    const button = document.getElementById('submit-btn')
+    button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving';
 
-//     const form = event.target; // Get the form element
-//     const formData = new FormData(form); // Create a FormData object
+    const form = event.target; // Get the form element
+    const formData = new FormData(form); // Create a FormData object
 
-//     // Clear previous error messages
-//     document.querySelectorAll('.error').forEach(errorSpan => {
-//         errorSpan.textContent = '';
-//     });
+    // Clear previous error messages
+    document.querySelectorAll('.error').forEach(errorSpan => {
+        errorSpan.textContent = '';
+    });
 
-//     try {
-//         const response = await fetch('/donors/store/', {
-//             method: 'POST',
-//             headers: {
-//                 "X-CSRF-TOKEN": document
-//                     .querySelector('meta[name="csrf-token"]')
-//                     .getAttribute("content"),
-//                 'Accept': 'application/json'
-//             },
-//             body: formData
-//         });
+    try {
+        const response = await fetch('/donors/store/', {
+            method: 'POST',
+            headers: {
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+                'Accept': 'application/json'
+            },
+            body: formData
+        });
 
-//         if (!response.ok) {
-//             if (response.status === 422) {
-//                 // Handle validation errors
-//                 const errorData = await response.json().catch(() => {
-//                     throw new Error('Invalid JSON response');
-//                 });
+        if (!response.ok) {
+            if (response.status === 422) {
+                // Handle validation errors
+                const errorData = await response.json().catch(() => {
+                    throw new Error('Invalid JSON response');
+                });
 
-//                 const errors = errorData.errors;
+                const errors = errorData.errors;
 
-//                 // Display the validation errors
-//                 for (const [key, messages] of Object.entries(errors)) {
-//                     const errorSpan = document.getElementById(`${key}_Error`);
-//                     if (errorSpan) {
-//                         errorSpan.innerHTML = `
-//                              <p class="text-sm text-danger text-italized"
-//                                     style="text-align: left !important; font-size: 11px;">
-//                                     ${messages.join(' ')}</p>
-//                         `;
-//                     }
-//                 }
-//             } else {
-//                 throw new Error('Network response was not ok');
-//             }
-//         } else {
-//             const data = await response.json().catch(() => {
-//                 throw new Error('Invalid JSON response');
-//             });
+                // Display the validation errors
+                for (const [key, messages] of Object.entries(errors)) {
+                    const errorSpan = document.getElementById(`${key}_Error`);
+                    if (errorSpan) {
+                        errorSpan.innerHTML = `
+                             <p class="text-sm text-danger text-italized"
+                                    style="text-align: left !important; font-size: 11px;">
+                                    ${messages.join(' ')}</p>
+                        `;
+                    }
+                }
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        } else {
+            const data = await response.json().catch(() => {
+                throw new Error('Invalid JSON response');
+            });
 
-//             if (data.status == 200) {
-//                 const myModal = new bootstrap.Modal(document.getElementById('confirm-donor'));
-//                 myModal.show();
+            if (data.status == 200) {
+                const myModal = new bootstrap.Modal(document.getElementById('confirm-donor'));
+                myModal.show();
 
-//                 document.getElementById('td_name').innerHTML = `${data.data.last_name}, ${data.data.first_name}, ${data.data.middle_name ?? ' '}, ${data.data.suffix ?? ' '}` 
-//                 document.getElementById('td_email').innerHTML = data.data.email 
-//                 document.getElementById('td_contact').innerHTML = data.data.contact_number 
-//                 document.getElementById('td_address').innerHTML = data.data.province + ', ' + data.data.city + ', ' + data.data.barangay 
-//                 document.getElementById('td_gender').innerHTML = data.data.gender 
-//                 document.getElementById('td_status').innerHTML = data.data.civil_status 
-//                 document.getElementById('td_date').innerHTML = data.data.birth_date
-//                 document.getElementById('td_type').innerHTML = data.data.blood_type
+                document.getElementById('td_name').innerHTML = `${data.data.last_name}, ${data.data.first_name}, ${data.data.middle_name ?? ' '}, ${data.data.suffix ?? ' '}` 
+                document.getElementById('td_email').innerHTML = data.data.email 
+                document.getElementById('td_contact').innerHTML = data.data.contact_number 
+                document.getElementById('td_address').innerHTML = data.data.province + ', ' + data.data.city + ', ' + data.data.barangay 
+                document.getElementById('td_gender').innerHTML = data.data.gender 
+                document.getElementById('td_status').innerHTML = data.data.civil_status 
+                document.getElementById('td_date').innerHTML = data.data.birth_date
+                document.getElementById('td_type').innerHTML = data.data.blood_type
 
-//                 document.getElementById('confirm-donor-form').addEventListener('submit', (e) => {
-//                     e.preventDefault()
-//                     confirmDonor(formData)
-//                 })
-//             } else {
-//                 Swal.fire({
-//                     icon: "error",
-//                     title: data.message,
-//                     showCancelButton: true,
-//                     showConfirmButton: false,
-//                     cancelButtonText: 'Close',
-//                     customClass: {
-//                         popup: "my-swal-popup-error",
-//                         title: "my-swal-title-error",
-//                         cancelButton: "my-cancel-btn-error"
-//                     },
-//                 });
-//             }
-//         }
-//     } catch (error) {
-//         console.log(error);
-//         alert('An error occurred: ' + error.message);
-//     } finally {
-//         button.innerHTML = 'Save';
-//     }
-// });
+                document.getElementById('confirm-donor-form').addEventListener('submit', (e) => {
+                    e.preventDefault()
+                    confirmDonor(formData)
+                })
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message,
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    cancelButtonText: 'Close',
+                    customClass: {
+                        popup: "my-swal-popup-error",
+                        title: "my-swal-title-error",
+                        cancelButton: "my-cancel-btn-error"
+                    },
+                });
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        alert('An error occurred: ' + error.message);
+    } finally {
+        button.innerHTML = 'Save';
+    }
+});
 
 async function getCity(){
     const select = document.getElementById('province-select-a')
@@ -199,8 +199,9 @@ async function getBarangay(){
 
 deleteBtn.forEach(btn => {
     btn.addEventListener('click', () => {
+        alert()
         Swal.fire({
-            title: "Are you sure you want to delete this Donor?",
+            title: "Are you sure you want to delete this department?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#EB5A3C",
@@ -219,7 +220,7 @@ deleteBtn.forEach(btn => {
                 confirmBtn.disabled = true; // prevent double click
 
                 try {
-                    const response = await fetch(`/donors/${btn.value}/delete`, {
+                    const response = await fetch("/departments/delete/" + btn.value, {
                         method: "delete", // usually logout should be POST
                         headers: {
                             "Content-Type": "application/json",
@@ -238,7 +239,7 @@ deleteBtn.forEach(btn => {
                     if(data.status == 200){
                         Swal.fire({
                             icon: "success",
-                            title: "Donors Deleted Successfuly",
+                            title: "Department Deleted Successfuly",
                             showCancelButton: true,
                             showConfirmButton: false,
                             cancelButtonText: 'OK',
@@ -268,7 +269,7 @@ deleteBtn.forEach(btn => {
                 } catch (error) {
                     Swal.fire({
                         icon: "error",
-                        title: "Unable to delete Donor, Please Try Again!",
+                        title: "Unable to delete department, Please Try Again!",
                         showCancelButton: true,
                         showConfirmButton: false,
                         cancelButtonText: 'Close',

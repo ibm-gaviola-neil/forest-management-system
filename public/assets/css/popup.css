@@ -69,6 +69,10 @@
     padding: 10px !important;
 }
 
+.select2-container {
+    width: 100% !important;
+}
+
 /* .select2-container .select2-choice {
     padding: 5px 10px !important;
     height: 40px !important;

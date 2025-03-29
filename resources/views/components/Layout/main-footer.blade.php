@@ -8,13 +8,13 @@
 <script src="{{ asset('/html/assets/bundles/jvectormap.bundle.js') }}"></script>
 <script src="{{ asset('/assets/vendor/jvectormap/jquery-jvectormap-us-aea-en.js') }}"></script>
 
-<script src="{{  asset('/html/assets/bundles/datatablescripts.bundle.js')}}"></script>
-<script src="{{  asset('/assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
-<script src="{{  asset('/assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js')}}"></script>
-<script src="{{  asset('/assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js')}}"></script>
-<script src="{{  asset('/assets/vendor/jquery-datatable/buttons/buttons.html5.min.js')}}"></script>
-<script src="{{  asset('/assets/vendor/jquery-datatable/buttons/buttons.print.min.js')}}"></script>
-<script src="{{  asset('/html/assets/js/pages/tables/jquery-datatable.js')}}"></script>
+<script src="{{ asset('/html/assets/bundles/datatablescripts.bundle.js') }}"></script>
+<script src="{{ asset('/assets/vendor/jquery-datatable/buttons/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('/assets/vendor/jquery-datatable/buttons/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('/assets/vendor/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('/assets/vendor/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('/assets/vendor/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
+<script src="{{ asset('/html/assets/js/pages/tables/jquery-datatable.js') }}"></script>
 
 <script src="{{ asset('/html/assets/bundles/mainscripts.bundle.js') }}"></script>
 <script src="{{ asset('/html/assets/js/hrdashboard.js') }}"></script>
@@ -31,6 +31,13 @@
     $(document).ready(function() {
         $('.select-two').select2({
             height: 'resolve'
+        });
+    });
+
+    $('#donate-modal').on('shown.bs.modal', function() {
+        $('.select-two').select2({
+            dropdownParent: $('#donate-modal'),
+            width: 'resolve' // Ensures Select2 calculates the correct width
         });
     });
 </script>

@@ -16,8 +16,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="tab-content mt-0">
-                    <form method="POST" id="add-donor-form">
-                        @csrf
+                    <form>
                         <div class="body mt-2">
                             <div class="row clearfix mb-2">
                                 <div class="col-md-6 col-sm-12">
@@ -29,7 +28,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">First Name <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="first_name" value="{{ old('first_name') }}"
+                                        <input type="text" name="first_name" value="{{ $request->first_name }}"
                                             class="form-control @error('first_name') parsley-error @enderror"
                                             placeholder="First Name *">
                                         <span id="first_name_Error" class="error"></span>
@@ -44,7 +43,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Last Name <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="last_name" value="{{ old('last_name') }}"
+                                        <input type="text" name="last_name" value="{{ $request->last_name }}"
                                             class="form-control @error('last_name') parsley-error @enderror"
                                             placeholder="Last Name">
                                         <span id="last_name_Error" class="error"></span>
@@ -65,7 +64,11 @@
                                             id="province-select-a" 
                                             onchange="getCity()"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select Province</option>
+                                            @isset($request->province)
+                                                <option value="{{ $address['province']->provCode }}" selected>{{ $address['province']->provDesc }}</option>
+                                            @else
+                                                <option value="" selected>Select Province</option>   
+                                            @endisset
                                             @foreach ($provinces as $value)
                                                 <option value="{{ $value->provCode }}">{{ $value->provDesc }}</option>
                                             @endforeach
@@ -88,7 +91,16 @@
                                             style="height: 100px !important; box-shadow: none !important;"
                                             id="city_select"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select City</option>
+                                            @isset($request->city)
+                                                <option value="{{ $address['city']->citymunCode }}" selected>{{ $address['city']->citymunDesc }}</option>
+                                            @else
+                                                <option value="" selected>Select City</option>   
+                                            @endisset
+                                            @isset($request->province)
+                                                @foreach ($address['cities'] as $city)
+                                                    <option value="{{ $city->citymunCode }}">{{ $city->citymunDesc }}</option>   
+                                                @endforeach
+                                            @endisset
                                         </select>
                                         @error('city')
                                             <p class="text-sm text-danger text-italized"
@@ -107,7 +119,16 @@
                                             style="height: 100px !important; box-shadow: none !important;"
                                             id="barangay_select"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select Barangay</option>
+                                            @isset($request->barangay)
+                                                <option value="{{ $request->barangay }}" selected>{{ $request->barangay }}</option>
+                                            @else
+                                                <option value="" selected>Select Barangay</option>   
+                                            @endisset
+                                            @isset($request->city)
+                                                @foreach ($address['barangays'] as $barangay)
+                                                    <option value="{{ $barangay->brgyDesc }}">{{ $barangay->brgyDesc }}</option>   
+                                                @endforeach
+                                            @endisset
                                         </select>
                                         @error('barangay')
                                             <p class="text-sm text-danger text-italized"
@@ -125,7 +146,11 @@
                                         <select name="blood_type"
                                             style="height: 100px !important; box-shadow: none !important;"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select Blood Type</option>
+                                            @isset($request->blood_type)
+                                                <option value="{{ $request->blood_type }}" selected hidden>{{ $request->blood_type }}</option>
+                                            @else
+                                                <option value="" selected>Select Blood Type</option>   
+                                            @endisset
                                             <option value="A+">A+</option>
                                             <option value="A-">A-</option>
                                             <option value="B+">B+</option>
@@ -146,7 +171,8 @@
 
 
                                 <div class="col-12">
-                                    <button type="button" class="btn btn-primary" id="submit-btn">Search</button>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                    <a href="/donors" class="btn btn-secondary">Clear</a>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +201,11 @@
                             @forelse ($donors as $donor)
                                 <tr id="user-{{ $donor->id }}">
                                     <td>
-                                        <h6 class="mb-0" style="text-transform: capitalize">{{ $donor->last_name. ' ' .$donor->first_name  }}</h6>
+                                        <h6 class="mb-0" style="text-transform: capitalize">
+                                            <a href="/donors/{{ $donor->id }}/view" class="text-primary">
+                                                {{ $donor->last_name. ' ' .$donor->first_name  }}
+                                            </a>
+                                        </h6>
                                         <span>{{ $donor->email }}</span><br>
                                         <span>{{ $donor->contact_number }}</span>
                                     </td>
@@ -194,9 +224,9 @@
                                     <td>
                                         {{-- <button type="button" value="{{ $donor->id }}" data-status="{{ $donor->status }}" class="btn block-user btn-sm btn-default" title="Edit"><i
                                                 class="fa fa-power-off"></i></button> --}}
-                                        <a href="/donors/edit/{{ $donor->id }}" class="btn btn-sm btn-default" title="Edit"><i
+                                        <a href="/donors/{{ $donor->id }}/edit" class="btn btn-sm btn-default" title="Edit"><i
                                                 class="fa fa-edit"></i></a>
-                                        <button value="{{ $donor->id }}" type="button" class="btn btn-sm btn-default js-sweetalert delete-user" title="Delete"
+                                        <button value="{{ $donor->id }}" type="button" class="btn btn-sm btn-default js-sweetalert delete-btn" title="Delete"
                                             data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
                                     </td>
                                 </tr>
@@ -214,6 +244,6 @@
     </div>
 
 @push('scripts')
-    <script src="{{ asset('assets/js/users.js') }}"></script>
+    <script src="{{ asset('assets/js/donors.js') }}"></script>
 @endpush
 @endsection

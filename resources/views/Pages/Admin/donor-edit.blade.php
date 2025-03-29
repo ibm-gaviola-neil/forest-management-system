@@ -4,13 +4,42 @@
     <div class="block-header">
         <div class="row clearfix">
             <div class="col-md-6 col-sm-12">
-                <h1>Add Donor</h1>
-                {{-- <nav aria-label="breadcrumb">
+                <h2>Donor's Profile</h2>
+                <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Oculux</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Users</li>
+                        <li class="breadcrumb-item"><a href="#">Donation History</a></li>
                     </ol>
-                </nav> --}}
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12">
+            <div class="card social">
+                <div class="profile-header d-flex justify-content-between justify-content-center">
+                    <div class="d-flex">
+                        <div class="mr-3 mt-2">
+                            <img src="{{ asset('/assets/images/user.jpg') }}" class="rounded" alt="">
+                        </div>
+                        <div class="details">
+                            <h5 class="mb-0">{{ $donor->last_name . ' ' . $donor->first_name }}</h5>
+                            <span
+                                class="text-light">{{ $donor->province . ', ' . $donor->city . ', ' . $donor->barangay }}</span>
+                            <p class="mb-0"><span>Blood Type: <strong
+                                        class="badge badge-white text-black">{{ $donor->blood_type }}</strong></span>
+                                <span>Gender:
+                                    <strong style="text-transform: uppercase">{{ $donor->gender }}</strong></span></span>
+                            </p>
+                            <p class="mb-0 text-sm" style="font-size: 12px"><span>Added Date:
+                                    {{ $donor->created_at->format('m-d-Y') }}</p>
+                        </div>
+                    </div>
+                    {{-- <div>
+                        <button class="btn btn-primary btn-sm">Follow</button>
+                        <button class="btn btn-success btn-sm">Message</button>
+                    </div> --}}
+                </div>
             </div>
         </div>
     </div>
@@ -27,7 +56,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">First Name <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="first_name" value="{{ old('first_name') }}"
+                                        <input type="text" name="first_name" value="{{ $donor->first_name }}"
                                             class="form-control @error('first_name') parsley-error @enderror"
                                             placeholder="First Name *">
                                         <span id="first_name_Error" class="error"></span>
@@ -42,7 +71,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Last Name <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="last_name" value="{{ old('last_name') }}"
+                                        <input type="text" name="last_name" value="{{ $donor->last_name }}"
                                             class="form-control @error('last_name') parsley-error @enderror"
                                             placeholder="Last Name">
                                         <span id="last_name_Error" class="error"></span>
@@ -57,7 +86,7 @@
                                 <div class="col-lg-3 col-md-3 col-sm-12 mb-3">
                                     <div class="form-group">
                                         <label for="" class="form-label">Middle Name</label>
-                                        <input type="text" name="middle_name" value="{{ old('middle_name') }}"
+                                        <input type="text" name="middle_name" value="{{ $donor->middle_name }}"
                                             class="form-control @error('middle_name') parsley-error @enderror"
                                             placeholder="Middle Name">
                                         @error('middle_name')
@@ -73,7 +102,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Suffix</label>
                                         <select name="suffix" class="form-control" id="">
-                                            <option value="" selected hidden>Suffix</option>
+                                            <option value="{{ $donor->suffix }}" selected hidden>{{ $donor->suffix }}</option>
                                             <option value="">None</option>
                                             <option value="Jr.">Jr.</option>
                                             <option value="Sr.">Sr.</option>
@@ -88,7 +117,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Email Address <span
                                                 class="text-danger">*</span></label>
-                                        <input type="email" value="{{ old('email') }}" name="email"
+                                        <input type="email" value="{{ $donor->email }}" name="email"
                                             class="form-control @error('email') parsley-error @enderror"
                                             placeholder="Email">
                                         @error('email')
@@ -103,7 +132,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Contact Number <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" value="{{ old('contact_number') }}" name="contact_number"
+                                        <input type="text" value="{{ $donor->contact_number }}" name="contact_number"
                                             class="form-control @error('contact_number') parsley-error @enderror"
                                             placeholder="Contact Number">
                                         @error('contact_number')
@@ -121,7 +150,7 @@
                                             <label>Date Of Birth</label>
                                             <div class="input-group">
                                                 <input data-provide="datepicker" name="birth_date"
-                                                    value="{{ old('birth_date') }}" placeholder="Date of Birth"
+                                                    value="{{ $donor->birth_date }}" placeholder="Date of Birth"
                                                     data-date-autoclose="true"
                                                     class="form-control @error('contact_number') parsley-error @enderror"
                                                     data-date-format="dd/mm/yyyy">
@@ -142,13 +171,13 @@
                                         <br />
                                         <label class="fancy-radio">
                                             <input type="radio" name="gender" value="male"
-                                                {{ old('gender') == 'male' ? 'checked' : '' }}
+                                                {{ $donor->gender == 'male' ? 'checked' : '' }}
                                                 data-parsley-errors-container="#error-radio">
                                             <span><i></i>Male</span>
                                         </label>
                                         <label class="fancy-radio">
                                             <input type="radio" name="gender" value="female"
-                                                {{ old('gender') == 'female' ? 'checked' : '' }}>
+                                                {{ $donor->gender == 'female' ? 'checked' : '' }}>
                                             <span><i></i>Female</span>
                                         </label>
                                         <span id="gender_Error" class="error"></span>
@@ -168,18 +197,18 @@
                                         <br />
                                         <label class="fancy-radio">
                                             <input type="radio" name="civil_status"
-                                                {{ old('civil_status') == 'single' ? 'checked' : '' }} value="single"
+                                                {{ $donor->civil_status == 'single' ? 'checked' : '' }} value="single"
                                                 data-parsley-errors-container="#error-radio">
                                             <span><i></i>Single</span>
                                         </label>
                                         <label class="fancy-radio">
                                             <input type="radio" name="civil_status"
-                                                {{ old('civil_status') == 'divorced' ? 'checked' : '' }} value="divorced">
+                                                {{ $donor->civil_status == 'divorced' ? 'checked' : '' }} value="divorced">
                                             <span><i></i>Divorced</span>
                                         </label>
                                         <label class="fancy-radio">
                                             <input type="radio" name="civil_status" value="widowed"
-                                                {{ old('civil_status') == 'widowed' ? 'checked' : '' }}>
+                                                {{ $donor->civil_status == 'widowed' ? 'checked' : '' }}>
                                             <span><i></i>Widowed</span>
                                         </label>
                                     </div>
@@ -197,10 +226,9 @@
                                                 class="text-danger">*</span></label>
                                         <select name="province"
                                             style="height: 100px !important; box-shadow: none !important;"
-                                            id="province-select-a" 
-                                            onchange="getCity()"
+                                            id="province-select-a" onchange="getCity()"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select Province</option>
+                                            <option value="{{ $province->provCode }}" selected>{{ $donor->province }}</option>
                                             @foreach ($provinces as $value)
                                                 <option value="{{ $value->provCode }}">{{ $value->provDesc }}</option>
                                             @endforeach
@@ -218,12 +246,16 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">City / Municipality <span
                                                 class="text-danger">*</span></label>
-                                        <select name="city"
-                                            onchange="getBarangay()"
+                                        <select name="city" onchange="getBarangay()"
                                             style="height: 100px !important; box-shadow: none !important;"
                                             id="city_select"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select City</option>
+                                            <option value="{{ $city_default->citymunCode }}" selected hidden>
+                                                {{ $city_default->citymunDesc }}</option>
+                                            @foreach ($cities as $city)
+                                                <option value="{{ $city->citymunCode }}">{{ $city->citymunDesc }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                         @error('city')
                                             <p class="text-sm text-danger text-italized"
@@ -242,7 +274,12 @@
                                             style="height: 100px !important; box-shadow: none !important;"
                                             id="barangay_select"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select Barangay</option>
+                                            <option value="{{ $barangay_default->brgyDesc }}" selected>
+                                                {{ $barangay_default->brgyDesc }}</option>
+                                            @foreach ($barangays as $barangay)
+                                                <option value="{{ $barangay->brgyDesc }}">{{ $barangay->brgyDesc }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                         @error('barangay')
                                             <p class="text-sm text-danger text-italized"
@@ -257,10 +294,10 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Blood Type <span
                                                 class="text-danger">*</span></label>
-                                        <select name="blood_type"
+                                        <select name="blood_type" disabled
                                             style="height: 100px !important; box-shadow: none !important;"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select Blood Type</option>
+                                            <option value="{{ $donor->blood_type }}" selected>{{ $donor->blood_type }}</option>
                                             <option value="A+">A+</option>
                                             <option value="A-">A-</option>
                                             <option value="B+">B+</option>
@@ -279,10 +316,12 @@
                                     </div>
                                 </div>
 
+                                <input type="hidden" id="donor_id" value="{{ $donor->id }}">
+
 
                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary" id="submit-btn">Add</button>
-                                    <a href="/donors" type="button" class="btn btn-secondary"
+                                    <button type="submit" class="btn btn-primary" id="submit-btn">Save</button>
+                                    <a href="/donors/{{ $donor->id }}/view" type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Cancel</a>
                                 </div>
                             </div>
@@ -293,8 +332,8 @@
         </div>
     </div>
 
-    @include('components.modals.confirm-donor')
+    @include('components.modals.confirm-donor-edit')
     @push('scripts')
-        <script src="{{ asset('assets/js/add-donors.js') }}"></script>
+        <script src="{{ asset('assets/js/edit-donors.js') }}"></script>
     @endpush
 @endsection
