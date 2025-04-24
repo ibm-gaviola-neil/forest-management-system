@@ -18,7 +18,7 @@ class DepartmentConroller extends Controller
 
     public function index(){
         $departments = $this->department_service->getDepartments();
-        return view('pages.admin.departments', compact('departments'));
+        return view('Pages.Admin.departments', compact('departments'));
     }
 
     public function store(\App\Http\Requests\DepartmentRequest $request){

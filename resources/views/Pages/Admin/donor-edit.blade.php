@@ -332,7 +332,7 @@
         </div>
     </div>
 
-    @include('components.modals.confirm-donor-edit')
+    @include('components.Modals.confirm-donor-edit')
     @push('scripts')
         <script src="{{ asset('assets/js/edit-donors.js') }}"></script>
     @endpush

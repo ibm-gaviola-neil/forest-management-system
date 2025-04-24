@@ -1,4 +1,4 @@
-@include('components.layout.main-header')
+@include('components.Layout.main-header')
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="bar1"></div>
@@ -14,8 +14,8 @@
 
     <div class="wrapper"></div>
 
-    @include('components.layout.main-navbar')
-    @include('components.layout.main-sidebar')
+    @include('components.Layout.main-navbar')
+    @include('components.Layout.main-sidebar')
 
     <div id="main-content">
         <div class="container-fluid">
@@ -23,4 +23,4 @@
         </div>
     </div>
 
-@include('components.layout.main-footer')
+@include('components.Layout.main-footer')

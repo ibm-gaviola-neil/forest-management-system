@@ -293,7 +293,7 @@
         </div>
     </div>
 
-    @include('components.modals.confirm-donor')
+    @include('components.Modals.confirm-donor')
     @push('scripts')
         <script src="{{ asset('assets/js/add-donors.js') }}"></script>
     @endpush

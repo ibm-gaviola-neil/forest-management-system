@@ -10,43 +10,27 @@
             </div>
             <div class="modal-body" id="main-modal">
                 <div class="row clearfix" id="donate-modal-body">
-                    <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
-                        <div class="form-group">
-                            <label for="" class="form-label">Blood Bag ID <span
-                                    class="text-danger">*</span></label>
-                            <input id="edit-department_name" type="text" name="blood_bag_id"
-                                class="form-control @error('department_name') parsley-error @enderror"
-                                placeholder="Blood Bag ID *">
-                            <span id="blood_bag_id_Error" class="error"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
-                        <div class="form-group">
-                            <label for="" class="form-label">Volume ML <span
-                                    class="text-danger">*</span></label>
-                            <input min="1" id="edit-department_name" type="number" name="volume_ml"
-                                class="form-control @error('department_name') parsley-error @enderror"
-                                placeholder="Volume ML *">
-                            <span id="volume_ml_Error" class="error"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
 
                         <input type="hidden" name="donor_id" id="donor_id" value="{{ $donor_id }}">
 
                         <div class="form-group">
                             <label for="" class="form-label">Blood Bag QNTY <span
                                     class="text-danger">*</span></label>
-                            <input min="1" id="edit-department_name" type="number" name="qnty"
+                            <input min="1" id="blood_qnty" type="number" name="qnty"
                                 class="form-control @error('department_name') parsley-error @enderror"
                                 placeholder="Blood Bag QNTY *">
                             <span id="qnty_Error" class="error"></span>
                         </div>
+
+                        <div id="input-devs" class="col-12 col-lg-12 col-md-12 row clearfix w-full">
+                        
+                        </div>
+
                     </div>
 
-                    <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
                         <div class="form-group">
                             <label for="" class="form-label">Date Processed <span
                                     class="text-danger">*</span></label>
@@ -58,6 +42,57 @@
                             </div>
                             <span id="date_process_Error" class="error"></span>
                         </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                        <div class="col-lg-6 col-md-12">
+                            <label>Expiration Setting Option <span class="text-danger">*</span></label>
+                            <br />
+                            <label class="fancy-radio">
+                                <input type="radio" name="expiration_setting_type" value="1"
+                                    {{ old('expiration_setting_type') == '1' ? 'checked' : '' }}
+                                    data-parsley-errors-container="#error-radio" class="expiration_setting_type">
+                                <span><i></i>Date Input</span>
+                            </label>
+                            <label class="fancy-radio">
+                                <input type="radio" name="expiration_setting_type" value="2"
+                                {{ old('expiration_setting_type') == '2' ? 'checked' : '' }} class="expiration_setting_type">
+                                <span><i></i>Days Input</span>
+                            </label>
+                            <span id="gender_Error" class="error"></span>
+                        </div>
+                        <span id="expiration_setting_type_Error" class="error"></span>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2" id="expiration_type" style="display: none">
+                        <div class="">
+                            <label for="" class="form-label">Expiration <span
+                                    class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input data-provide="datepicker" name="expiration_date" value="{{ old('birth_date') }}"
+                                    placeholder="Expiration" data-date-autoclose="true" 
+                                    class="form-control @error('expiration') parsley-error @enderror"
+                                    data-date-format="dd/mm/yyyy">
+                            </div>
+                            <span id="expiration_date_Error" class="error"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2" id="days_type" style="display: none">
+
+                        <div class="form-group">
+                            <label for="" class="form-label">Number of Days Expiration<span
+                                    class="text-danger">*</span></label>
+                            <input min="1" type="number" name="expiration_days"
+                                class="form-control @error('department_name') parsley-error @enderror"
+                                placeholder="Number of Days Expiration *">
+                            <span id="expiration_days_Error" class="error"></span>
+                        </div>
+
+                        <div id="input-devs" class="col-12 col-lg-12 col-md-12 row clearfix w-full">
+                        
+                        </div>
+
                     </div>
 
                     <div class="col-lg-4 col-md-4 col-sm-12 mb-2">

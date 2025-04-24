@@ -19,7 +19,7 @@ class UsersController extends Controller
 
     public function addUser(){
         $departments = Department::orderBy('department_name')->get();
-        return view('pages.forms.add-user', compact('departments'));
+        return view('Pages.Forms.add-user', compact('departments'));
     }
 
     public function editUser(User $user){
@@ -34,7 +34,7 @@ class UsersController extends Controller
         }else{
             $user_data = $user;
         }
-        return view('pages.forms.edit-user', compact('user_data', 'departments'));
+        return view('Pages.Forms.edit-user', compact('user_data', 'departments'));
     }
 
     public function store(\App\Http\Requests\UserRequest $request){

@@ -4,37 +4,41 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DonateRequest;
-use App\Http\Requests\DonorRequest;
 use App\Http\Services\DonationService;
 use App\Http\Services\DonorService;
+use App\Http\Services\InventoryService;
 use App\Models\Barangay;
 use App\Models\City;
-use App\Models\DonationHistory;
 use App\Models\Donor;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Domains\TraitAdmin;
 
 class DonorController extends Controller
 {
+    use TraitAdmin;
     protected $donor_service;
     protected $donation_service;
+    protected $inventory_service;
 
-    public function __construct(DonorService $donor_service, DonationService $donation_service){
+    public function __construct(DonorService $donor_service, DonationService $donation_service, InventoryService $inventoryService){
         $this->donor_service = $donor_service;
         $this->donation_service = $donation_service;
+        $this->inventory_service = $inventoryService;
     }
 
     public function index(Request $request) {
         $donors = $this->donor_service->getDonors($request);
         $provinces = Province::orderBy('provDesc', 'ASC')->get();
         $address = $this->donor_service->getDonorRequestAddress($request);
-        return view('pages.admin.donors', compact('donors', 'provinces', 'request', 'address'));
+        return view('Pages.Admin.donors', compact('donors', 'provinces', 'request', 'address'));
     }
 
     public function addDonor(){
         $provinces = Province::orderBy('provDesc', 'ASC')->get();
-        return view('pages.forms.add-donor', compact('provinces'));
+        return view('Pages.Forms.add-donor', compact('provinces'));
     }
 
     /**
@@ -135,7 +139,11 @@ class DonorController extends Controller
         $staffs = User::where('role', 'staff')->orderBy('last_name', 'ASC')->get();
         $histories = $this->donation_service->getDonationHistories((int)$donor->id);
         $donor_id = $donor->id;
-        return view('pages.admin.donor', compact('histories', 'provinces', 'donor_id', 'staffs', 'donor'));
+        return view('Pages.Admin.donor', compact('histories', 'provinces', 'donor_id', 'staffs', 'donor'));
+    }
+
+    public function getDonationHistory($donation_id){
+        return response()->json($this->donation_service->getDonation($donation_id));
     }
 
     public function edit(Donor $donor){
@@ -148,24 +156,31 @@ class DonorController extends Controller
         
         $barangays = Barangay::where('citymunCode', $city_default->citymunCode)->orderBy('brgyDesc', 'ASC')->get();
         $barangay_default = Barangay::where('brgyDesc', $donor->barangay)->first();
-        return view('pages.admin.donor-edit', compact('provinces', 'donor_id', 'donor', 'cities', 'barangays', 'city_default', 'barangay_default', 'province'));
+        return view('Pages.Admin.donor-edit', compact('provinces', 'donor_id', 'donor', 'cities', 'barangays', 'city_default', 'barangay_default', 'province'));
     }
 
     public function confirmContent(){
-        return view('components.modals.confirm-donate');
+        return view('components.Modals.confirm-donate');
     }
 
     public function confirmDondate(Donor $donor, DonateRequest $request){
         $payload = $request->validated();
         $payload['user_id'] = auth()->user()->id; 
         $payload['donor_id'] = $donor->id; 
+        $save = false;
 
         $province_name = Province::where('provCode', $request->province)->first();
         $city_name = City::where('citymunCode', $request->city)->first();
         $payload['province'] = $province_name->provDesc;
         $payload['city'] = $city_name->citymunDesc;
+        $payload['expiration_date'] = $this->setExpirationDate($payload);
+        // dd($payload);
+        DB::transaction(function () use ($donor, $payload, &$save){
+            // dd($payload);
+            $donation = $this->donation_service->storeDonation($payload);
+            $save = $this->inventory_service->saveInventoryData($payload, $donation);
+        });
 
-        $save = DonationHistory::create($payload);
         if($save){
             return response()->json([
                 'status' => 200,

@@ -15,16 +15,22 @@ async function getUser() {
 window.addEventListener("load", async () => {
     const logout_btn = document.getElementById("logout-link");
     const sidebarItem = document.querySelectorAll('.sidebar-item')
+    const sideBarLink = document.querySelectorAll('.sidebar-link')
     const pathname = window.location.pathname;
     
     sidebarItem.forEach(item => {
         const link = item.querySelector('a')
         const url = new URL(link.href)
         const path = url.pathname
+        console.log(path + ', ' + pathname) 
         
-        path === pathname ? item.classList.add('active', 'open') : null
-    })
+        if(path === pathname || pathname.includes(path)){
+            item.classList.add('active', 'open')
+            link.style.color = 'black'
+        }
 
+    })
+    
     logout_btn.addEventListener("click", () => {
         Swal.fire({
             title: "Are you sure you want to logout?",

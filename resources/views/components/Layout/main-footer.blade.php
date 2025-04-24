@@ -1,5 +1,6 @@
 <!-- Javascript -->
 @stack('scripts')
+<script src="{{ asset('/assets/vendor/summernote/dist/summernote.js') }}"></script>
 <script src="{{ asset('/html/assets/bundles/libscripts.bundle.js') }}"></script>
 <script src="{{ asset('/html/assets/bundles/vendorscripts.bundle.js') }}"></script>
 

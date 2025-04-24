@@ -55,7 +55,7 @@
                                 <th class="">QTY</th>
                                 <th class="">Donation Type</th>
                                 <th class="">Donation Date</th>
-                                <th>Entry Date</th>
+                                <th>Expiration Date</th>
                                 <th>Processed By</th>
                             </tr>
                         </thead>
@@ -63,13 +63,13 @@
                             @forelse ($histories as $donor)
                                 <tr id="user-{{ $donor->id }}">
                                     <td>
-                                        <a href="#" style="font-weight: 500; text-decoration: underline;" class="text-primary">{{ $donor->blood_bag_id }}</a>
+                                        <button style="font-weight: 500; text-decoration: underline;" value="{{ $donor->id }}" class="text-primary btn donation-id">{{ $donor->blood_bag_id }}</a>
                                     </td>
                                     <td>{{ $donor->volume_ml }}</td>
                                     <td>{{ $donor->qnty }}</td>
                                     <td>{{ $donor->donation_type }}</td>
                                     <td>{{ $donor->date_process }}</td>
-                                    <td>{{ $donor->created_at->format('m-d-Y') }}</td>
+                                    <td>{{ $donor->expiration_date}}</td>
                                     <td>
                                         <a href="#"
                                             class="text-primary" style="text-transform: capitalize">{{ $donor->userlname . ' ' . $donor->userfname }}</a>
@@ -88,8 +88,8 @@
         </div>
     </div>
 
-    @include('components.modals.donate')
-    {{-- @include('components.modals.confirm-donate') --}}
+    @include('components.Modals.donate')
+    @include('components.Modals.confirm-donate')
     @push('scripts')
         <script src="{{ asset('assets/js/donor.js') }}"></script>
     @endpush

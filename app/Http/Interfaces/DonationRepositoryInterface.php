@@ -14,4 +14,5 @@ interface DonationRepositoryInterface {
      * @return Collection|LengthAwarePaginator
      */
     public function index(int $donor) : Collection;
+    public function get(int $donation_id);
 }

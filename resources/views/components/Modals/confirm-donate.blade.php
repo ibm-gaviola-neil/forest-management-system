@@ -3,7 +3,7 @@
     <form class="modal-dialog modal-lg modal-dialog-centered" role="document" id="confirm-donor-form">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirm Donor Information</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Donation Information</h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -11,36 +11,44 @@
             <div class="modal-body">
                 <table class="table spacing5">
                     <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Name: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_name">Neil Bryan Gaviola</th>
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Blood Bag ID: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="blood_bag"></th>
                     </tr>
                     <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Email: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_email"></th>
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Volume ML: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="volume"></th>
+                    </tr>
+                    {{-- <tr style="">
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">QNTY: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="qnty"></th>
+                    </tr> --}}
+                    <tr style="">
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Donation Type: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="type"></th>
                     </tr>
                     <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Contact Number: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_contact"></th>
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Donation Date: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="don_date"></th>
                     </tr>
+                    {{-- <tr style="">
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Entry Date: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="entry_date"></th>
+                    </tr> --}}
                     <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Address: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_address"></th>
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Processed By: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="processed"></th>
                     </tr>
-                    <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Gender: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_gender"></th>
-                    </tr>
-                    <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Civil Status: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_status"></th>
-                    </tr>
-                    <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Birth Date: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_date"></th>
-                    </tr>
-                    <tr style="">
+                    {{-- <tr style="">
                         <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Blood Type: </th>
                         <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_type"></th>
+                    </tr> --}}
+                    <tr style="">
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Venue: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="venue"></th>
+                    </tr>
+                    <tr style="">
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Expiration Date: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="expiration"></th>
                     </tr>
                 </table>
 
@@ -49,8 +57,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="edit-close-button" class="btn btn-round btn-default"
-                    data-dismiss="modal">Cancel</button>
-                <button type="submit" id="confirm-donor-a" class="btn btn-round btn-primary">Submit</button>
+                    data-dismiss="modal">Close</button>
+                {{-- <button type="submit" id="confirm-donor-a" class="btn btn-round btn-primary">Submit</button> --}}
             </div>
         </div>
     </form>
