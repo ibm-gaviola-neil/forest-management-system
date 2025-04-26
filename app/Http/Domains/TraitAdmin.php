@@ -15,15 +15,14 @@ trait TraitAdmin {
 
     public function setExpirationDate($payload){
         if((int)$payload['expiration_setting_type'] == 1){  
-            $date = strtotime($payload['expiration_date']);
-            return date('Y-m-d', $date);
+            return $this->formatDate($payload['expiration_date']);
         }else{
             return $this->expirationDays($payload['expiration_days']);
         }
     }
 
-    public function formatDate(string $date){
-        $date = strtotime($date);
-        return date('Y-m-d', $date);
+    public function formatDate($date){
+        $dateFormatted = Carbon::parse($date);
+        return $dateFormatted->format('Y-m-d');
     }
 }

@@ -12,7 +12,7 @@
                 </nav>
             </div>
             <div class="col-md-6 col-sm-12 text-right hidden-xs">
-                <button id="donate-btn" class="btn btn-sm btn-primary btn-round" title="">Donate</button>
+                <a style="margin-right: 5px" href="/donors/{{ $donor_id }}/donate-page" class="btn btn-sm btn-primary btn-round" title="">Donate</button> {{ ' ' }}
                 <a href="/donors/{{ $donor_id }}/edit" class="btn btn-sm btn-success btn-round" title="">Edit Profile</a>
             </div>
         </div>

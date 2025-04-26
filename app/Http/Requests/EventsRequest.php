@@ -9,7 +9,7 @@ class EventsRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): bool   
     {
         return true;
     }
@@ -24,8 +24,8 @@ class EventsRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'content' => 'required',
-            'display_start_date' => 'required',
-            'display_end_date' => 'required'
+            'display_start_date' => ['required', 'date'],
+            'display_end_date' => ['required', 'date', 'after_or_equal:display_start_date'],
         ];
     }
 

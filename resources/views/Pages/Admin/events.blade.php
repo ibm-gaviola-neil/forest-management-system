@@ -26,7 +26,7 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Event Title <span
                                                 class="text-danger">*</span></label>
-                                        <input type="text" name="title" value="{{ old('title') }}" class="form-control @error('title') parsley-error @enderror" placeholder="Department Name *">
+                                        <input type="text" name="title" value="{{ old('title') }}" class="form-control @error('title') parsley-error @enderror" placeholder="Event Title *">
                                         @error('title')
                                             <p class="text-sm text-danger text-italized"
                                                 style="text-align: left !important; font-size: 11px;">
@@ -55,7 +55,7 @@
                                             <input data-provide="datepicker" name="display_start_date" value="{{ old('display_start_date') }}"
                                                 placeholder="Display Start Date" data-date-autoclose="true" 
                                                 class="form-control @error('display_start_date') parsley-error @enderror"
-                                                data-date-format="dd/mm/yyyy">
+                                                data-date-format="yyyy-mm-dd">
                                         </div>
                                         @error('display_start_date')
                                             <p class="text-sm text-danger text-italized"
@@ -72,7 +72,7 @@
                                             <input data-provide="datepicker" name="display_end_date" value="{{ old('display_end_date') }}"
                                                 placeholder="Display End Date" data-date-autoclose="true" 
                                                 class="form-control @error('display_end_date') parsley-error @enderror"
-                                                data-date-format="dd/mm/yyyy">
+                                                data-date-format="yyyy-mm-dd">
                                         </div>
                                         @error('display_end_date')
                                             <p class="text-sm text-danger text-italized"
@@ -105,43 +105,40 @@
                                 <th class="w60">Event Title</th>
                                 <th>Display Date</th>
                                 <th>Display End Date</th>
-                                <th>Status</th>
                                 <th>Created Date</th>
                                 <th class="w100">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($events as $department)
-                                <tr id="department-{{ $department->id }}">
-                                    <td style="max-width: 300px !important">
-                                        <p class="mb-0" style="text-transform: capitalize; font-weight: 500;">{{ $department->department_name }}</p>
-                                    </td>
-                                    <td>{{ $department->department_head }}</td>
-                                    <td>{{ $department->contact_number }}</td>
-                                    <td>{{ $department->email }}</td>
-                                    <td>{{ $department->created_at->format('m-d-Y') }}</td>
-                                    <td>
-                                        <button value="{{ $department->id }}" class="btn btn-sm btn-default edit-btn" title="Edit"><i
-                                                class="fa fa-edit"></i></button>
-                                        <button value="{{ $department->id }}" type="button" class="btn btn-sm btn-default js-sweetalert delete-department" title="Delete"
-                                            data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="7" class="text-center">No Data</td>
-                                </tr>
-                            @endforelse
-
+                            @forelse ($events as $event)
+                            <tr id="department-{{ $event->id }}">
+                                <td style="max-width: 300px !important">
+                                    <p class="mb-0" style="text-transform: capitalize; font-weight: 500;">{{ $event->title }}</p>
+                                </td>
+                                <td>{{ $event->display_start_date }}</td>
+                                <td>{{ $event->display_end_date }}</td>
+                                <td>{{ $event->created_at->format('Y-m-d') }}</td>
+                                <td>
+                                    <button value="{{ $event->id }}" class="btn btn-sm btn-default edit-btn" title="Edit"><i
+                                            class="fa fa-edit"></i></button>
+                                    <button value="{{ $event->id }}" type="button" class="btn btn-sm btn-default js-sweetalert delete-department" title="Delete"
+                                        data-type="confirm"><i class="fa fa-trash-o text-danger"></i></button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">No Data</td>
+                            </tr>
+                        @endforelse
                         </tbody>
-                    </table>
+                    </table>    
                 </div>
             </div>
         </div>
     </div>
 
-@include('components.Modals.edit-department')
+@include('components.Modals.edit-event')
 @push('scripts')
-    <script src="{{ asset('assets/js/departments.js') }}"></script>
+    <script src="{{ asset('assets/js/events.js') }}"></script>
 @endpush
 @endsection

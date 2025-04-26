@@ -439,7 +439,7 @@
                                 <th class="">Blood Bag ID</th>
                                 <th class="">Volume ML</th>
                                 <th class="">Blood Type</th>
-                                <th class="">Donation Date</th>
+                                <th class="">Expiration Date</th>
                                 <th>Address</th>
                                 <th>Donated By</th>
                             </tr>

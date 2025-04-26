@@ -27,14 +27,18 @@ class DonateRequest extends FormRequest
             "blood_bag_id.*" => 'required|unique:donation_histories,blood_bag_id',
             "volume_ml" => 'required_with:qnty|array',
             "volume_ml.*" => 'required',
-            "date_process" => 'required',
+            "date_process" => 'required|date',
             "province" => 'required',
             "city" => 'required',
             "barangay" => 'required',
             "staff_id" => 'required',
             "donation_type" => 'required',
-            'expiration_setting_type' => 'required|integer|max:2',
-            'expiration_date' => 'required_if:expiration_setting_type,1',
+            'expiration_setting_type' => 'required|integer|in:1,2',
+            'expiration_date' => [
+                'required_if:expiration_setting_type,1',
+                'nullable',
+                'date',   
+            ],
             'expiration_days' => 'required_if:expiration_setting_type,2'
         ];
     }

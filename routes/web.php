@@ -39,6 +39,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::get('/', 'index');
         Route::get('/register', 'addDonor');
         Route::get('/{donor}/edit', 'edit');
+        Route::get('/{donor}/donate-page', 'donatePage');
         Route::post('/{donor}/edit-confirm', 'editConfirm');
         Route::post('/{donor}/update', 'update');
         Route::delete('/{donor}/delete', 'delete');
@@ -67,10 +68,10 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
 
     Route::prefix('events')->controller(\App\Http\Controllers\Admin\EventController::class)->group(function(){
         Route::get('/', 'index');
-        // Route::get('/{department}', 'show');
+        Route::get('/{event}', 'show');
         Route::post('/store', 'store');
-        // Route::delete('/delete/{department}', 'delete');
-        // Route::post('/update/{department}', 'update');
+        Route::delete('/delete/{event}', 'delete');
+        Route::post('/update/{event}', 'update');
     });
 });
 

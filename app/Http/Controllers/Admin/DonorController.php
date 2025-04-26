@@ -159,6 +159,20 @@ class DonorController extends Controller
         return view('Pages.Admin.donor-edit', compact('provinces', 'donor_id', 'donor', 'cities', 'barangays', 'city_default', 'barangay_default', 'province'));
     }
 
+    public function donatePage(Donor $donor){
+        $provinces = Province::orderBy('provDesc', 'ASC')->get();
+        $donor_id = $donor->id;
+        $province = Province::where('provDesc', $donor->province)->first();
+
+        $city_default = City::where('citymunDesc', $donor->city)->first();
+        $cities = City::where('provCode', $province->provCode)->orderBy('citymunDesc', 'ASC')->get();
+        
+        $barangays = Barangay::where('citymunCode', $city_default->citymunCode)->orderBy('brgyDesc', 'ASC')->get();
+        $barangay_default = Barangay::where('brgyDesc', $donor->barangay)->first();
+        $staffs = User::where('role', 'staff')->orderBy('last_name', 'ASC')->get();
+        return view('Pages.Admin.donor-donate', compact('provinces', 'donor_id', 'staffs', 'donor', 'cities', 'barangays', 'city_default', 'barangay_default', 'province'));
+    }
+
     public function confirmContent(){
         return view('components.Modals.confirm-donate');
     }

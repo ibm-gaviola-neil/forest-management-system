@@ -38,7 +38,7 @@
                                 <input data-provide="datepicker" name="date_process" value="{{ old('birth_date') }}"
                                     placeholder="Date of Processed" data-date-autoclose="true"
                                     class="form-control @error('contact_number') parsley-error @enderror"
-                                    data-date-format="dd/mm/yyyy">
+                                    data-date-format="yyyy-mm-dd">
                             </div>
                             <span id="date_process_Error" class="error"></span>
                         </div>
@@ -72,7 +72,7 @@
                                 <input data-provide="datepicker" name="expiration_date" value="{{ old('birth_date') }}"
                                     placeholder="Expiration" data-date-autoclose="true" 
                                     class="form-control @error('expiration') parsley-error @enderror"
-                                    data-date-format="dd/mm/yyyy">
+                                    data-date-format="yyyy-mm-dd">
                             </div>
                             <span id="expiration_date_Error" class="error"></span>
                         </div>
