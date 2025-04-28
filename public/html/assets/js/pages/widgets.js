@@ -1,3 +1,20 @@
+async function getNumberOfDonors (){
+    try {
+        const response = await fetch('/admin/number-donors')
+        const data = await response.json()
+
+        const total_donors = data.total_donors.map(item => item.total_donors)
+        const barangays = data.total_donors.map(item => item.barangay)
+
+        return {
+            total_donors: total_donors,
+            barangays: barangays
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 $(function() {
 "use strict";
 
@@ -54,35 +71,31 @@ $(function() {
 	});
 });
 
-$(function() {
+$(async function() {
     "use strict";
+    const numberOfDonors = await getNumberOfDonors()
+    console.log(numberOfDonors);
     var chart = c3.generate({
         bindto: '#chart-bar', // id of chart wrapper
         data: {
             columns: [
-                // each columns data
-                ['data1', 11, 8, 15, 18, 19, 17],
-                ['data2', 8, 7, 11, 11, 4, 8],
-                ['data3', 8, 9, 8, 10, 12, 14],
+                // each columns data    
+                ['data1', ...numberOfDonors.total_donors],
             ],
             type: 'bar', // default type of chart
             colors: {
                 'data1': '#467fcf', // blue            
-                'data2': '#5eba00', // green
-                'data3': '#f66d9b', // pink
             },
             names: {
                 // name of each serie
                 'data1': 'Income',            
-                'data2': 'Growth',
-                'data3': 'Expense',
             }
         },
         axis: {
             x: {
                 type: 'category',
                 // name of each category
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+                categories: [...numberOfDonors.barangays]
             },
         },
         bar: {

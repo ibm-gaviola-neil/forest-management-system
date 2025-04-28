@@ -20,9 +20,14 @@
 <script src="{{ asset('/html/assets/bundles/mainscripts.bundle.js') }}"></script>
 <script src="{{ asset('/html/assets/js/hrdashboard.js') }}"></script>
 <script src="{{ asset('/assets/js/user.js') }}"></script>
+<script src="{{ asset('/html/assets/js/pages/widgets.js') }}"></script>
 
 <script src="{{ asset('/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <script src="{{ asset('/html/assets/js/pages/forms/advanced-form-elements.js') }}"></script>
+
+<script src="{{ asset('/html/assets/bundles/chartist.bundle.js') }}"></script>
+<script src="{{ asset('/html/assets/bundles/knob.bundle.js') }}"></script><!-- Jquery Knob-->
+<script src="{{ asset('/html/assets/bundles/c3.bundle.js') }}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 

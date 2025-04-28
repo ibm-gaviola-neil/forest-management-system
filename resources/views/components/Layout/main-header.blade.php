@@ -33,6 +33,10 @@
 <!-- MAIN CSS -->
 <link rel="stylesheet" href="{{  asset('/html/assets/css/site.min.css')}}">
 
+<link rel="stylesheet" href="{{ asset('/assets/vendor/c3/c3.min.css')}}"/>
+<link rel="stylesheet" href="{{ asset('/assets/vendor/chartist/css/chartist.min.css')}}">
+<link rel="stylesheet" href="{{ asset('/assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css')}}">
+
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 

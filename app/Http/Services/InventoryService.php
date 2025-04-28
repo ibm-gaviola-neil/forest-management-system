@@ -50,8 +50,6 @@ class InventoryService {
     }
 
     public function getInventoryData($request){
-
-        // dd($this->donor_service->getDonorRequestAddress($request));
         return [
             'provinces' => Province::orderBy('provDesc', 'ASC')->get(),
             'inventoryData' => $this->inventory_repository->getData($request, $this->donor_service->getDonorRequestAddress($request)),
@@ -62,7 +60,7 @@ class InventoryService {
         ];
     }
 
-    private function getBloodTypeCount($request, $address){
+    public function getBloodTypeCount($request, $address){
         $blood_types = BloodTypeDomain::BLOOD_TYPES;
         $types = [];
         foreach ($blood_types as $key => $value) {

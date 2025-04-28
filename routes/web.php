@@ -23,6 +23,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
 
     Route::prefix('admin')->controller(\App\Http\Controllers\Admin\DashboardController::class)->group(function(){
         Route::get('/', 'index');
+        Route::get('/number-donors', 'getNumberOfDonors');
     });
 
     Route::prefix('users')->controller(\App\Http\Controllers\Admin\UsersController::class)->group(function(){
