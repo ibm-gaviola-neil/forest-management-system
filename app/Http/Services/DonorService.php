@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Domains\TraitAdmin;
 use App\Http\Interfaces\DonorRepositoryInterface;
 use App\Http\Repositories\DonorRepository;
 use App\Models\Barangay;
@@ -10,6 +11,7 @@ use App\Models\Province;
 use Illuminate\Support\Collection;
 
 class DonorService {
+    use TraitAdmin;
     protected $donor_repository;
 
     public function __construct(
@@ -19,20 +21,7 @@ class DonorService {
     }
 
     public function getDonors(object $request) : Collection{
-        $address = array();
-
-        if(isset($request->city)){
-            $address['city'] =  $address['city'] =  City::where('citymunCode', $request->city)->first()->citymunDesc;
-        }
-
-        if(isset($request->province)){
-            $address['province'] = Province::where('provCode', $request->province)->first()->provDesc;
-        }
-
-        if(isset($request->barangay)){
-            $address['barangay'] = $request->barangay;
-        }
-
+        $address = $this->getAddress($request);
         return $this->donor_repository->index($request, $address);
     }
 

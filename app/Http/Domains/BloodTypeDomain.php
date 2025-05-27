@@ -17,4 +17,14 @@ class BloodTypeDomain {
         'o_plus' => 'O+',
         'o_minus' => 'O-',
     ];
+
+    const SUFFIX = [
+        "",
+        "Jr",
+        "Sr",
+        "I",
+        "II",
+        "IV",
+    ];
+
 }

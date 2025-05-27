@@ -36,10 +36,12 @@
                 <li class="sidebar-item"><a class="sidebar-link" href="/admin" style="font-weight: 500;"><i class="icon-speedometer"></i><span>Dashboard</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="/departments" style="font-weight: 500;"><i class="icon-grid"></i><span>Departments</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="/donors" style="font-weight: 500;"><i class="icon-users"></i><span>Donors</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" href="/patients" style="font-weight: 500;"><i class="icon-users"></i><span>Patients</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="/events" style="font-weight: 500;"><i class="icon-calendar"></i><span>Events</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="report.html" style="font-weight: 500;"><i class="icon-bar-chart"></i><span>Report</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="activities.html" style="font-weight: 500;"><i class="icon-equalizer"></i><span>Audit Trails</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="/inventory" style="font-weight: 500;"><i class="icon-wallet"></i><span>Inventory</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" href="/blood-issuance" style="font-weight: 500;"><i class=" icon-drawer "></i><span>Blood Issuance</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="/users" style="font-weight: 500;"><i class="icon-user"></i><span>Users</span></a></li>
             </ul>
         </nav>

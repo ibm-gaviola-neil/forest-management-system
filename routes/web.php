@@ -61,10 +61,6 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
 
     Route::prefix('inventory')->controller(\App\Http\Controllers\Admin\BloodInventoryController::class)->group(function(){
         Route::get('/', 'index');
-        // Route::get('/{department}', 'show');
-        // Route::post('/store', 'store');
-        // Route::delete('/delete/{department}', 'delete');
-        // Route::post('/update/{department}', 'update');
     });
 
     Route::prefix('events')->controller(\App\Http\Controllers\Admin\EventController::class)->group(function(){
@@ -74,6 +70,28 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::delete('/delete/{event}', 'delete');
         Route::post('/update/{event}', 'update');
     });
+
+    Route::prefix('blood-issuance')->controller(\App\Http\Controllers\Admin\BloodIssuanceController::class)->group(function(){
+        Route::get('/', 'index');
+        // Route::get('/{event}', 'show');
+        // Route::post('/store', 'store');
+        // Route::delete('/delete/{event}', 'delete');
+        // Route::post('/update/{event}', 'update');
+    });
+
+    Route::prefix('patients')->controller(\App\Http\Controllers\Admin\PatientController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::get('/register', 'create');
+        Route::get('/{patient}/show', 'show');
+        Route::get('/{patient}/edit', 'edit');
+        Route::post('/store', 'store');
+        Route::post('/{patient}/update', 'store');
+        Route::post('/store-confirm', 'confirm');
+        Route::delete('/{patient}/delete', 'delete');
+        // Route::post('/update/{event}', 'update');
+    });
+
+    
 });
 
 Route::controller(\App\Http\Controllers\Client\AuthController::class)->group(function(){

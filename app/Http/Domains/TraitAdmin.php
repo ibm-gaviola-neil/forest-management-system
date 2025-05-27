@@ -2,6 +2,8 @@
 
 namespace App\Http\Domains;
 
+use App\Models\City;
+use App\Models\Province;
 use Carbon\Carbon;
 use DateTime;
 
@@ -24,5 +26,21 @@ trait TraitAdmin {
     public function formatDate($date){
         $dateFormatted = Carbon::parse($date);
         return $dateFormatted->format('Y-m-d');
+    }
+
+    public function getAddress($request){
+        if(isset($request->city)){
+            $address['city'] =  $address['city'] =  City::where('citymunCode', $request->city)->first()->citymunDesc;
+        }
+
+        if(isset($request->province)){
+            $address['province'] = Province::where('provCode', $request->province)->first()->provDesc;
+        }
+
+        if(isset($request->barangay)){
+            $address['barangay'] = $request->barangay;
+        }
+
+        return $address ?? [];
     }
 }
