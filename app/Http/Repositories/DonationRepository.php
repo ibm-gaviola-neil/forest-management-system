@@ -54,6 +54,7 @@ class DonationRepository implements DonationRepositoryInterface{
                 'donation_histories.date_process'
             )
             ->join('donors', 'donors.id', '=', 'donation_histories.donor_id')
+            ->where('donation_histories.count', filled($request->blood_bag_id) ? 0 : 1)
             ->whereDate('donation_histories.expiration_date', '>=', $today)
             ->orderBy('donation_histories.expiration_date', 'asc')
             ->get();

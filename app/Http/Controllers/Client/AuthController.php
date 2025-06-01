@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,8 +15,13 @@ class AuthController extends Controller
 
     public function login(\App\Http\Requests\LoginRequest $request){
         $request->validated();
+        $checkUser = User::where('username', $request['username'])->first();
 
         $auth = $request->only('username', 'password');
+
+        if($checkUser->status !== 'active'){
+            return redirect()->back()->withErrors(['password'=> 'Account not found!']); 
+        }
 
         if(Auth::attempt($auth)){
             return redirect('/admin');

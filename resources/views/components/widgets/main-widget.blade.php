@@ -15,10 +15,17 @@
             <div class="card">
                 <div class="body ribbon">
                     <div class="ribbon-box green">{{ $peapleCounts['users'] ?? 0 }}</div>
-                    <a href="/users" class="my_sort_cut text-muted">
-                        <i class="icon-users"></i>
-                        <span>Users</span>
-                    </a>
+                    @if (auth()->user()->role === 'general_admin' || auth()->user()->role === 'admin')  
+                        <a href="/users" class="my_sort_cut text-muted">
+                            <i class="icon-users"></i>
+                            <span>Users</span>
+                        </a>
+                    @else
+                        <a href="#" class="my_sort_cut text-muted">
+                            <i class="icon-users"></i>
+                            <span>Users</span>
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>

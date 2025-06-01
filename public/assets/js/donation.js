@@ -22,7 +22,7 @@ document.getElementById('store-donate-form').addEventListener('submit', async (e
                 confirmAttr,
                 confirmDataMap,
                 url: '/blood-issuance/store-confirm/',
-                title: 'Blood issuance data submitted successfully',
+                successMessage: 'Blood issuance data submitted successfully',
             });
         }
     } catch (err) {

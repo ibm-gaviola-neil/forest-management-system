@@ -50,8 +50,7 @@
                     <table class="table table-striped table-hover js-basic-example dataTable table-custom spacing5">
                         <thead>
                             <tr>
-                                <th class="">Blood Bag ID</th>
-                                <th class="">Volume ML</th>
+                                <th class="">Blood Unit Serial Number</th>
                                 <th class="">QTY</th>
                                 <th class="">Donation Type</th>
                                 <th class="">Donation Date</th>
@@ -65,7 +64,6 @@
                                     <td>
                                         <button style="font-weight: 500; text-decoration: underline;" value="{{ $donor->id }}" class="text-primary btn donation-id">{{ $donor->blood_bag_id }}</a>
                                     </td>
-                                    <td>{{ $donor->volume_ml }}</td>
                                     <td>{{ $donor->qnty }}</td>
                                     <td>{{ $donor->donation_type }}</td>
                                     <td>{{ $donor->date_process }}</td>

@@ -26,7 +26,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::get('/number-donors', 'getNumberOfDonors');
     });
 
-    Route::prefix('users')->controller(\App\Http\Controllers\Admin\UsersController::class)->group(function(){
+    Route::middleware(['ifAdmin'])->prefix('users')->controller(\App\Http\Controllers\Admin\UsersController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/register', 'addUser');
         Route::post('/store', 'store');
@@ -63,7 +63,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::get('/', 'index');
     });
 
-    Route::prefix('events')->controller(\App\Http\Controllers\Admin\EventController::class)->group(function(){
+    Route::middleware(['ifAdmin'])->prefix('events')->controller(\App\Http\Controllers\Admin\EventController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/{event}', 'show');
         Route::post('/store', 'store');

@@ -436,8 +436,7 @@
                     <table class="table table-striped table-hover js-basic-example dataTable table-custom spacing8">
                         <thead>
                             <tr>
-                                <th class="">Blood Bag ID</th>
-                                <th class="">Volume ML</th>
+                                <th class="">Blood Unit Serial Number </th>
                                 <th class="">Blood Type</th>
                                 <th class="">Expiration Date</th>
                                 <th>Address</th>
@@ -448,7 +447,6 @@
                             @forelse ($inventoryData as $inventory)
                                 <tr>
                                     <td>{{ $inventory->blood_bag_id }}</td>
-                                    <td>{{ $inventory->volume_ml }}</td>
                                     <td style="font-weight: bold" class="text-danger">
                                         {{ $inventory->blood_type }}
                                     </td>

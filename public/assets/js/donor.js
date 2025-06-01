@@ -47,7 +47,6 @@ async function getBarangay() {
                 console.log(data);
                 
                 blood_bag.innerHTML = data.blood_bag_id
-                volume.innerHTML = data.volume_ml
                 // qnty.innerHTML = data.qnty
                 type.innerHTML = data.donation_type
                 don_date.innerHTML = data.date_process

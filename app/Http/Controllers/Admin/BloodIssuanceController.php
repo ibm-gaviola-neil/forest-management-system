@@ -7,10 +7,12 @@ use App\Http\Domains\TraitAdmin;
 use App\Http\Requests\BloodIssuanceRequest;
 use App\Http\Services\BloodIssuanceService;
 use App\Models\BloodIssuance;
+use App\Models\DonationHistory;
 use App\Models\Patient;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BloodIssuanceController extends Controller
 {
@@ -53,7 +55,16 @@ class BloodIssuanceController extends Controller
         $payload['user_id'] = auth()->user()->id;
         $payload['expiration_date'] = $this->formatDate($request['expiration_date']);
         $payload['date_of_crossmatch'] = $this->formatDate($request['date_of_crossmatch']);
-        $save = BloodIssuance::create($payload);
+
+        $save = DB::transaction(function ()  use(&$payload) {
+
+            DonationHistory::where('blood_bag_id', $payload['blood_bag_id'])->update([
+                'count' => 0
+            ]);
+
+            return BloodIssuance::create($payload);
+        });
+
 
         if(!$save){
             return response()->json([

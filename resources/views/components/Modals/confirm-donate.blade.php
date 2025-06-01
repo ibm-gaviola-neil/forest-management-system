@@ -14,10 +14,6 @@
                         <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Blood Bag ID: </th>
                         <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="blood_bag"></th>
                     </tr>
-                    <tr style="">
-                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Volume ML: </th>
-                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="volume"></th>
-                    </tr>
                     {{-- <tr style="">
                         <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">QNTY: </th>
                         <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="qnty"></th>

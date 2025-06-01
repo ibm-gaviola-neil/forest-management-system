@@ -64,7 +64,7 @@
                         <span id="expiration_setting_type_Error" class="error"></span>
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2" id="expiration_type" style="display: none">
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2" id="expiration_type" style="display: none; margin-bottom: 5px !important">
                         <div class="">
                             <label for="" class="form-label">Expiration <span
                                     class="text-danger">*</span></label>
@@ -78,7 +78,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2" id="days_type" style="display: none">
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-2 mt-2" id="days_type" style="display: none">
 
                         <div class="form-group">
                             <label for="" class="form-label">Number of Days Expiration<span
@@ -95,7 +95,7 @@
 
                     </div>
 
-                    <div class="col-lg-4 col-md-4 col-sm-12 mb-2">
+                    <div class="col-lg-4 col-md-4 col-sm-12 mb-2 mt-2">
                         <div class="form-group w-full">
                             <label for="" class="form-label">Province <span class="text-danger">*</span></label>
                             <select name="province" id="province-select-a" onchange="getCity()"

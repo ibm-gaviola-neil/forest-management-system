@@ -37,11 +37,11 @@ export function showConfirmForm({ formData, confirmAttr, confirmDataMap, url, su
                         title: "my-swal-title",
                         cancelButton: "my-cancel-btn",
                     },
-                }).then((data) => {
-                    if(redirect){
+                }).then(() => {
+                    if(redirectUrl){
                         window.location.replace(redirectUrl)
                     }else{
-                        window.location.reload()
+                        window.location.reload() 
                     }
                 });
             })

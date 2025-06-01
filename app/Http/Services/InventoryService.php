@@ -28,7 +28,6 @@ class InventoryService {
             $inventoryData []= [
                 'donation_id' => $donation->id,
                 'blood_type' => $donor->blood_type,
-                'volume_ml' => $donation->volume_ml,
                 'date_donated' => $donation->date_process,
                 'status' => 'available',
                 'created_at' => Date::now(),

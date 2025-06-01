@@ -28,7 +28,6 @@ class DonationService {
         for ($i=0; $i < (int)$payload['qnty']; $i++) { 
             $data[] = [
                 'blood_bag_id' => $payload["blood_bag_id"][$i],
-                'volume_ml' => $payload["volume_ml"][$i],
                 'donor_id' => $payload['donor_id'],
                 'user_id' => auth()->user()->id,
                 'province' => $payload['province'],
@@ -43,6 +42,7 @@ class DonationService {
                 'expiration_setting_type' => $payload['expiration_setting_type'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+                'count' => 1
             ];
         }
         DonationHistory::insert($data);
