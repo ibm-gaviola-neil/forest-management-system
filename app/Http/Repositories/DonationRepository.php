@@ -5,6 +5,7 @@ namespace App\Http\Repositories;
 use App\Http\Interfaces\DonationRepositoryInterface;
 use App\Models\DonationHistory;
 use App\Models\Donor;
+use Date;
 use Illuminate\Support\Collection;
 
 class DonationRepository implements DonationRepositoryInterface{
@@ -29,4 +30,33 @@ class DonationRepository implements DonationRepositoryInterface{
         return $query->where('donation_histories.id', $donation_id)
             ->orderBy('donation_histories.created_at', 'DESC')->first();
     }
+
+    public function getDonorByBloodType($request)
+    {
+        $today = now()->toDateString();
+        $query = DonationHistory::query();
+
+        $query->when(filled($request->blood_type), function ($q) use ($request) {
+            $q->where('donors.blood_type', $request->blood_type);
+        });
+
+        $query->when(filled($request->blood_bag_id), function ($q) use ($request) {
+            $q->where('donation_histories.blood_bag_id', $request->blood_bag_id);
+        });
+
+        return $query->select(
+                'donors.last_name',
+                'donors.first_name',
+                'donors.blood_type',
+                'donors.id as donor_id',
+                'donation_histories.blood_bag_id',
+                'donation_histories.expiration_date',
+                'donation_histories.date_process'
+            )
+            ->join('donors', 'donors.id', '=', 'donation_histories.donor_id')
+            ->whereDate('donation_histories.expiration_date', '>=', $today)
+            ->orderBy('donation_histories.expiration_date', 'asc')
+            ->get();
+        }
+
 }

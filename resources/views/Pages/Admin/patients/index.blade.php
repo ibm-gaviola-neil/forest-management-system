@@ -40,10 +40,8 @@
                             @forelse ($patients as $patient)
                                 <tr id="user-{{ $patient->id }}">
                                     <td>
-                                        <h6 class="mb-0" style="text-transform: capitalize">
-                                            <a href="/patients/{{ $patient->id }}/view" class="text-primary">
-                                                {{ $patient->last_name. ' ' .$patient->first_name  }}
-                                            </a>
+                                        <h6 class="mb-0 text-primary" style="text-transform: capitalize">
+                                            {{ $patient->last_name. ' ' .$patient->first_name  }}
                                         </h6>
                                         <span>{{ $patient->email }}</span><br>
                                         <span>{{ $patient->contact_number }}</span>

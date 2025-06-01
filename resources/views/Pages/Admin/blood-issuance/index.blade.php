@@ -12,10 +12,14 @@
                 </nav>
             </div>
             <div class="col-md-6 col-sm-12 text-right hidden-xs">
-                <a href="/donors/register" class="btn btn-sm btn-success" title="">Blood Issuance History</a>
+                <a href="/blood-issuance/history" class="btn btn-sm btn-success" title="">Blood Issuance History</a>
             </div>
         </div>
     </div>
 
     @include('Pages.Admin.blood-issuance.form')
+    @include('Pages.Admin.blood-issuance.confirm')
+    @push('scripts')
+        <script type="module" src="{{ asset('assets/js/donation.js') }}"></script>
+    @endpush
 @endsection

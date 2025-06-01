@@ -73,9 +73,10 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
 
     Route::prefix('blood-issuance')->controller(\App\Http\Controllers\Admin\BloodIssuanceController::class)->group(function(){
         Route::get('/', 'index');
-        // Route::get('/{event}', 'show');
-        // Route::post('/store', 'store');
-        // Route::delete('/delete/{event}', 'delete');
+        Route::get('/history', 'history');
+        Route::get('/get-serial-number', 'getSerialNumber');
+        Route::post('/store', 'store');
+        Route::post('/store-confirm', 'confirm');
         // Route::post('/update/{event}', 'update');
     });
 
@@ -88,7 +89,6 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/{patient}/update', 'store');
         Route::post('/store-confirm', 'confirm');
         Route::delete('/{patient}/delete', 'delete');
-        // Route::post('/update/{event}', 'update');
     });
 
     

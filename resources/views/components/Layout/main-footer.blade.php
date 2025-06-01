@@ -34,10 +34,64 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+    async function fetchBloodBagInfo(val, param){
+        const response = await fetch(`/blood-issuance/get-serial-number?${param}=${val}`);
+        return await response.json();
+    }
+
+    async function setBloodBagIdSelect(data){
+        const blood_bag_id_select = document.getElementById("blood_bag_id");
+
+        blood_bag_id_select.innerHTML = `
+            <option value="" selected>Select Blood Unit Serial Number</option>
+        `;
+
+        $('input[name="blood_type_input"]').val('')
+        $('input[name="expiration_date_input"]').val('')
+        $('input[name="date_process"]').val('')
+        $('input[name="donated_by"]').val('')
+
+        let items = '<option value="" selected>Select Blood Unit Serial Number</option>';
+
+        data.forEach((element) => {
+            items += `
+                <option value="${element.blood_bag_id}">${element.blood_bag_id}</option>
+            `;
+        });
+
+        blood_bag_id_select.innerHTML = items;
+    }
+
+    function setBloodInfoInput(data){
+        console.log(data[0].blood_type);
+        if(data.length > 0){
+            $('input[name="blood_type_input"]').val(data[0].blood_type)
+            $('input[name="expiration_date_input"]').val(data[0].expiration_date)
+            $('input[name="expiration_date"]').val(data[0].expiration_date)
+            $('input[name="date_process"]').val(data[0].date_process)
+            $('input[name="donated_by"]').val(data[0].last_name + ' ' + data[0].first_name)
+        }
+    }
+
     $(document).ready(function() {
         $('.select-two').select2({
             height: 'resolve'
         });
+
+        $('#blood_type_select').on('change', async function () {
+            const bloodType = $(this).val(); // e.g., "B+"
+            const encoded = encodeURIComponent(bloodType); // e.g., "B%2B"
+            const data = await fetchBloodBagInfo(encoded, 'blood_type');
+            setBloodBagIdSelect(data)
+        });
+
+        $('#blood_bag_id').on('change', async function () {
+            const bloodBag = $(this).val(); // e.g., "B+"
+            const encoded = encodeURIComponent(bloodBag); // e.g., "B%2B"
+            const data = await fetchBloodBagInfo(encoded, 'blood_bag_id');
+            setBloodInfoInput(data)
+        })
+
     });
 
     $('#donate-modal').on('shown.bs.modal', function() {
