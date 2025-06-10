@@ -20,5 +20,6 @@ class BloodIssuance extends Model
         'blood_type',
         'blood_bag_id',
         'time_of_crossmatch',
+        'release_date',
     ];
 }

@@ -24,6 +24,23 @@
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="{{ asset('/html/assets/css/site.min.css') }}">
 
+    <style>
+        img{
+            width: 200px;
+            height: 200px;
+        }
+
+        .body{
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .card{
+            width: 120% !important;
+            height: 100%;
+        }
+    </style>
+
 </head>
 
 <body class="theme-cyan font-montserrat light_version">
@@ -54,10 +71,11 @@
         </div> --}}
             <div class="card">
                 <div class="body">
+                    <img src="{{ asset('./assets/images/logo-removebg-preview.png') }}" alt="">
                     <p class="lead">Login to your account</p>
                     <form class="form-auth-small m-t-20" action="/login" method="post" novalidate>
                         @csrf
-                        <div class="form-group">
+                        <div class="form-group mb-4">
                             <label for="signin-email" class="control-label sr-only">Username</label>
                             <input type="text" name="username" value="{{ old('username') }}"
                                 class="form-control @error('username') parsley-error @enderror round"
@@ -68,7 +86,7 @@
                                     {{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-4">
                             <label for="signin-pass" class="control-label sr-only">Username</label>
                             <input type="password" name="password" value="{{ old('password') }}"
                                 class="form-control @error('password') parsley-error @enderror round"
@@ -79,18 +97,7 @@
                                     {{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="form-group clearfix">
-                            <label class="fancy-checkbox element-left">
-                                <input type="checkbox">
-                                <span>Remember me</span>
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-round btn-block">LOGIN</button>
-                        <div class="bottom">
-                            <span class="helper-text m-b-10"><i class="fa fa-lock"></i> <a
-                                    href="page-forgot-password.html">Forgot password?</a></span>
-                            <span>Don't have an account? <a href="page-register.html">Register</a></span>
-                        </div>
+                        <button type="submit" class="btn btn-primary btn-round btn-block mb-4">LOGIN</button>
                     </form>
                 </div>
             </div>

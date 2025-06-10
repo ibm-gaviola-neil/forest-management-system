@@ -2,6 +2,7 @@
 
 namespace App\Http\Domains;
 
+use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
 use Carbon\Carbon;
@@ -42,5 +43,21 @@ trait TraitAdmin {
         }
 
         return $address ?? [];
+    }
+
+    public function getDonorRequestAddress(object $request){
+        $address = array();
+
+        if(isset($request->city)){
+            $address['city'] =  City::where('citymunCode', $request->city)->first();
+            $address['barangays'] = Barangay::where('citymunCode', $request->city)->get();
+        }
+
+        if(isset($request->province)){
+            $address['province'] = Province::where('provCode', $request->province)->first();
+            $address['cities'] = City::where('provCode', $request->province)->get();
+        }
+
+        return $address;
     }
 }

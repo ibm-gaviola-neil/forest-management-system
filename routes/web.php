@@ -91,6 +91,17 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::delete('/{patient}/delete', 'delete');
     });
 
+    Route::prefix('reports')->controller(\App\Http\Controllers\Admin\ReportController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::get('/export', 'export');
+        // Route::get('/{patient}/show', 'show');
+        // Route::get('/{patient}/edit', 'edit');
+        // Route::post('/store', 'store');
+        // Route::post('/{patient}/update', 'store');
+        // Route::post('/store-confirm', 'confirm');
+        // Route::delete('/{patient}/delete', 'delete');
+    });
+
     
 });
 

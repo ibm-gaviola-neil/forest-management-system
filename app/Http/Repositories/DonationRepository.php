@@ -54,10 +54,38 @@ class DonationRepository implements DonationRepositoryInterface{
                 'donation_histories.date_process'
             )
             ->join('donors', 'donors.id', '=', 'donation_histories.donor_id')
-            ->where('donation_histories.count', filled($request->blood_bag_id) ? 0 : 1)
+            ->where('donation_histories.count', 1)
             ->whereDate('donation_histories.expiration_date', '>=', $today)
             ->orderBy('donation_histories.expiration_date', 'asc')
             ->get();
-        }
+    }
+
+    public function getDonorByModal($request)
+    {
+        $today = now()->toDateString();
+        $query = DonationHistory::query();
+
+        $query->when(filled($request->blood_type), function ($q) use ($request) {
+            $q->where('donors.blood_type', $request->blood_type);
+        });
+
+        $query->when(filled($request->blood_bag_id), function ($q) use ($request) {
+            $q->where('donation_histories.blood_bag_id', $request->blood_bag_id);
+        });
+
+        return $query->select(
+                'donors.last_name',
+                'donors.first_name',
+                'donors.blood_type',
+                'donors.id as donor_id',
+                'donation_histories.blood_bag_id',
+                'donation_histories.expiration_date',
+                'donation_histories.date_process'
+            )
+            ->join('donors', 'donors.id', '=', 'donation_histories.donor_id')
+            ->whereDate('donation_histories.expiration_date', '>=', $today)
+            ->orderBy('donation_histories.expiration_date', 'asc')
+            ->get();
+    }
 
 }

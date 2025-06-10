@@ -28,12 +28,21 @@ class BloodIssuanceRequest extends FormRequest
             'blood_bag_id' => 'required',
             'expiration_date' => 'required|date',
             'date_of_crossmatch' => 'required|date',
-            'time_of_crossmatch' => [
-                'required', 
-            ],
+            'time_of_crossmatch' => 'required',
             'release_by' => 'required',
             'taken_by' => 'required',
-        ];
+            'release_date' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) {
+                    $crossmatchDate = $this->input('date_of_crossmatch');
+                
+                    if ($crossmatchDate && strtotime($value) < strtotime($crossmatchDate)) {
+                        $fail('The release date must not be later than the date of crossmatch.');
+                    }
+                }                
+            ],
+        ];  
     }
 
     public function messages(){
@@ -47,6 +56,7 @@ class BloodIssuanceRequest extends FormRequest
             'time_of_crossmatch.regex' => 'Please input correct time format ex. (9:00 AM)',
             'release_by.required' => 'Please select release in charge',
             'taken_by.required' => 'Please select person in charge',
+            'release_date.required' => 'Please input release date.'
         ];
     }
 }

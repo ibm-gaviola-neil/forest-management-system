@@ -55,6 +55,7 @@ class BloodIssuanceController extends Controller
         $payload['user_id'] = auth()->user()->id;
         $payload['expiration_date'] = $this->formatDate($request['expiration_date']);
         $payload['date_of_crossmatch'] = $this->formatDate($request['date_of_crossmatch']);
+        $payload['release_date'] = $this->formatDate($request['release_date']);
 
         $save = DB::transaction(function ()  use(&$payload) {
 

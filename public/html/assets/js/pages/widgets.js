@@ -88,7 +88,7 @@ $(async function() {
             },
             names: {
                 // name of each serie
-                'data1': 'Income',            
+                'data1': 'Total Donors',            
             }
         },
         axis: {

@@ -11,7 +11,7 @@ serial_number.forEach(btn => {
 
         try {
             const data = await fetchData({
-                url: `/blood-issuance/get-serial-number?blood_bag_id=${value}`,
+                url: `/blood-issuance/get-serial-number?blood_bag_id=${value}&modal=true`,
             });
 
             const confirmDataMap = buildInfoDataMap(data);

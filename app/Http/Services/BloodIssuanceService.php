@@ -17,6 +17,9 @@ class BloodIssuanceService {
     }
 
     public function getBloodBagData($request){
+        if(isset($request->modal)){
+            return $this->donationRepository->getDonorByModal($request);
+        }
         return $this->donationRepository->getDonorByBloodType($request);
     }
 
@@ -30,6 +33,7 @@ class BloodIssuanceService {
         $data['expiration_date'] = $request['expiration_date'];
         $data['date_of_crossmatch'] = $request['date_of_crossmatch'];
         $data['time_of_crossmatch'] = $request['time_of_crossmatch'];
+        $data['release_date'] = $request['release_date'];
         $data['release_by'] = User::select('last_name', 'first_name')->where('id', $request['release_by'])->first();
         $data['taken_by'] = User::select('last_name', 'first_name')->where('id', $request['taken_by'])->first();
 

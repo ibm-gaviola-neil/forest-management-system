@@ -10,7 +10,27 @@ class InventoryRepository {
         $query = DonationInventory::query()
             ->join('donation_histories', 'donation_inventories.donation_id', '=', 'donation_histories.id')
             ->join('donors', 'donation_histories.donor_id', '=', 'donors.id');
-    
+
+        $query->when(filled($request->start_date) && filled($request->end_date) && !filled($request->month) && !filled($request->year), function ($q) use ($request) {
+            $q->whereBetween('donation_histories.date_process', [$request->start_date, $request->end_date]);
+        });
+        
+        $query->when(filled($request->start_date) && !filled($request->end_date) && !filled($request->month) && !filled($request->year), function ($q) use ($request) {
+            $q->whereDate('donation_histories.date_process', '>=', $request->start_date);
+        });
+        
+        $query->when(filled($request->end_date) && !filled($request->start_date) && !filled($request->month) && !filled($request->year), function ($q) use ($request) {
+            $q->whereDate('donation_histories.date_process', '<=', $request->end_date);
+        });
+        
+        $query->when(filled($request->month), function ($q) use ($request) {
+            $q->whereMonth('donation_histories.date_process', $request->month);
+        });
+        
+        $query->when(filled($request->year), function ($q) use ($request) {
+            $q->whereYear('donation_histories.date_process', $request->year);
+        });   
+            
         $query->when(isset($address['city']), function ($q) use ($address) {
             $q->where('donors.city', $address['city']->citymunDesc);
         });
@@ -28,14 +48,20 @@ class InventoryRepository {
         });
     
         return $query->select(
-                'donation_histories.*', 
-                'donation_inventories.*',
-                'donors.blood_type',
+                'donors.id as donor_id',
+                'donation_histories.blood_bag_id', 
                 DB::raw("CONCAT(donors.last_name, ', ', donors.first_name) as donor_name"),
-                DB::raw("CONCAT(donors.barangay, ', ', donors.city, ', ', donors.province) as address"),
                 'donors.email',
-                'donors.contact_number'
+                'donors.contact_number',
+                'donors.blood_type',
+                'donation_histories.expiration_date',
+                'donors.province',
+                'donors.city', 
+                'donors.barangay',
+                'donation_histories.date_process',
+                'donation_histories.created_at'
             )
+            ->orderBy('donation_histories.date_process', 'desc')
             ->get();
     }
     
@@ -53,10 +79,6 @@ class InventoryRepository {
     
         $query->when(isset($address['province']), function ($q) use ($address) {
             $q->where('donors.province', $address['province']->provDesc);
-        });
-    
-        $query->when(isset($request->blood_type), function ($q) use ($request) {
-            $q->where('donors.blood_type', $request->blood_type);
         });
 
         return $query->join('donation_histories', 'donation_inventories.donation_id', '=', 'donation_histories.id')

@@ -35,6 +35,10 @@ export const confirmAttr = [
         label: 'Taken By',
         id: 'td_taken_by',
     },
+    {
+        label: 'Release Date',
+        id: 'td_release_date',
+    },
 ];
 
 export const bloodIssuanceInfo = [
@@ -66,7 +70,7 @@ export function buildInfoDataMap(data) {
         'td_serial_number': data[0].blood_bag_id,
         'td_blood_type': data[0].blood_type,
         'td_expiration': data[0].expiration_date,
-        'td_date_process': data[0].date_process
+        'td_date_process': data[0].date_process,
     };
 }
 
@@ -81,5 +85,6 @@ export function buildConfirmDataMap(data) {
         'td_time_crossmatch': data.payload.data.time_of_crossmatch,
         'td_release_by': `${data.payload.data.release_by.last_name}, ${data.payload.data.release_by.first_name}`,
         'td_taken_by': `${data.payload.data.taken_by.last_name}, ${data.payload.data.taken_by.first_name}`,
+        'td_release_date': data.payload.data.release_date
     };
 }

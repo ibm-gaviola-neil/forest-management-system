@@ -1,7 +1,7 @@
 <div id="left-sidebar" class="sidebar">
     <div class="navbar-brand">
         <a href="index.html"><img src="{{ asset('/assets/images/icon.svg') }}" alt="Oculux Logo"
-                class="img-fluid logo"><span style="color: #fff">Oculux</span></a>
+                class="img-fluid logo"><span style="color: #fff">Blood Registry System</span></a>
         <button type="button" class="btn-toggle-offcanvas btn btn-sm float-right"><i
                 class="lnr lnr-menu icon-close"></i></button>
     </div>
@@ -40,7 +40,7 @@
                 @if (Auth::user()->role == 'general_admin' || Auth::user()->role == 'admin')  
                     <li class="sidebar-item"><a class="sidebar-link" href="/events" style="font-weight: 500;"><i class="icon-calendar"></i><span>Events</span></a></li>
                 @endif
-                <li class="sidebar-item"><a class="sidebar-link" href="report.html" style="font-weight: 500;"><i class="icon-bar-chart"></i><span>Report</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" href="/reports" style="font-weight: 500;"><i class="icon-bar-chart"></i><span>Report</span></a></li>
                 @if (Auth::user()->role == 'general_admin' || Auth::user()->role == 'admin')  
                     <li class="sidebar-item"><a class="sidebar-link" href="activities.html" style="font-weight: 500;"><i class="icon-equalizer"></i><span>Audit Trails</span></a></li>
                 @endif

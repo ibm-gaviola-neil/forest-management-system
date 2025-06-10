@@ -23,6 +23,51 @@
                         @csrf
                         <div class="body mt-2">
                             <div class="row clearfix">
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">Select Role <span
+                                                class="text-danger">*</span></label>
+                                        <select name="role" style="height: 100px !important; box-shadow: none !important;" class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                            <option value="" selected>Select Role Type</option>
+                                            <option value="staff">Staff</option>
+                                            <option value="donor">Donor</option>
+                                        </select>
+                                        @error('role')
+                                            <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                {{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">Select Donor</label>
+                                        <select id="" name="donor_id" class="form-control select-two show-tick @error('department') parsley-error @enderror">
+                                            <option value="" selected>Select Department</option>
+                                            @forelse ($departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                            @empty
+                                                <option value="">No department created</option>
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">Select Department</label>
+                                        <select id="" name="department_id" class="form-control select-two show-tick @error('department') parsley-error @enderror">
+                                            <option value="" selected>Select Department</option>
+                                            @forelse ($departments as $department)
+                                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                            @empty
+                                                <option value="">No department created</option>
+                                            @endforelse
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                     <div class="form-group">
                                         <label for="" class="form-label">First Name <span
@@ -79,36 +124,6 @@
                                         <input type="text" value="{{ old('designation') }}" class="form-control" name="designation" placeholder="Designation">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
-                                    <div class="form-group">
-                                        <label for="" class="form-label">Select Role <span
-                                                class="text-danger">*</span></label>
-                                        <select name="role" style="height: 100px !important; box-shadow: none !important;" class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="" selected>Select Role Type</option>
-                                            <option value="staff">Staff</option>
-                                            <option value="donor">Donor</option>
-                                        </select>
-                                        @error('role')
-                                            <p class="text-sm text-danger text-italized"
-                                                style="text-align: left !important; font-size: 11px;">
-                                                {{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-md-6 col-sm-12">
-                                    <div class="form-group">
-                                        <label for="" class="form-label">Select Department</label>
-                                        <select id="" name="department_id" class="form-control select-two show-tick @error('department') parsley-error @enderror">
-                                            <option value="" selected>Select Department</option>
-                                            @forelse ($departments as $department)
-                                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
-                                            @empty
-                                                <option value="">No department created</option>
-                                            @endforelse
-                                        </select>
-                                    </div>
-                                </div>
 
                                 <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                     <div class="form-group">
@@ -147,4 +162,7 @@
             </div>
         </div>
     </div>
+@push('scripts')
+    <script type="module" src="{{ asset('assets/js/features/add-user.js') }}"></script>
+@endpush
 @endsection

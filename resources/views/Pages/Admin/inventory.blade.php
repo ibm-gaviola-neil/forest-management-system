@@ -451,7 +451,7 @@
                                         {{ $inventory->blood_type }}
                                     </td>
                                     <td>{{ $inventory->expiration_date }}</td>
-                                    <td>{{ $inventory->address  }}</td>
+                                    <td>{{ $inventory->province . ', ' . $inventory->city .', '. $inventory->barangay  }}</td>
                                     <td>
                                         <h6 class="mb-0" style="text-transform: capitalize">
                                             <a href="/donors/{{ $inventory->donor_id }}/view" class="text-primary">

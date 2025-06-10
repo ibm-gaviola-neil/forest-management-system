@@ -17,6 +17,8 @@ document.getElementById('store-donate-form').addEventListener('submit', async (e
 
         if (data.status === 200) {
             const confirmDataMap = buildConfirmDataMap(data);
+            console.log(data);
+            
             showConfirmForm({
                 formData,
                 confirmAttr,
@@ -26,6 +28,7 @@ document.getElementById('store-donate-form').addEventListener('submit', async (e
             });
         }
     } catch (err) {
+        console.log(data);
         console.error('Submission failed', err);
     }
 });

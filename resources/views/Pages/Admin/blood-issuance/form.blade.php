@@ -115,10 +115,11 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <div>
-                                        <label>Date of Crossmatch</label>
+                                        <label>Date of Crossmatch <span
+                                            class="text-danger">*</span></label>
                                         <div class="input-group">
                                             <input data-provide="datepicker" name="date_of_crossmatch"
                                                 placeholder="Date of Crossmatch"
@@ -131,17 +132,19 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
                                 <div class="form-group">
-                                    <div>
-                                        <label>Time of Crossmatch</label>
-                                        <div class="input-group">
-                                            <input name="time_of_crossmatch"
-                                                class="form-control time24"
-                                                type="time">
-                                        </div>
-                                    </div>
-                                    <span id="time_of_crossmatch_Error" class="error"></span>
+                                    <label for="" class="form-label">Time of Crossmatch <span
+                                            class="text-danger">*</span></label>
+                                    <select name="time_of_crossmatch" style="height: 100px !important; box-shadow: none !important;"
+                                        id="time_of_crossmatch"
+                                        class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                        <option value="" selected>Time of Crossmatch</option>
+                                        @for ($i = 1; $i <= 24; $i++)
+                                            <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) . ':00' }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) . ':00' }}</option>
+                                        @endfor
+                                    </select>
+                                    <span id="release_by_Error" class="error"></span>
                                 </div>
                             </div>
 
@@ -159,6 +162,23 @@
                                         @endforeach
                                     </select>
                                     <span id="release_by_Error" class="error"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                <div class="form-group">
+                                    <div>
+                                        <label>Released Date <span
+                                            class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input data-provide="datepicker" name="release_date"
+                                                placeholder="Released Date"
+                                                data-date-autoclose="true"
+                                                class="form-control @error('contact_number') parsley-error @enderror"
+                                                data-date-format="yyyy-mm-dd">
+                                        </div>
+                                    </div>
+                                    <span id="release_date_Error" class="error"></span>
                                 </div>
                             </div>
 
