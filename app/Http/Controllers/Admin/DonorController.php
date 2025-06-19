@@ -102,6 +102,7 @@ class DonorController extends Controller
             ]); 
         }
 
+        $this->storeAuditTrails('update', 'donor', 'donors/'.$donor->id.'/view', 'Profile updated');
         return response()->json([
             'status' => 200,
             'data' => $payload
@@ -127,6 +128,7 @@ class DonorController extends Controller
             ]); 
         }
 
+        $this->storeAuditTrails('create', 'donor', 'donors/'.$save->id.'/view', 'Newly registered donor');
         return response()->json([
             'status' => 200,
             'data' => $payload
@@ -140,6 +142,21 @@ class DonorController extends Controller
         $histories = $this->donation_service->getDonationHistories((int)$donor->id);
         $donor_id = $donor->id;
         return view('Pages.Admin.donor', compact('histories', 'provinces', 'donor_id', 'staffs', 'donor'));
+    }
+
+    public function donorUser(){
+        $donor = Donor::where('id', auth()->user()->donor_id)->first();
+        $histories = array();
+        $provinces = Province::orderBy('provDesc', 'ASC')->get();
+        $staffs = User::where('role', 'staff')->orderBy('last_name', 'ASC')->get();
+        $histories = $this->donation_service->getDonationHistories((int)$donor->id);
+        $donor_id = $donor->id;
+        $events = $this->donor_service->getEvents();
+        return view('Pages.Admin.donor', compact('histories', 'provinces', 'donor_id', 'staffs', 'donor', 'events'));
+    }
+
+    public function show(Donor $donor){
+        return response()->json($donor);
     }
 
     public function getDonationHistory($donation_id){
@@ -193,6 +210,7 @@ class DonorController extends Controller
             // dd($payload);
             $donation = $this->donation_service->storeDonation($payload);
             $save = $this->inventory_service->saveInventoryData($payload, $donation);
+            $this->storeAuditTrails('donate', 'donor', 'donors/'.$donor->id.'/view', 'Blood donation');
         });
 
         if($save){
@@ -209,9 +227,11 @@ class DonorController extends Controller
     }
 
     public function delete(Donor $donor){
+        $donor_name = $donor->last_name . ' ' .$donor->first_name;
         $delete = $donor->delete();
 
         if($delete){
+            $this->storeAuditTrails('delete', 'donor', null, $donor_name.' was deleted');
             return response()->json([
                 'status' => 200,
                 'message' => 'Success'

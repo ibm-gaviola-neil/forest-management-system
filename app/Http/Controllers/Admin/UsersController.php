@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\AuditStored;
 use App\Http\Controllers\Controller;
+use App\Http\Domains\TraitAdmin;
 use App\Models\Department;
+use App\Models\Donor;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
+    use TraitAdmin;
     public function index() {
         $users = User::where('role', '!=' ,'general_admin')
             ->where('id', '!=' ,auth()->user()->id)
@@ -19,7 +24,8 @@ class UsersController extends Controller
 
     public function addUser(){
         $departments = Department::orderBy('department_name')->get();
-        return view('Pages.Forms.add-user', compact('departments'));
+        $donors = Donor::orderBy('last_name')->get();
+        return view('Pages.Forms.add-user', compact('departments', 'donors'));
     }
 
     public function editUser(User $user){
@@ -41,7 +47,12 @@ class UsersController extends Controller
         $payload = $request->validated();
         $payload['password'] = Hash::make($payload['password']);
         $payload['added_by'] = auth()->user()->id;
-        $save = User::create($payload);
+        $save = DB::transaction(function() use ($payload){
+            $isSave = User::create($payload);
+            $this->storeAuditTrails('create', 'user', '/users/edit/'.$isSave->id, 'Newly registered user.');
+            return $isSave;
+        });
+
         if(!$save){
             return redirect()->back()->withErrors(['password'=> 'Server error! Please try again']);
         }
@@ -49,7 +60,14 @@ class UsersController extends Controller
     }
 
     public function delete(User $user){
-        $delete = $user->delete();
+        $delete = DB::transaction(function() use ($user) {
+            $name = $user->last_name .' '.$user->first_name;
+            $isDelete = $user->delete();
+            $this->storeAuditTrails('delete', 'user', null, $name. ' was deleted.');
+
+            return $isDelete;
+        });
+
 
         if(!$delete){
             return response()->json([
@@ -77,6 +95,7 @@ class UsersController extends Controller
             ]); 
         }
 
+        $this->storeAuditTrails('deactivate', 'user', '/users/edit/'.$user->id, 'Account deactivated');
         return response()->json([
             'status' => 1
         ]);
@@ -88,7 +107,7 @@ class UsersController extends Controller
             "last_name" => "required",
             "email" => "required|email|unique:users,email,".$user->id,
             "username" => "required|min:6|unique:users,username,".$user->id,
-            "role" => "required",
+            "role" => $user->role === "donor" ? "nullable" : "required",
             "designation" => 'nullable',
             "department_id" => 'nullable',
         ]);
@@ -106,7 +125,8 @@ class UsersController extends Controller
         if(!$save){
             return redirect()->back()->withErrors(['password'=> 'Cannot make this request, please try again!']);
         }
-        
+
+        $this->storeAuditTrails('update', 'user', '/users/edit/'.$user->id, 'Account updated');
         return redirect('/users');
     }
 }

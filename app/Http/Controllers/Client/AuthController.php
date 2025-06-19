@@ -24,6 +24,9 @@ class AuthController extends Controller
         }
 
         if(Auth::attempt($auth)){
+            if(auth()->user()->role === 'donor'){
+                return redirect('/donor-page');
+            }
             return redirect('/admin');
         }
 

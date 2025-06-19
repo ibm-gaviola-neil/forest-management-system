@@ -1,6 +1,6 @@
 
     
-<div class="col-lg-6 col-md-12">
+<div class="col-lg-{{ auth()->user()->role === 'donor' ? '12' : '6' }} col-md-12">
     <div class="card" >
         <div class="body" style="max-height: 480px; overflow-y: scroll;">
             <div class="header">

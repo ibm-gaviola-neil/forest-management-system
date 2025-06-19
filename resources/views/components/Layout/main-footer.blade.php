@@ -39,6 +39,11 @@
         return await response.json();
     }
 
+    async function fetchDonor(id){
+        const response = await fetch(`/donors/${id}/show`);
+        return await response.json();
+    }
+
     async function setBloodBagIdSelect(data){
         const blood_bag_id_select = document.getElementById("blood_bag_id");
 
@@ -90,6 +95,32 @@
             const encoded = encodeURIComponent(bloodBag); // e.g., "B%2B"
             const data = await fetchBloodBagInfo(encoded, 'blood_bag_id');
             setBloodInfoInput(data)
+        })
+
+        $('#role').on('change', function () {
+            const role = $(this).val()?.toLowerCase();
+
+            if (role === 'donor') {
+                $('#donor-div').removeClass('d-none');
+                $('#department-div, #designation-div').removeClass('d-block');
+                $('#department-div, #designation-div').addClass('d-none');
+            } else if (role === 'staff') {
+                $('#department-div').removeClass('d-none');
+                $('#designation-div').removeClass('d-none');
+                $('#donor-div').addClass('d-none');
+                $('#donor-div').removeClass('d-block');
+                $('input[name=first_name]').val('')
+                $('input[name=last_name]').val('')
+                $('input[name=email]').val('')
+            }
+        });
+
+        $('#donor_id').on('change', async function () {
+            const donor_id = $(this).val()
+            const data = await fetchDonor(donor_id)
+            $('input[name=first_name]').val(data.first_name)
+            $('input[name=last_name]').val(data.last_name)
+            $('input[name=email]').val(data.email)
         })
 
     });

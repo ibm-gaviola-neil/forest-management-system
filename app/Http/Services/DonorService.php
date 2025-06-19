@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Domains\TraitAdmin;
 use App\Http\Interfaces\DonorRepositoryInterface;
 use App\Http\Repositories\DonorRepository;
+use App\Http\Repositories\EventRepository;
 use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
@@ -13,10 +14,10 @@ use Illuminate\Support\Collection;
 class DonorService {
     use TraitAdmin;
     protected $donor_repository;
+    protected $event_repository;
 
     public function __construct(
-        DonorRepositoryInterface $donor_repository = new DonorRepository()
-    ){
+        DonorRepositoryInterface $donor_repository = new DonorRepository()    ){
         $this->donor_repository = $donor_repository;
     }
 
@@ -39,5 +40,10 @@ class DonorService {
         }
 
         return $address;
+    }
+
+    public function getEvents(){
+        $eventRepository = new EventRepository();
+        return $eventRepository->getEvents();
     }
 }

@@ -39,9 +39,9 @@ export function showConfirmForm({ formData, confirmAttr, confirmDataMap, url, su
                     },
                 }).then(() => {
                     if(redirectUrl){
-                        window.location.replace(redirectUrl)
+                        // window.location.replace(redirectUrl)
                     }else{
-                        window.location.reload() 
+                        // window.location.reload() 
                     }
                 });
             })

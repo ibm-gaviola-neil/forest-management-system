@@ -45,11 +45,17 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/{donor}/update', 'update');
         Route::delete('/{donor}/delete', 'delete');
         Route::get('/{donor}/view', 'donor');
+        Route::get('/{donor}/show', 'show');
         Route::get('/{donation_id}/donation', 'getDonationHistory');
         Route::post('/{donor}/confirm-donate', 'confirmDondate');
         Route::post('/store', 'store');
         Route::post('/store-confirm', 'confirm');
     });
+
+    Route::prefix('donor-page')->controller(\App\Http\Controllers\Admin\DonorController::class)->group(function(){
+        Route::get('/', 'donorUser');
+    });
+
 
     Route::prefix('departments')->controller(\App\Http\Controllers\Admin\DepartmentConroller::class)->group(function(){
         Route::get('/', 'index');
@@ -94,6 +100,11 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
     Route::prefix('reports')->controller(\App\Http\Controllers\Admin\ReportController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/export', 'export');
+    });
+
+    Route::middleware(['ifAdmin'])->prefix('audit-trails')->controller(\App\Http\Controllers\AuditTrailController::class)->group(function(){
+        Route::get('/', 'index');
+        // Route::get('/register', 'create');
         // Route::get('/{patient}/show', 'show');
         // Route::get('/{patient}/edit', 'edit');
         // Route::post('/store', 'store');
@@ -101,8 +112,6 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         // Route::post('/store-confirm', 'confirm');
         // Route::delete('/{patient}/delete', 'delete');
     });
-
-    
 });
 
 Route::controller(\App\Http\Controllers\Client\AuthController::class)->group(function(){

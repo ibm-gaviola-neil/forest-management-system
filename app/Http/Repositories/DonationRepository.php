@@ -16,7 +16,7 @@ class DonationRepository implements DonationRepositoryInterface{
         ->join('users', 'users.id', '=', 'donation_histories.staff_id')
         ->join('donors', 'donors.id', '=', 'donation_histories.donor_id');
 
-        return $query->where('donor_id', $donor)
+        return $query->where('donation_histories.donor_id', $donor)
             ->orderBy('donation_histories.created_at', 'DESC')->get();
     }
 

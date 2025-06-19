@@ -90,28 +90,29 @@
                                                 name="designation" placeholder="Designation">
                                         </div>
                                     </div>
+                                    
+                                    <div
+                                        class="col-lg-6 col-md-6 col-sm-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="" class="form-label">Select Role <span
+                                                    class="text-danger">*</span></label>
+                                            <select name="role"
+                                                style="height: 100px !important; box-shadow: none !important;"
+                                                class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                                <option value="{{ $user_data->role }}" selected>{{ $user_data->role }}
+                                                </option>
+                                                <option value="staff">Staff</option>
+                                                <option value="donor">Donor</option>
+                                            </select>
+                                            @error('role')
+                                                <p class="text-sm text-danger text-italized"
+                                                    style="text-align: left !important; font-size: 11px;">
+                                                    {{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 @endif
 
-                                <div
-                                    class="@if ($user_data->role === 'donor') col-lg-12 col-md-12 @else col-lg-6 col-md-6 @endif col-sm-12 mb-3">
-                                    <div class="form-group">
-                                        <label for="" class="form-label">Select Role <span
-                                                class="text-danger">*</span></label>
-                                        <select name="role"
-                                            style="height: 100px !important; box-shadow: none !important;"
-                                            class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                            <option value="{{ $user_data->role }}" selected>{{ $user_data->role }}
-                                            </option>
-                                            <option value="staff">Staff</option>
-                                            <option value="donor">Donor</option>
-                                        </select>
-                                        @error('role')
-                                            <p class="text-sm text-danger text-italized"
-                                                style="text-align: left !important; font-size: 11px;">
-                                                {{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
 
                                 @if ($user_data->role == 'staff')
                                     <div class="col-lg-6 col-md-6 col-sm-12">

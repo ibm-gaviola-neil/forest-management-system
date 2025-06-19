@@ -42,7 +42,7 @@
                 @endif
                 <li class="sidebar-item"><a class="sidebar-link" href="/reports" style="font-weight: 500;"><i class="icon-bar-chart"></i><span>Report</span></a></li>
                 @if (Auth::user()->role == 'general_admin' || Auth::user()->role == 'admin')  
-                    <li class="sidebar-item"><a class="sidebar-link" href="activities.html" style="font-weight: 500;"><i class="icon-equalizer"></i><span>Audit Trails</span></a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/audit-trails" style="font-weight: 500;"><i class="icon-equalizer"></i><span>Audit Trails</span></a></li>
                 @endif
                 <li class="sidebar-item"><a class="sidebar-link" href="/inventory" style="font-weight: 500;"><i class="icon-wallet"></i><span>Inventory</span></a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="/blood-issuance" style="font-weight: 500;"><i class=" icon-drawer "></i><span>Blood Issuance</span></a></li>

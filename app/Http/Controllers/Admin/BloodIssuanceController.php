@@ -63,7 +63,9 @@ class BloodIssuanceController extends Controller
                 'count' => 0
             ]);
 
-            return BloodIssuance::create($payload);
+            $isSave = BloodIssuance::create($payload);
+            $this->storeAuditTrails('issuance', 'blood_issuance', null, null, (int)$isSave->id);
+            return $isSave;
         });
 
 
@@ -73,10 +75,10 @@ class BloodIssuanceController extends Controller
                 'payload' => $payload
             ]);
         }
-
         return response()->json([
             'status' => 200,
-            'payload' => $request
+            'payload' => $request,
+            'data' => $save
         ]);
     }
 }

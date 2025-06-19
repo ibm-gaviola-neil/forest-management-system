@@ -29,8 +29,15 @@ class UserRequest extends FormRequest
             "email" => 'required|unique:users,email|email',
             "username" => 'required|min:6|unique:users,username',
             "role" => 'required',
+            'donor_id' => 'required_if:role,donor',
             "password" => 'required|confirmed|min:6',
             "password_confirmation" => 'required',
+        ];
+    }
+
+    public function messages(){
+        return [
+            'donor_id.required_if' => 'Please select donor.'
         ];
     }
 }

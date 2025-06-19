@@ -15,9 +15,11 @@
     <div class="wrapper"></div>
 
     @include('components.Layout.main-navbar')
-    @include('components.Layout.main-sidebar')
+    @if (auth()->user()->role !== 'donor') 
+        @include('components.Layout.main-sidebar')
+    @endif
 
-    <div id="main-content">
+    <div id="main-content"  @if (auth()->user()->role === 'donor') style="width: 100%; margin-top: 80px;" @endif>
         <div class="container-fluid">
             @yield('content')
         </div>

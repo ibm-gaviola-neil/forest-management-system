@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Domains\BloodTypeDomain;
+use App\Http\Domains\TraitAdmin;
 use App\Http\Requests\PatientRequest;
 use App\Http\Services\DonorService;
 use App\Http\Services\PatientService;
@@ -11,9 +12,11 @@ use App\Models\City;
 use App\Models\Patient;
 use App\Models\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
 {
+    use TraitAdmin;
     protected $donor_service;
     protected $patient_service;
     public function __construct(DonorService $donor_service, PatientService $patient_service){
@@ -69,9 +72,17 @@ class PatientController extends Controller
         $payload['city'] = $city_name->citymunDesc;
 
         if(!isset($patient_id)){
-            $save = Patient::create($payload);
+            $save = DB::transaction(function() use ($payload){
+                $isSave = Patient::create($payload);
+                $this->storeAuditTrails('create', 'patient', 'patients/'.$isSave->id.'/edit', 'Newly registered patient');
+                return $isSave;
+            });
         }else{
-            $save = Patient::where('id', $patient_id)->update($payload);
+            $save = DB::transaction(function() use ($payload, $patient_id){
+                $isSave = Patient::where('id', $patient_id)->update($payload);
+                $this->storeAuditTrails('update', 'patient', 'patients/'.$patient_id.'/edit', 'Profile updated');
+                return $isSave;
+            });
         }
 
         if(!$save){
@@ -89,9 +100,11 @@ class PatientController extends Controller
     }
 
     public function delete(Patient $patient){
+        $patient_name = $patient->last_name . ' ' .$patient->first_name;
         $delete = $patient->delete();
 
         if($delete){
+            $this->storeAuditTrails('delete', 'patient', null, $patient_name.' was deleted');
             return response()->json([
                 'status' => 200,
                 'message' => 'Success'

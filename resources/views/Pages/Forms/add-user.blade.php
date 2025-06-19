@@ -27,10 +27,10 @@
                                     <div class="form-group">
                                         <label for="" class="form-label">Select Role <span
                                                 class="text-danger">*</span></label>
-                                        <select name="role" style="height: 100px !important; box-shadow: none !important;" class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                        <select id="role" name="role" style="height: 100px !important; box-shadow: none !important;" class="form-control select-two show-tick @error('role') parsley-error @enderror">
                                             <option value="" selected>Select Role Type</option>
-                                            <option value="staff">Staff</option>
-                                            <option value="donor">Donor</option>
+                                            <option value="staff" {{ old('role') === 'staff' ? 'selected' : '' }}>Staff</option>
+                                            <option value="donor" {{ old('role') === 'donor' ? 'selected' : '' }}>Donor</option>
                                         </select>
                                         @error('role')
                                             <p class="text-sm text-danger text-italized"
@@ -39,35 +39,39 @@
                                         @enderror
                                     </div>
                                 </div>
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                <div id="donor-div" class="col-lg-12 col-md-12 col-sm-12 mb-3 {{ old('role') === 'donor' ? 'd-block' : 'd-none' }}">
                                     <div class="form-group">
-                                        <label for="" class="form-label">Select Donor</label>
-                                        <select id="" name="donor_id" class="form-control select-two show-tick @error('department') parsley-error @enderror">
-                                            <option value="" selected>Select Department</option>
-                                            @forelse ($departments as $department)
-                                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                        <label for="" class="form-label">Select Donor <span
+                                            class="text-danger">*</span></label>
+                                        <select id="donor_id" name="donor_id" class="form-control select-two show-tick @error('department') parsley-error @enderror">
+                                            <option value="" selected>Select Donor</option>
+                                            @forelse ($donors as $donor)
+                                                <option value="{{ $donor->id }}">{{ $donor->last_name . ' ' . $donor->first_name }}</option>
                                             @empty
-                                                <option value="">No department created</option>
+                                                <option value="">No Data</option>
                                             @endforelse
                                         </select>
+                                        @error('donor_id')
+                                            <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                {{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                <div id="department-div" class="col-lg-12 col-md-12 col-sm-12 mb-3 {{ old('role') === 'staff' ? 'd-block' : 'd-none' }}">
                                     <div class="form-group">
                                         <label for="" class="form-label">Select Department</label>
                                         <select id="" name="department_id" class="form-control select-two show-tick @error('department') parsley-error @enderror">
                                             <option value="" selected>Select Department</option>
                                             @forelse ($departments as $department)
-                                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                                <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>{{ $department->department_name }}</option>
                                             @empty
                                                 <option value="">No department created</option>
                                             @endforelse
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                     <div class="form-group">
                                         <label for="" class="form-label">First Name <span
@@ -118,7 +122,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                <div id="designation-div" class="col-lg-12 col-md-12 col-sm-12 mb-3 {{ old('role') === 'staff' ? 'd-block' : 'd-none' }}">
                                     <div class="form-group">
                                         <label for="" class="form-label">Designation</label>
                                         <input type="text" value="{{ old('designation') }}" class="form-control" name="designation" placeholder="Designation">

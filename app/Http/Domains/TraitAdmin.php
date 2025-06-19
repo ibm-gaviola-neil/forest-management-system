@@ -2,6 +2,7 @@
 
 namespace App\Http\Domains;
 
+use App\Events\AuditStored;
 use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
@@ -59,5 +60,16 @@ trait TraitAdmin {
         }
 
         return $address;
+    }
+
+    public function storeAuditTrails(string $action, string $type, string $url = null, string $message = null, int $blood_issuance_id = null){
+        $data = [
+            'action' => $action,
+            'type' => $type,
+            'url' => $url ?? null,
+            'message' => $message ?? null,
+            'blood_issuance_id' => $blood_issuance_id ?? null
+        ];
+        event(new AuditStored($data));
     }
 }
