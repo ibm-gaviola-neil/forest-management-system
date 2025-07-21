@@ -12,7 +12,7 @@
                         </div>
                         <div class="row clearfix">
 
-                            @if ($request->tab === 'donor')
+                            @if ($request->tab === 'donor' || $request->tab === 'percentage')
                                 <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
                                     <div class="form-group">
                                         <label for="" class="form-label">Province <span
@@ -108,35 +108,37 @@
                                 </div> --}}
                             @endif
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
-                                <div class="form-group">
-                                    <label for="" class="form-label">Blood Type <span
-                                            class="text-danger">*</span></label>
-                                    <select name="blood_type"
-                                        style="height: 100px !important; box-shadow: none !important;"
-                                        class="form-control select-two show-tick @error('role') parsley-error @enderror">
-                                        @isset($request->event)
-                                            <option value="{{ $request->event }}" selected hidden>{{ $request->event }}</option>
-                                        @else
-                                            <option value="" selected>Select Blood Type</option>   
-                                        @endisset
-                                        <option value="A+">A+</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B+">B+</option>
-                                        <option value="B-">B-</option>
-                                        <option value="AB+">AB+</option>
-                                        <option value="AB-">AB-</option>
-                                        <option value="O+">O+</option>
-                                        <option value="O-">O-</option>
-                                    </select>
-                                    @error('blood_type')
-                                        <p class="text-sm text-danger text-italized"
-                                            style="text-align: left !important; font-size: 11px;">
-                                            {{ $message }}</p>
-                                    @enderror
-                                    <span id="blood_type_Error" class="error"></span>
+                            @if ($request->tab !== 'percentage')
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">Blood Type <span
+                                                class="text-danger">*</span></label>
+                                        <select name="blood_type"
+                                            style="height: 100px !important; box-shadow: none !important;"
+                                            class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                            @isset($request->event)
+                                                <option value="{{ $request->event }}" selected hidden>{{ $request->event }}</option>
+                                            @else
+                                                <option value="" selected>Select Blood Type</option>   
+                                            @endisset
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
+                                        @error('blood_type')
+                                            <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                {{ $message }}</p>
+                                        @enderror
+                                        <span id="blood_type_Error" class="error"></span>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                 <div class="form-group">

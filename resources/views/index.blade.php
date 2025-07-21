@@ -71,7 +71,7 @@
         </div> --}}
             <div class="card">
                 <div class="body">
-                    <img src="{{ asset('./assets/images/logo-removebg-preview.png') }}" alt="">
+                    <img src="{{ asset('./assets/images/bd-logo.png') }}" alt="">
                     <p class="lead">Login to your account</p>
                     <form class="form-auth-small m-t-20" action="/login" method="post" novalidate>
                         @csrf

@@ -20,13 +20,16 @@ window.addEventListener("load", async () => {
     
     sidebarItem.forEach(item => {
         const link = item.querySelector('a')
+        const icon = item.querySelector('i')
         const url = new URL(link.href)
         const path = url.pathname
         console.log(path + ', ' + pathname) 
         
         if(path === pathname || pathname.includes(path)){
             item.classList.add('active', 'open')
-            link.style.color = 'black'
+            item.style.backgroundColor = '#f62d51'
+            link.style.color = '#fff'
+            icon.style.color = "#fff"
         }
 
     })

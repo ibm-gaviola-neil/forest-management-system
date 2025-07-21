@@ -101,32 +101,57 @@ class UsersController extends Controller
         ]);
     }
 
-    public function update(User $user, Request $request){
+    public function update($user = null, Request $request){
+        $user_id = $user ?? auth()->user()->id;
+        $targetUser = User::where('id', $user_id)->first();
+        $payload = array();
         $payload = $request->validate([
             "first_name" => "required",
             "last_name" => "required",
-            "email" => "required|email|unique:users,email,".$user->id,
-            "username" => "required|min:6|unique:users,username,".$user->id,
-            "role" => $user->role === "donor" ? "nullable" : "required",
-            "designation" => 'nullable',
-            "department_id" => 'nullable',
+            "email" => "required|email|unique:users,email,".$targetUser->id,
+            "username" => "required|min:6|unique:users,username,".$targetUser->id,
         ]);
 
+        if(isset($request['remove_profile_image']) && $request->input('remove_profile_image') == 1){
+            $targetUser->profile_image = null;
+        }else{
+            if($request->hasFile('profile_image')){
+                $request->validate([
+                    "profile_image" => "nullable|mimes:png,jpg,jpeg",
+                ]);
+                $fileData = $request->file('profile_image')->store('images', 'public');
+                $targetUser->profile_image = $fileData;
+            }
+        }
+        $targetUser->save();
+
+        if ($targetUser->role !== "general_admin") {
+            $additional = $request->validate([
+                "role" => $targetUser->role === "donor" ? "nullable" : "required",
+                "designation" => 'nullable',
+                "department_id" => 'nullable',
+            ]);
+        
+            $payload = array_merge($payload, $additional);
+        }
+        
         if(isset($request->password)){
             $request->validate([
                 "password" => 'confirmed|min:6'
             ]);
-
+            
             $payload['password'] = Hash::make($request->password); 
         }
-
-        $save = $user->update($payload);
+        $save = $targetUser->update($payload);
 
         if(!$save){
             return redirect()->back()->withErrors(['password'=> 'Cannot make this request, please try again!']);
         }
 
-        $this->storeAuditTrails('update', 'user', '/users/edit/'.$user->id, 'Account updated');
-        return redirect('/users');
+        if($targetUser->role !== "general_admin"){
+            $this->storeAuditTrails('update', 'user', '/users/edit/'.$targetUser->id, 'Account updated');
+        }
+
+        return redirect()->back();
     }
 }

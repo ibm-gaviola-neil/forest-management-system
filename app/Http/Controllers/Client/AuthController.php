@@ -41,6 +41,12 @@ class AuthController extends Controller
         ]);
     }
 
+    public function profile(){
+        $user_id = auth()->user()->id;
+        $data['user_data'] = User::where('id', $user_id)->first();
+        return view('Pages.Admin.profile.index', $data);
+    }
+
     public function logout(){
         Auth::logout();
 

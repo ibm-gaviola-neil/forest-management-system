@@ -146,11 +146,17 @@ class DonorController extends Controller
 
     public function donorUser(){
         $donor = Donor::where('id', auth()->user()->donor_id)->first();
+        if(!isset($donor)){
+            return redirect('/')->withErrors(['password'=> 'User not found!']);
+        }
         $histories = array();
+        $donor_id = null;
         $provinces = Province::orderBy('provDesc', 'ASC')->get();
         $staffs = User::where('role', 'staff')->orderBy('last_name', 'ASC')->get();
-        $histories = $this->donation_service->getDonationHistories((int)$donor->id);
-        $donor_id = $donor->id;
+        if(isset($donor)){
+            $histories = $this->donation_service->getDonationHistories((int)$donor->id);
+            $donor_id = $donor->id;
+        }
         $events = $this->donor_service->getEvents();
         return view('Pages.Admin.donor', compact('histories', 'provinces', 'donor_id', 'staffs', 'donor', 'events'));
     }

@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="..{{ asset('/assets/vendor/summernote/dist/summernote.css') }}"/>
 
 <!-- MAIN CSS -->
+<link rel="stylesheet" href="{{ asset("/assets/vendor/dropify/css/dropify.min.css") }}">
 <link rel="stylesheet" href="{{  asset('/html/assets/css/site.min.css')}}">
 
 <link rel="stylesheet" href="{{ asset('/assets/vendor/c3/c3.min.css')}}"/>
@@ -39,6 +40,8 @@
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-
+<style>
+ 
+</style>
 </head>
 <body class="theme-cyan font-montserrat light_version">

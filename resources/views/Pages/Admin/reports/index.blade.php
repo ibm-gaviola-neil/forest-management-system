@@ -41,6 +41,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {{ request('tab') === 'percentage' ? 'active' : '' }}"
+                       href="{{ url('/reports') . '?' . http_build_query(array_merge($query, ['tab' => 'percentage'])) }}">
+                        Data Overview
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ url('/reports/export') . '?' . http_build_query(array_merge($query)) }}" class="nav-link btn btn-success">
                         <i class="fa fa-cloud-download"></i> EXPORT EXCEL
                     </a>
@@ -59,10 +65,10 @@
                     $views = [
                         'issuance' => 'Pages.Admin.reports.blood-issuance',
                         'donor' => 'Pages.Admin.reports.blood-donor',
+                        'percentage' => 'Pages.Admin.reports.data-percentage',
                     ];
                     $tab = $request->tab ?? 'issuance';
                 @endphp
-                
                 @includeIf($views[$tab] ?? 'Pages.Admin.reports.blood-issuance')                
                 </div>
             </div>

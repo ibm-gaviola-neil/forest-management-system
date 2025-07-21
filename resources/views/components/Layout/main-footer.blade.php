@@ -28,6 +28,8 @@
 <script src="{{ asset('/html/assets/bundles/chartist.bundle.js') }}"></script>
 <script src="{{ asset('/html/assets/bundles/knob.bundle.js') }}"></script><!-- Jquery Knob-->
 <script src="{{ asset('/html/assets/bundles/c3.bundle.js') }}"></script>
+<script src="{{ asset("/assets/vendor/dropify/js/dropify.js") }}"></script>
+<script src="{{ asset("/html/assets/js/pages/forms/dropify.js") }}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -130,6 +132,13 @@
             dropdownParent: $('#donate-modal'),
             width: 'resolve' // Ensures Select2 calculates the correct width
         });
+    });
+
+    $('.dropify').dropify();
+
+    // Detect when image is cleared
+    $('.dropify').on('dropify.afterClear', function(event, element){
+        $('#remove_profile_image').val('1');
     });
 </script>
 </body>

@@ -45,6 +45,7 @@ class ReportService{
         return [
             'issuance' => $this->reportRepository->getBloodIssuanceReportData($request),
             'donor' => $this->inventoryRepository->getData($request, $this->getDonorRequestAddress($request)),
+            'percentage' => []
         ];
     }
 
