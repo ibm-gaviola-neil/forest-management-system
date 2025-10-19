@@ -2,6 +2,7 @@
 
 namespace App\Http\Repositories;
 
+use App\Models\BloodIssuance;
 use App\Models\DonationInventory;
 use DB;
 
@@ -81,10 +82,39 @@ class InventoryRepository {
             $q->where('donors.province', $address['province']->provDesc);
         });
 
+        if(isset($request->start_date) && isset($request->end_date)){
+            $query->whereBetween('donation_histories.created_at', [$request->start_date, $request->end_date]);
+        }
+
         return $query->join('donation_histories', 'donation_inventories.donation_id', '=', 'donation_histories.id')
         ->join('donors', 'donation_histories.donor_id', '=', 'donors.id')
         ->where('donors.blood_type', $blood_type_name)
         ->groupBy('donors.blood_type')       
+        ->count();
+    }
+
+    public function getIssuanceCount($request, $blood_type_name, $address){
+        $query = BloodIssuance::query();
+
+        $query->when(isset($address['city']), function ($q) use ($address) {
+            $q->where('patients.city', $address['city']->citymunDesc);
+        });
+    
+        $query->when(isset($address['barangay']), function ($q) use ($address) {
+            $q->where('patients.barangay', $address['barangay']);
+        });
+    
+        $query->when(isset($address['province']), function ($q) use ($address) {
+            $q->where('patients.province', $address['province']->provDesc);
+        });
+
+        if(isset($request->start_date) && isset($request->end_date)){
+            $query->whereBetween('blood_issuances.release_date', [$request->start_date, $request->end_date]);
+        }
+
+        return $query->join('patients', 'patients.id', '=', 'blood_issuances.patient_id')
+        ->where('blood_issuances.blood_type', $blood_type_name)
+        ->groupBy('blood_issuances.blood_type')       
         ->count();
     }
 }

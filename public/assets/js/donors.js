@@ -1,4 +1,5 @@
 const deleteBtn = document.querySelectorAll('.delete-btn')
+const approveBtn = document.querySelectorAll('.approve-btn')
 
 async function confirmDonor (data){
     document.getElementById('confirm-donor-a').innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving'
@@ -269,6 +270,93 @@ deleteBtn.forEach(btn => {
                     Swal.fire({
                         icon: "error",
                         title: "Unable to delete Donor, Please Try Again!",
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        cancelButtonText: 'Close',
+                        customClass: {
+                            popup: "my-swal-popup-error",
+                            title: "my-swal-title-error",
+                            cancelButton: "my-cancel-btn-error"
+                        },
+                    });
+                }
+            },
+        });
+    })
+})
+
+approveBtn.forEach(btn => {
+    btn.addEventListener('click', () => {
+        Swal.fire({
+            title: "Are you sure you want to approve this registratoin?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#EB5A3C",
+            confirmButtonText: "Approve",
+            focusConfirm: false,
+
+            customClass: {
+                popup: "my-swal-popup",
+                title: "my-swal-title",
+                confirmButton: "my-confirm-btn",
+                cancelButton: "my-cancel-btn",
+            },
+            preConfirm: async () => {
+                const confirmBtn = Swal.getConfirmButton();
+                confirmBtn.innerHTML = `<span class="loader"></span> Loading...`;
+                confirmBtn.disabled = true; // prevent double click
+
+                try {
+                    const response = await fetch(`/donors/${btn.value}/approved`, {
+                        method: "delete", // usually logout should be POST
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-Requested-With": "XMLHttpRequest",
+                            "X-CSRF-TOKEN": document
+                                .querySelector('meta[name="csrf-token"]')
+                                .getAttribute("content"),
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Logout request failed.");
+                    }
+
+                    const data = await response.json();
+                    if(data.status == 200){
+                        Swal.fire({
+                            icon: "success",
+                            title: "Donor approved successfuly",
+                            showCancelButton: true,
+                            showConfirmButton: false,
+                            cancelButtonText: 'OK',
+                            customClass: {
+                                popup: "my-swal-popup",
+                                title: "my-swal-title",
+                                confirmButton: "my-confirm-btn",
+                                cancelButton: "my-cancel-btn",
+                            },
+                        }).then(() => {
+                            window.location.reload()
+                        });
+                    }else{
+                        Swal.fire({
+                            icon: "error",
+                            title: data.message,
+                            showCancelButton: true,
+                            showConfirmButton: false,
+                            cancelButtonText: 'Close',
+                            customClass: {
+                                popup: "my-swal-popup-error",
+                                title: "my-swal-title-error",
+                                cancelButton: "my-cancel-btn-error"
+                            },
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Unable to make request, please try again!",
                         showCancelButton: true,
                         showConfirmButton: false,
                         cancelButtonText: 'Close',

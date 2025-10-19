@@ -67,4 +67,13 @@ class InventoryService {
         }
         return $types;
     }
+
+    public function getBloodIssuanceCount($request, $address){
+        $blood_types = BloodTypeDomain::BLOOD_TYPES;
+        $types = [];
+        foreach ($blood_types as $key => $value) {
+            $types[$key] = $this->inventory_repository->getIssuanceCount($request, $value, $address);
+        }
+        return $types;
+    }
 }

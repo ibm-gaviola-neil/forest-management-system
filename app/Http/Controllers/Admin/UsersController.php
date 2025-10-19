@@ -24,7 +24,11 @@ class UsersController extends Controller
 
     public function addUser(){
         $departments = Department::orderBy('department_name')->get();
-        $donors = Donor::orderBy('last_name')->get();
+        $donors = Donor::where('is_approved', 1)
+            ->orderBy('last_name')
+            ->get()
+            ->unique('id')
+            ->values();
         return view('Pages.Forms.add-user', compact('departments', 'donors'));
     }
 

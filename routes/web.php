@@ -45,6 +45,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/{donor}/edit-confirm', 'editConfirm');
         Route::post('/{donor}/update', 'update');
         Route::delete('/{donor}/delete', 'delete');
+        Route::delete('/{donor}/approved', 'approved');
         Route::get('/{donor}/view', 'donor');
         Route::get('/{donor}/show', 'show');
         Route::get('/{donation_id}/donation', 'getDonationHistory');
@@ -105,19 +106,20 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
 
     Route::middleware(['ifAdmin'])->prefix('audit-trails')->controller(\App\Http\Controllers\AuditTrailController::class)->group(function(){
         Route::get('/', 'index');
-        // Route::get('/register', 'create');
-        // Route::get('/{patient}/show', 'show');
-        // Route::get('/{patient}/edit', 'edit');
-        // Route::post('/store', 'store');
-        // Route::post('/{patient}/update', 'store');
-        // Route::post('/store-confirm', 'confirm');
-        // Route::delete('/{patient}/delete', 'delete');
+    });
+
+    Route::middleware(['ifAdmin'])->prefix('settings')->controller(\App\Http\Controllers\SettingsController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::post('/update', 'update');
     });
 });
 
 Route::controller(\App\Http\Controllers\Client\AuthController::class)->group(function(){
     Route::post('/login', 'login');
     Route::get('/', 'index')->name('login');
+    Route::get('/register', 'create')->name('register');
+    Route::post('/store', 'store')->name('user.store');
+    Route::post('/store/confirm', 'confirm')->name('user.confirm');
 });
 
 Route::controller(AddressController::class)->group(function () {

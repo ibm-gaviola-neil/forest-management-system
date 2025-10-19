@@ -1,6 +1,6 @@
 <div id="left-sidebar" class="sidebar">
     <div class="navbar-brand">
-        <a href="index.html"><img src="{{ asset('/assets/images/bd-logo.png') }}" alt="Oculux Logo"
+        <a href="#"><img id="side-logo" src="{{isset($systemSettings) ? asset('storage/' . $systemSettings?->logo) :  asset('/assets/images/bd-logo.png') }}" alt="Oculux Logo"
                 class="img-fluid logo"><span style="color: #fff">Blood Registry System</span></a>
         <button type="button" class="btn-toggle-offcanvas btn btn-sm float-right"><i
                 class="lnr lnr-menu icon-close"></i></button>
@@ -8,7 +8,7 @@
     <div class="sidebar-scroll">
         <div class="user-account">
             <div class="user_div">
-                <img style="height: 45px" src="{{ Auth::user()->profile_image ? asset('storage/'.$user_data->profile_image) : asset('/assets/images/user.jpg') }}" class="user-photo" alt="User Profile Picture">
+                <img style="height: 45px" src="{{ Auth::user()->profile_image ? asset('storage/'.Auth::user()->profile_image) : asset('/assets/images/user.jpg') }}" class="user-photo" alt="User Profile Picture">
             </div>
             <div class="dropdown">
                 <span style="color: #fff">Welcome,</span> <br>
@@ -23,8 +23,8 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right account vivify flipInY">
                     <li><a href="/user/profile"><i class="icon-user"></i>My Profile</a></li>
-                    {{-- <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li>
-                    <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li> --}}
+                    {{-- <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li> --}}
+                    <li><a href="/settings"><i class="icon-settings"></i>Settings</a></li>
                     {{-- <li class="divider"></li> --}}
                 </ul>
 

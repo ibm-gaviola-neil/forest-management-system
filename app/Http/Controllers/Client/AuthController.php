@@ -3,14 +3,70 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Domains\TraitAdmin;
+use App\Http\Requests\DonorRequest;
+use App\Http\Requests\PatientRequest;
+use App\Models\City;
+use App\Models\Donor;
+use App\Models\Patient;
+use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
+    use TraitAdmin;
     public function index(){
         return view('index');
+    }
+
+    public function create(){
+        $data['provinces'] = Province::orderBy('provDesc', 'ASC')->get();
+        return view('register', $data);
+    }
+
+    public function store(DonorRequest $request)
+    {
+        $payload = $request->validated();
+
+        $province_name = Province::where('provCode', $request->province)->first();
+        $city_name = City::where('citymunCode', $request->city)->first();
+        $payload['province'] = $province_name->provDesc;
+        $payload['city'] = $city_name->citymunDesc;
+        return response()->json([
+            'status' => 200,
+            'data' => $payload
+        ]);
+    }
+
+    public function confirm(Request $request){
+        $payload = $request->except('_token', 'patient');
+
+        $province_name = Province::where('provCode', $request->province)->first();
+        $city_name = City::where('citymunCode', $request->city)->first();
+        $payload['province'] = $province_name->provDesc;
+        $payload['city'] = $city_name->citymunDesc;
+
+        $save = DB::transaction(function() use ($payload){
+            $isSave = Donor::create($payload);
+            // $this->storeAuditTrails('create', 'patient', 'patients/'.$isSave->id.'/edit', 'Newly registered patient');
+            return $isSave;
+        });
+
+        if(!$save){
+            return response()->json([
+                'status' => 500,
+                'data' => $payload,
+                'message' => 'Unable to save Patient!'
+            ]); 
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $payload
+        ]);
     }
 
     public function login(\App\Http\Requests\LoginRequest $request){

@@ -249,4 +249,24 @@ class DonorController extends Controller
             ]);
         }
     }
+
+    public function approved(Donor $donor){
+        $donor_name = $donor->last_name . ' ' .$donor->first_name;
+        $donor->is_approved = 1;
+        $donor->user_id = auth()->user()->id;
+        $save = $donor->save();
+
+        if($save){
+            // $this->storeAuditTrails('delete', 'donor', null, $donor_name.' was deleted');
+            return response()->json([
+                'status' => 200,
+                'message' => 'Success'
+            ]);
+        }else{
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server Error!'
+            ]);
+        }
+    }
 }

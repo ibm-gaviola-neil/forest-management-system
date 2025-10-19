@@ -1,14 +1,53 @@
 @extends('components.Layout.main-content')
+@php
+    $query = request()->query(); // Get current query string as array
+    $clearUrl = url('/donors');
+    if (request('tab')) {
+        $clearUrl .= '?tab=' . request('tab');
+    }
+@endphp
+
+<style>
+    .tab{
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: #ffff;
+        margin-bottom: 10px;
+        margin-top: 20px;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    h1{
+        font-size: 20px !important;
+        font-weight: 500 !important;
+    }
+</style>
 
 @section('content')
-    <div class="block-header">
-        <div class="row clearfix">
-            <div class="col-md-6 col-sm-12">
-                <h1>Donors</h1>
-            </div>
-            <div class="col-md-6 col-sm-12 text-right hidden-xs">
-                <a href="/donors/register" class="btn btn-sm btn-primary" title="">Register Donor</a>
-            </div>
+    <div class="tab">
+        <div>
+            <h1>Donors</h1>
+        </div>
+        <div>
+            <ul class="nav nav-tabs2">
+                <li class="nav-item">
+                    <a class="nav-link {{ request('tab') !== 'unregistered' ? 'active' : '' }}"
+                       href="/donors">
+                        Registered Donors
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request('tab') === 'unregistered' ? 'active' : '' }}"
+                       href="{{ url('/donors') . '?' . http_build_query(array_merge($query, ['tab' => 'unregistered'])) }}">
+                        Unregister Donors
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/donors/register" class="btn btn-sm btn-primary" title="">Register Donor</a>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -17,6 +56,7 @@
             <div class="card">
                 <div class="tab-content mt-0">
                     <form>
+                        <input type="hidden" name="tab" value="{{ request('tab') }}">
                         <div class="body mt-2">
                             <div class="row clearfix mb-2">
                                 <div class="col-md-6 col-sm-12">
@@ -172,7 +212,7 @@
 
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary">Search</button>
-                                    <a href="/donors" class="btn btn-secondary">Clear</a>
+                                    <a href="{{ $clearUrl }}" class="btn btn-secondary">Clear</a>
                                 </div>
                             </div>
                         </div>
@@ -193,7 +233,9 @@
                                 <th class="">Blood Type</th>
                                 <th>Address</th>
                                 <th>Created Date</th>
-                                <th>Added By</th>
+                                @if (request('tab') !== 'unregistered')  
+                                    <th>Added By</th>
+                                @endif
                                 <th class="w100">Action</th>
                             </tr>
                         </thead>
@@ -218,12 +260,17 @@
                                         </span>
                                     </td>
                                     <td>{{ $donor->created_at->format('m-d-Y') }}</td>
+                                    @if (request('tab') !== 'unregistered')  
+                                        <td>
+                                            <a href="#" class="text-primary">{{ $donor->a_last_name.' '. $donor->a_first_name }}</a>
+                                        </td>
+                                    @endif
                                     <td>
-                                        <a href="#" class="text-primary">{{ $donor->a_last_name.' '. $donor->a_first_name }}</a>
-                                    </td>
-                                    <td>
-                                        {{-- <button type="button" value="{{ $donor->id }}" data-status="{{ $donor->status }}" class="btn block-user btn-sm btn-default" title="Edit"><i
-                                                class="fa fa-power-off"></i></button> --}}
+                                        @if (request('tab') === 'unregistered')  
+                                            <button type="button" value="{{ $donor->id }}" class="btn approve-btn btn-sm btn-default" title="Edit"><i
+                                            class="fa fa-check"></i></button>
+                                        @endif
+                                        
                                         <a href="/donors/{{ $donor->id }}/edit" class="btn btn-sm btn-default" title="Edit"><i
                                                 class="fa fa-edit"></i></a>
                                         <button value="{{ $donor->id }}" type="button" class="btn btn-sm btn-default js-sweetalert delete-btn" title="Delete"

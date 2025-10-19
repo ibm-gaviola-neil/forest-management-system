@@ -8,6 +8,7 @@ use App\Http\Repositories\DonorRepository;
 use App\Http\Repositories\EventRepository;
 use App\Models\Barangay;
 use App\Models\City;
+use App\Models\Donor;
 use App\Models\Province;
 use Illuminate\Support\Collection;
 
@@ -23,7 +24,15 @@ class DonorService {
 
     public function getDonors(object $request) : Collection{
         $address = $this->getAddress($request);
-        return $this->donor_repository->index($request, $address);
+        $is_approved = 1;
+
+        if($request->tab === 'unregistered'){
+            $is_approved = 0;
+        }
+
+        $donors = $this->donor_repository->index($request, $address, $is_approved);
+
+        return $donors;
     }
 
     public function getDonorRequestAddress(object $request){

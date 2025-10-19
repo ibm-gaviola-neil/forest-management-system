@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
 
-                <table class="table spacing5">
+                <table class="table spacing5" style="overflow: scroll">
                     <tr style="">
                         <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Name: </th>
                         <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_name">Neil Bryan Gaviola</th>
@@ -38,6 +38,10 @@
                     <tr style="">
                         <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Birth Date: </th>
                         <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_date"></th>
+                    </tr>
+                    <tr style="">
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Blood Type: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_type"></th>
                     </tr>
                 </table>
 

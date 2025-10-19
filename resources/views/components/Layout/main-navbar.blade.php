@@ -3,12 +3,15 @@
 
         <div class="navbar-left">
             <div class="navbar-btn">
-                <a href="index.html"><img src="../assets/images/icon.svg" alt="Oculux Logo" class="img-fluid logo"></a>
+                {{-- <a href="index.html"><img src="../assets/images/icon.svg" alt="Oculux Logo" class="img-fluid logo"></a> --}}
                 <button type="button" class="btn-toggle-offcanvas"><i class="lnr lnr-menu fa fa-bars"></i></button>
             </div>
             @if (auth()->user()->role === 'donor')
-                
             @endif
+            <div class="d-flex align-items-center justify-content-center">
+                <img id="side-logo" style="height: 50px; width: 50px; margin-left: 30px" src="{{isset($systemSettings) ? asset('storage/' . $systemSettings?->navbar_logo) :  asset('/assets/images/bd-logo.png') }}" alt="Biliran Province Logo" class="img-fluid logo">
+                <h6 class="ml-2 nav-title">Province of Biliran</h6>
+            </div>
         </div>
 
         @if (auth()->user()->role !== 'donor')

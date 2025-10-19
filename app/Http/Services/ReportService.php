@@ -24,12 +24,14 @@ class ReportService{
         $this->inventoryRepository = $inventoryRepository;
     }
 
-    public function getReportData($request){     
+    public function getReportData($request){   
         return [
             'provinces' => Province::orderBy('provDesc', 'ASC')->get(),
             'reportData' => isset($request->tab) ? $this->setReportData($request)[$request->tab] : $this->setReportData($request)['issuance'],
             'address' => $this->getDonorRequestAddress($request),
             'blood_types' => $this->inventoryService->getBloodTypeCount($request, $this->getDonorRequestAddress($request)),
+            'blood_issuance_count' => $this->inventoryService->getBloodIssuanceCount($request, $this->getDonorRequestAddress($request)),
+            'percentage' => $this->getPercentage($request),
             'donors' => [],
             'request' => $request,
             'months' => BloodTypeDomain::MONTHS,
@@ -45,7 +47,7 @@ class ReportService{
         return [
             'issuance' => $this->reportRepository->getBloodIssuanceReportData($request),
             'donor' => $this->inventoryRepository->getData($request, $this->getDonorRequestAddress($request)),
-            'percentage' => []
+            'percentage' => $this->getPercentage($request)
         ];
     }
 
@@ -57,5 +59,21 @@ class ReportService{
         $fileName = $tab . '-report-' . $date->format('Y-m-d') . '.xlsx';
 
         return Excel::download(new ReportExport($reportData[$tab] ?? [], $tab), $fileName);
+    }
+
+    public function getPercentage($request)
+    {
+        $numbeOfBloodDonated = array_sum($this->inventoryService->getBloodTypeCount($request, $this->getDonorRequestAddress($request)));
+        $numberOfBloodIssued = array_sum($this->inventoryService->getBloodIssuanceCount($request, $this->getDonorRequestAddress($request)));
+        $total = $numbeOfBloodDonated + $numberOfBloodIssued;
+
+        // Prevent division by zero
+        $donatedPercent = $total > 0 ? round(($numbeOfBloodDonated / $total) * 100, 2) : 0;
+        $issuedPercent  = $total > 0 ? round(($numberOfBloodIssued / $total) * 100, 2) : 0;
+
+        return [
+            'numbeOfBloodDonated' => $donatedPercent . '%',
+            'numberOfBloodIssued' => $issuedPercent . '%',
+        ];
     }
 }

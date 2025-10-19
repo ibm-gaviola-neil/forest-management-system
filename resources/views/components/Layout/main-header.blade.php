@@ -37,11 +37,20 @@
 <link rel="stylesheet" href="{{ asset('/assets/vendor/c3/c3.min.css')}}"/>
 <link rel="stylesheet" href="{{ asset('/assets/vendor/chartist/css/chartist.min.css')}}">
 <link rel="stylesheet" href="{{ asset('/assets/vendor/chartist-plugin-tooltip/chartist-plugin-tooltip.css')}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=BBH+Sans+Bogle&display=swap" rel="stylesheet">
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <style>
- 
+    .nav-title{
+        font-family: "BBH Sans Bogle", sans-serif;
+        margin-top: 5px;
+        font-weight: 400;
+        letter-spacing: 2px;
+        color: #0042da;
+    }
 </style>
 </head>
 <body class="theme-cyan font-montserrat light_version">

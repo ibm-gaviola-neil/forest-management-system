@@ -8,7 +8,7 @@ use App\Models\Donor;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class DonorRepository implements DonorRepositoryInterface{
-    public function index(object $request, $address = array()): Collection {
+    public function index(object $request, $address = array(), $is_approved = 0): Collection {
         $query = Donor::query();
 
         $query->when(isset($request->last_name), function ($q) use ($request) {
@@ -35,8 +35,9 @@ class DonorRepository implements DonorRepositoryInterface{
             $q->where('donors.blood_type', $request->blood_type);
         });
 
-        return $query->join('users', 'donors.user_id', '=', 'users.id')
+        return $query->leftJoin('users', 'donors.user_id', '=', 'users.id')
         ->select('donors.*', 'users.last_name as a_last_name', 'users.first_name as a_first_name')
+        ->where('donors.is_approved', $is_approved)
         ->orderBy('last_name', 'ASC')
         ->get();
     }

@@ -26,7 +26,7 @@ class DonorRequest extends FormRequest
             "last_name" => 'required',
             "middle_name" => 'nullable',
             "suffix" => 'nullable',
-            "email" => 'required|email',
+            "email" => 'required|email|unique:donors,email',
             "contact_number" => ['required','regex:/^(09|\+639)\d{9}$/', 'min:11'],
             "birth_date" => 'required',
             "gender" => 'required',

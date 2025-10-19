@@ -46,11 +46,13 @@
                         Data Overview
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ url('/reports/export') . '?' . http_build_query(array_merge($query)) }}" class="nav-link btn btn-success">
-                        <i class="fa fa-cloud-download"></i> EXPORT EXCEL
-                    </a>
-                </li>
+                @if (request('tab') !== 'percentage')
+                    <li class="nav-item">
+                        <a href="{{ url('/reports/export') . '?' . http_build_query(array_merge($query)) }}" class="nav-link btn btn-success">
+                            <i class="fa fa-cloud-download"></i> EXPORT EXCEL
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

@@ -12,5 +12,5 @@ interface DonorRepositoryInterface {
      *
      * @return Collection|LengthAwarePaginator
      */
-    public function index(object $request, $address = array()) : Collection;
+    public function index(object $request, $address = array(), $is_approved) : Collection;
 }

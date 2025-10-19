@@ -9,7 +9,7 @@ use App\Models\Donor;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PatientRepository implements DonorRepositoryInterface{
-    public function index(object $request, $address = array()): Collection {
+    public function index(object $request, $address = array(), $is_approved = 0): Collection {
         $query = Patient::query();
 
         $query->when(isset($request->last_name), function ($q) use ($request) {

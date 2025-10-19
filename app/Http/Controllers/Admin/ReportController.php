@@ -14,6 +14,7 @@ class ReportController extends Controller
     public function __construct(ReportService $reportService){
         $this->reportService = $reportService;
     }
+    
     public function index(Request $request){
         $data = $this->reportService->getReportData($request);
         return view('Pages.Admin.reports.index', $data);
