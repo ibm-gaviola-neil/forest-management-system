@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Domains\TraitAdmin;
 use App\Http\Requests\DonorRequest;
 use App\Http\Requests\PatientRequest;
+use App\Http\Services\SettingService;
 use App\Models\City;
 use App\Models\Donor;
 use App\Models\Patient;
@@ -18,11 +19,25 @@ use Illuminate\Support\Facades\DB;
 class AuthController extends Controller
 {
     use TraitAdmin;
+    private $systemSettings;
+
+    public function __construct(SettingService $settings)
+    {
+        $this->systemSettings = $settings;
+    }
+
     public function index(){
-        return view('index');
+        $data = $this->systemSettings->getSettings();
+        return view('index', $data);
     }
 
     public function create(){
+        $settings = $this->systemSettings->getSettings();
+
+        if(!$settings['is_enable']){
+            return redirect('/');
+        }
+
         $data['provinces'] = Province::orderBy('provDesc', 'ASC')->get();
         return view('register', $data);
     }

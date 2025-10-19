@@ -98,7 +98,9 @@
                             @enderror
                         </div>
                         <button type="submit" class="btn btn-primary btn-round btn-block mb-4">LOGIN</button>
-                        <a href="/register">Don't have an Account?</a>
+                        @if ($is_enable)
+                            <a href="/register">Don't have an Account?</a>
+                        @endif
                     </form>
                 </div>
             </div>

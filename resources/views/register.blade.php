@@ -47,7 +47,7 @@
                             <img src="{{ asset('./assets/images/bd-logo.png') }}" alt="">
                         </center>
                         <div class="mb-3">
-                            <p class="lead text-center">Create your account</p>
+                            <p class="lead text-center">Register</p>
                         </div>
                         <div class="row clearfix w-full">
                             <div class="col-lg-6 col-md-6 col-sm-12 mb-3">

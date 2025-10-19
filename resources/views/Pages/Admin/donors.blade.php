@@ -267,7 +267,7 @@
                                     @endif
                                     <td>
                                         @if (request('tab') === 'unregistered')  
-                                            <button type="button" value="{{ $donor->id }}" class="btn approve-btn btn-sm btn-default" title="Edit"><i
+                                            <button type="button" value="{{ $donor->id }}" class="btn approve-btn btn-sm btn-default" title="Approve"><i
                                             class="fa fa-check"></i></button>
                                         @endif
                                         
