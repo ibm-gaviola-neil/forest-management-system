@@ -18,7 +18,7 @@ class SettingService {
         return $data;
     }
 
-    private function setEnableRegister(SystemSettings $settings) : bool
+    private function setEnableRegister($settings = null) : bool
     {   
         $is_enable = false;
 
