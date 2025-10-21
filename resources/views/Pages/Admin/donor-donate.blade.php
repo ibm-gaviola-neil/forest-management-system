@@ -35,10 +35,6 @@
                                     {{ $donor->created_at->format('m-d-Y') }}</p>
                         </div>
                     </div>
-                    {{-- <div>
-                        <button class="btn btn-primary btn-sm">Follow</button>
-                        <button class="btn btn-success btn-sm">Message</button>
-                    </div> --}}
                 </div>
             </div>
         </div>
