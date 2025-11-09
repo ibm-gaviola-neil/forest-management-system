@@ -85,7 +85,6 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::get('/get-serial-number', 'getSerialNumber');
         Route::post('/store', 'store');
         Route::post('/store-confirm', 'confirm');
-        // Route::post('/update/{event}', 'update');
     });
 
     Route::prefix('patients')->controller(\App\Http\Controllers\Admin\PatientController::class)->group(function(){

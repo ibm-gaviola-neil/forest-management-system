@@ -1,5 +1,13 @@
 export const confirmAttr = [
     {
+        label: 'Issue To',
+        id: 'td_issue_to',
+    },
+    {
+        label: 'Department / Office',
+        id: 'td_department',
+    },
+    {
         label: 'Patient Name',
         id: 'td_patient_name',
     },
@@ -75,8 +83,10 @@ export function buildInfoDataMap(data) {
 }
 
 export function buildConfirmDataMap(data) {
-    return {
-        'td_patient_name': `${data.payload.data.patient.last_name}, ${data.payload.data.patient.first_name}`,
+    console.log(data.payload.data.patient);
+    
+    var elements = {
+        'td_issue_to': `${data.payload.data.issue_to}`,
         'td_requestor': `${data.payload.data.requestor.last_name}, ${data.payload.data.requestor.first_name}`,
         'td_serial_number': data.payload.data.serial_number,
         'td_blood_type': data.payload.data.blood_type,
@@ -87,4 +97,14 @@ export function buildConfirmDataMap(data) {
         'td_taken_by': `${data.payload.data.taken_by.last_name}, ${data.payload.data.taken_by.first_name}`,
         'td_release_date': data.payload.data.release_date
     };
+
+    if (data.payload.data.patient !== null) {
+        elements['td_patient_name'] = `${data.payload.data.patient.last_name}, ${data.payload.data.patient.first_name}`;
+    }
+
+    if (data.payload.data.department !== null) {
+        elements['td_department'] = `${data.payload.data.department.department_name}`;
+    }
+
+    return elements;
 }

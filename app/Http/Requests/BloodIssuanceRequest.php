@@ -22,13 +22,19 @@ class BloodIssuanceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'patient_id' => 'required',
+            'issue_to' => 'required',
+            'department_id' => 'required_if:issue_to,office',
+            'patient_id' => 'required_if:issue_to,patient',
             'requestor_id' => 'required',
             'blood_type' => 'required',
             'blood_bag_id' => 'required',
             'expiration_date' => 'required|date',
-            'date_of_crossmatch' => 'required|date',
-            'time_of_crossmatch' => 'required',
+            'date_of_crossmatch' => ['required_if:issue_to,patient', function ($attribute, $value, $fail) {
+                if (isset($value) && strtotime($value) == false) {
+                    $fail('Date of crossmatch must be a valid date.');
+                }
+            }],
+            'time_of_crossmatch' => 'required_if:issue_to,patient',
             'release_by' => 'required',
             'taken_by' => 'required',
             'release_date' => [
@@ -38,7 +44,7 @@ class BloodIssuanceRequest extends FormRequest
                     $crossmatchDate = $this->input('date_of_crossmatch');
                 
                     if ($crossmatchDate && strtotime($value) < strtotime($crossmatchDate)) {
-                        $fail('The release date must not be later than the date of crossmatch.');
+                        $fail('The date of crossmatch must not be later than the release date.');
                     }
                 }                
             ],
@@ -47,16 +53,24 @@ class BloodIssuanceRequest extends FormRequest
 
     public function messages(){
         return [
-            'patient_id.required' => 'Please select patient',
+            'patient_id.required_if' => 'Please select patient',
+            'department_id.required_if' => 'Please select department or office.',
             'requestor_id.required' => 'Please select requestor',
             'blood_type.required' => 'Please blood type',
             'blood_bag_id.required' => 'Please select serial number',
-            'date_of_crossmatch.required' => 'Input date of crossmatch',
-            'time_of_crossmatch.required' => 'Input time of crossmatch',
+            'date_of_crossmatch.required_if' => 'Input date of crossmatch',
+            'time_of_crossmatch.required_if' => 'Input time of crossmatch',
             'time_of_crossmatch.regex' => 'Please input correct time format ex. (9:00 AM)',
             'release_by.required' => 'Please select release in charge',
             'taken_by.required' => 'Please select person in charge',
             'release_date.required' => 'Please input release date.'
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->sometimes('date_of_crossmatch', 'date', function ($input) {
+            return isset($input->date_of_crossmatch);
+        });
     }
 }

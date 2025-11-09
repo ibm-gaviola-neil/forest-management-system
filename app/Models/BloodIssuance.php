@@ -12,6 +12,8 @@ class BloodIssuance extends Model
     protected $fillable = [
         'user_id',
         'patient_id',
+        'department_id',
+        'issue_to',
         'requestor_id',
         'release_by',
         'taken_by',

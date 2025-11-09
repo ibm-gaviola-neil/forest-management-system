@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Services\DepartmentService;
+use App\Models\BloodIssuance;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -35,8 +36,9 @@ class DepartmentConroller extends Controller
 
     public function delete(Department $department){
         $users = User::where('department_id', $department->id)->get();
+        $bloodIssuance = BloodIssuance::where('department_id', $department->id)->get();
 
-        if(count($users) > 0){
+        if(count($users) > 0 || count($bloodIssuance) > 0){
             return response()->json([
                 'status' => 403,
                 'message' => 'Unable to delete department, There are some data associated with this department.'

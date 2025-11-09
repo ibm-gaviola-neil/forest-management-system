@@ -3,7 +3,7 @@ import { submitForm } from "../services/formService.js";
 export function setModalTable(confirmAttr) {
     const rows = confirmAttr.map(attr => `
         <tr>
-            <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">${attr.label}:</th>
+            <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">${attr.label}: </th>
             <th id="${attr.id}" style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;"></th>
         </tr>
     `).join('');
@@ -19,7 +19,17 @@ export function showConfirmForm({ formData, confirmAttr, confirmDataMap, url, su
 
     confirmAttr.forEach(attr => {
         const el = document.getElementById(attr.id);
-        if (el) el.innerHTML = confirmDataMap[attr.id] ?? 'N/A';
+        if (el) {
+            const value = confirmDataMap[attr.id];
+            el.innerHTML = value ?? 'N/A';
+            // Check if value is null or undefined
+            if (value === null || value === undefined) {
+                const tr = el.parentElement; // Get the parent <tr>
+                if (tr && tr.tagName === 'TR') {
+                    tr.style.display = 'none';
+                }
+            }
+        }
     });
 
     document.getElementById('confirm-form').addEventListener('submit', e => {

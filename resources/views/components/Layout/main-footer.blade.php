@@ -141,6 +141,26 @@
         $('#remove_profile_image').val('1');
     });
 </script>
+
+<script>
+    function issueToForm() {
+        var issueTo = $('#issue_to').val();
+
+        $('#release_date').val('');
+        if (issueTo == 'office') {
+            $('.patient-div').hide();
+            $('.office-div').show();
+        } else if (issueTo == 'patient') {
+            $('.patient-div').show();
+            $('.office-div').hide();
+        }
+    }
+
+    $('#issue_to').on('change', () => {
+        issueToForm();
+    }) 
+    issueToForm();
+</script>
 </body>
 
 </html>

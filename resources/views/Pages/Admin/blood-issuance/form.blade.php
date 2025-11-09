@@ -6,7 +6,21 @@
                     @csrf
                     <div class="body mt-2">
                         <div class="row clearfix" id="">
-                            <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                                <div class="form-group">
+                                    <label for="" class="form-label">Issue To <span
+                                            class="text-danger">*</span></label>
+                                    <select name="issue_to" style="height: 100px !important; box-shadow: none !important;"
+                                        id="issue_to"
+                                        class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                        <option value="patient" selected>Patient</option>
+                                        <option value="office">Office / Department</option>
+                                    </select>
+                                    <span id="issue_to_Error" class="error"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-2 patient-div">
                                 <div class="form-group">
                                     <label for="" class="form-label">Patient Name <span
                                             class="text-danger">*</span></label>
@@ -23,7 +37,24 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-2 office-div">
+                                <div class="form-group">
+                                    <label for="" class="form-label">Department / Office Name <span
+                                            class="text-danger">*</span></label>
+                                    <select name="department_id" style="height: 100px !important; box-shadow: none !important;"
+                                        id="department_id_select"
+                                        class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                        <option value="" selected>Select Department / Office</option>
+                                        @foreach ($departments as $department)
+                                            <option value="{{ $department->id }}">
+                                                {{ $department->department_name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span id="department_id_Error" class="error"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 mb-2 requestor-div">
                                 <div class="form-group">
                                     <label for="" class="form-label">Requestor <span
                                             class="text-danger">*</span></label>
@@ -115,7 +146,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-3 patient-div">
                                 <div class="form-group">
                                     <div>
                                         <label>Date of Crossmatch <span
@@ -132,7 +163,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-2 patient-div">
                                 <div class="form-group">
                                     <label for="" class="form-label">Time of Crossmatch <span
                                             class="text-danger">*</span></label>
@@ -144,7 +175,7 @@
                                             <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) . ':00' }}">{{ str_pad($i, 2, '0', STR_PAD_LEFT) . ':00' }}</option>
                                         @endfor
                                     </select>
-                                    <span id="release_by_Error" class="error"></span>
+                                    <span id="time_of_crossmatch_Error" class="error"></span>
                                 </div>
                             </div>
 
@@ -171,7 +202,7 @@
                                         <label>Released Date <span
                                             class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <input data-provide="datepicker" name="release_date"
+                                            <input data-provide="datepicker" name="release_date" id="release_date"
                                                 placeholder="Released Date"
                                                 data-date-autoclose="true"
                                                 class="form-control @error('contact_number') parsley-error @enderror"

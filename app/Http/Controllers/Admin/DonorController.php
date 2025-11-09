@@ -117,6 +117,7 @@ class DonorController extends Controller
         $city_name = City::where('citymunCode', $request->city)->first();
         $payload['province'] = $province_name->provDesc;
         $payload['city'] = $city_name->citymunDesc;
+        $payload['is_approved'] = 1;
 
         $save = Donor::create($payload);
 

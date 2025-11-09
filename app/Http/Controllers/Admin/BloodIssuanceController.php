@@ -7,6 +7,7 @@ use App\Http\Domains\TraitAdmin;
 use App\Http\Requests\BloodIssuanceRequest;
 use App\Http\Services\BloodIssuanceService;
 use App\Models\BloodIssuance;
+use App\Models\Department;
 use App\Models\DonationHistory;
 use App\Models\Patient;
 use App\Models\Province;
@@ -29,12 +30,15 @@ class BloodIssuanceController extends Controller
             'provinces'=> $provinces,
             'staffs' =>   User::where('role', 'staff')->orderBy('last_name', 'ASC')->get(),
             'patients' => Patient::orderBy('last_name')->get(),
-            'serial_numbers' => $this->bloodIssuanceService->getBloodBagData($request)
+            'serial_numbers' => $this->bloodIssuanceService->getBloodBagData($request),
+            'departments' => Department::orderBy('department_name', 'ASC')->get()
         ]);
     }
 
-    public function history(){
+    public function history(Request $request){
         $data['histories'] = $this->bloodIssuanceService->bloodIssuanceHistory();
+        $data['offices'] = $this->bloodIssuanceService->bloodIssuanceOfficeHistory();
+        $data['request'] = $request;
         return view('Pages.Admin.blood-issuance.history', $data);
     }
 
@@ -54,7 +58,7 @@ class BloodIssuanceController extends Controller
         $payload = $request->validated();
         $payload['user_id'] = auth()->user()->id;
         $payload['expiration_date'] = $this->formatDate($request['expiration_date']);
-        $payload['date_of_crossmatch'] = $this->formatDate($request['date_of_crossmatch']);
+        $payload['date_of_crossmatch'] = isset($payload['date_of_crossmatch']) ? $this->formatDate($request['date_of_crossmatch']) : null;
         $payload['release_date'] = $this->formatDate($request['release_date']);
 
         $save = DB::transaction(function ()  use(&$payload) {

@@ -26,5 +26,6 @@ class Donor extends Model
         'blood_type',
         'with_account',
         'status',
+        'is_approved',
     ];
 }

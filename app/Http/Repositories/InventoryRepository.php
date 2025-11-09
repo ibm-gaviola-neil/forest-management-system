@@ -89,6 +89,7 @@ class InventoryRepository {
         return $query->join('donation_histories', 'donation_inventories.donation_id', '=', 'donation_histories.id')
         ->join('donors', 'donation_histories.donor_id', '=', 'donors.id')
         ->where('donors.blood_type', $blood_type_name)
+        ->where('donation_histories.count', 1)
         ->groupBy('donors.blood_type')       
         ->count();
     }
