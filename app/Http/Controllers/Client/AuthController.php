@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Domains\NotificationDomain;
 use App\Http\Domains\TraitAdmin;
 use App\Http\Requests\DonorRequest;
-use App\Http\Requests\PatientRequest;
+use App\Http\Services\NotificationService;
 use App\Http\Services\SettingService;
 use App\Models\City;
 use App\Models\Donor;
-use App\Models\Patient;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,10 +20,12 @@ class AuthController extends Controller
 {
     use TraitAdmin;
     private $systemSettings;
+    private $notificationService;
 
-    public function __construct(SettingService $settings)
+    public function __construct(SettingService $settings, NotificationService $notificationService)
     {
         $this->systemSettings = $settings;
+        $this->notificationService = $notificationService;
     }
 
     public function index(){
@@ -66,7 +68,14 @@ class AuthController extends Controller
 
         $save = DB::transaction(function() use ($payload){
             $isSave = Donor::create($payload);
-            // $this->storeAuditTrails('create', 'patient', 'patients/'.$isSave->id.'/edit', 'Newly registered patient');
+            $this->notificationService->saveNotification([
+                'type' => NotificationDomain::DONOR_REGISTRATION,
+                'message' => 'New donor registered: ' . $isSave->first_name . ' ' . $isSave->last_name,
+                'related_id' => $isSave->id,
+                'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::DONOR_REGISTRATION],
+                'is_read' => false,
+                'created_by' => null,
+            ]);
             return $isSave;
         });
 
