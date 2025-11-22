@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Http\Domains\NotificationDomain;
 use App\Http\Domains\TraitAdmin;
+use App\Http\Requests\AccountSetupRequest;
 use App\Http\Requests\DonorRequest;
 use App\Http\Services\NotificationService;
 use App\Http\Services\SettingService;
@@ -15,6 +16,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -68,14 +70,6 @@ class AuthController extends Controller
 
         $save = DB::transaction(function() use ($payload){
             $isSave = Donor::create($payload);
-            $this->notificationService->saveNotification([
-                'type' => NotificationDomain::DONOR_REGISTRATION,
-                'message' => 'New donor registered: ' . $isSave->first_name . ' ' . $isSave->last_name,
-                'related_id' => $isSave->id,
-                'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::DONOR_REGISTRATION],
-                'is_read' => false,
-                'created_by' => null,
-            ]);
             return $isSave;
         });
 
@@ -89,8 +83,69 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 200,
-            'data' => $payload
+            'data' => $payload,
+            'donor' => $save
         ]);
+    }
+
+    public function setup(Donor $donor)
+    {
+        if ($donor->valid_id_image !== null || $donor->id_type !== null) {
+            return redirect('/register');
+        }
+
+        $data['donor'] = $donor;
+        return view('account-setup', $data);
+    }
+
+    public function setupStore(AccountSetupRequest $request, Donor $donor)
+    {
+        $payload = $request->validated();
+        try {
+            if($request->hasFile('valid_id_image')){
+                $logoImageFile = $request->file('valid_id_image')->store('images', 'public');
+                $payload['valid_id_image'] = $logoImageFile;
+            }
+    
+            DB::transaction(function() use ($payload, $donor) {
+                $donor->update([
+                    'valid_id_image' => $payload['valid_id_image'],
+                    'id_type' => $payload['id_type'],
+                    'temp_p' => $payload['password']
+                ]);
+    
+                User::create([
+                    'donor_id' => $donor->id,
+                    'last_name' => $donor->last_name,
+                    'first_name' => $donor->first_name,
+                    'username' => $payload['username'],
+                    'password' => Hash::make($payload['password']),
+                    'account_status' => 0,
+                    'role' => 'donor',
+                    'status' => 'active',
+                    'email' => $donor->email
+                ]);
+
+                $this->notificationService->saveNotification([
+                    'type' => NotificationDomain::DONOR_REGISTRATION,
+                    'message' => 'New donor registered: ' . $donor->first_name . ' ' . $donor->last_name,
+                    'related_id' => $donor->id,
+                    'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::DONOR_REGISTRATION],
+                    'is_read' => false,
+                    'created_by' => null,
+                ]);
+            });
+
+            return response([
+                'message' => 'success'
+            ],200);
+        } catch (\Throwable $th) {
+            return response([
+                'error' => $th->getMessage()
+            ],500);
+        }
+
+        
     }
 
     public function login(\App\Http\Requests\LoginRequest $request){
@@ -124,6 +179,7 @@ class AuthController extends Controller
     public function profile(){
         $user_id = auth()->user()->id;
         $data['user_data'] = User::where('id', $user_id)->first();
+        $data['donor'] = $donor = Donor::where('id', auth()->user()->donor_id)->first();
         return view('Pages.Admin.profile.index', $data);
     }
 

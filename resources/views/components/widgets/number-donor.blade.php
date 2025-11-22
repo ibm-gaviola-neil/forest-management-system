@@ -3,7 +3,7 @@
         <div class="body">
             <div class="card user_statistics">
                 <div class="header">
-                    <h2>Number of Donations Per Barangay</h2>
+                    <h2 style="text-transform: uppercase;">Number of Donations Per Municipality</h2>
                 </div>
                 <div class="body">                            
                     <div id="chart-bar" style="max-height: 302px"></div>

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmailAddress;
 use App\Models\SystemSettings;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Symfony\Component\Mime\Email;
 
 class SettingsController extends Controller
 {
@@ -20,6 +22,7 @@ class SettingsController extends Controller
 
     public function update(Request $request){
         $targetSettings = SystemSettings::first();
+        $prevTargetSettings = clone $targetSettings;
         $payload = array();
 
         $validator = Validator::make($request->all(), [
@@ -28,10 +31,12 @@ class SettingsController extends Controller
             "display_end_date"   => "required_if:is_enable,3",
             "navbar_logo" => isset($targetSettings)
                     ? "nullable|image|mimetypes:image/jpeg,image/png"
-                    : "required|image|mimetypes:image/jpeg,image/png",
+                    : "nullable|image|mimetypes:image/jpeg,image/png",
                 "logo" => isset($targetSettings)
                     ? "nullable|image|mimetypes:image/jpeg,image/png"
-                    : "required|image|mimetypes:image/jpeg,image/png",
+                    : "nullable|image|mimetypes:image/jpeg,image/png",
+            "email_address" => "required|email|unique:system_settings,email_address,". $targetSettings?->id,
+            "email_password" => "required",
         ],
         [
             'is_enable.required' => 'The enable field is required.',
@@ -84,6 +89,32 @@ class SettingsController extends Controller
             $targetSettings?->update($payload);
         }
 
+        $this->storeEmail($payload, $prevTargetSettings);
+
         return redirect()->back();
+    }
+
+    private function storeEmail($payload, SystemSettings $targetSettings): bool
+    {
+        if (
+            isset($payload['email_address'], $payload['email_password']) &&
+            $targetSettings &&
+            (
+                $payload['email_address'] !== $targetSettings->email_address ||
+                $payload['email_password'] !== $targetSettings->email_password
+            )
+        ) {
+            $toStore = [
+                'email_address'      => $payload['email_address'],
+                'email_password'     => $payload['email_password'],
+                'system_settings_id' => $targetSettings->id,
+                'user_id'            => auth()->user()->id,
+            ];
+
+            EmailAddress::create($toStore);
+            return true;
+        }
+        // No change, no history entry
+        return false;
     }
 }

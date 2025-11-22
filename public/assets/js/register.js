@@ -16,6 +16,8 @@ async function confirmDonor (data){
             body: data
         });
 
+        const donorData = await response.json();
+
         if (!response.ok) {
             if (response.status === 422) {
                 // Handle validation errors
@@ -30,19 +32,19 @@ async function confirmDonor (data){
                 document.getElementById('error-message').innerHTML = `
                     <div class="p-2" style="background-color: #ffcbd1; color: #f94449;">Can't Create Request!</div>
                 `
-                document.getElementById('confirm-donor-a').innerHTML = 'Save'
+                document.getElementById('confirm-donor-a').innerHTML = 'Submit'
             } else {
-                document.getElementById('confirm-donor-a').innerHTML = 'Save'
+                document.getElementById('confirm-donor-a').innerHTML = 'Submit'
                 throw new Error('Network response was not ok');
             }
         }else{
             Swal.fire({
                 icon: "success",
                 title: "Registered Successfully!",
-                text: 'Your information is now listed to the system.',
+                text: 'Click next to complete the registration.',
                 showCancelButton: true,
                 showConfirmButton: false,
-                cancelButtonText: 'OK',
+                cancelButtonText: 'Next',
                 customClass: {
                     popup: "my-swal-popup",
                     title: "my-swal-title",
@@ -50,7 +52,7 @@ async function confirmDonor (data){
                     cancelButton: "my-cancel-btn",
                 },
             }).then(() => {
-                window.location.replace('/register')
+                window.location.replace('/register/account-setup/' + donorData.donor.id)
             });
         }
     } catch (error) {

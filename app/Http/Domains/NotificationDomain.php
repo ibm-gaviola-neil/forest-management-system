@@ -29,4 +29,10 @@ class NotificationDomain {
         'low_stock'          => 'Low Blood Stock Alert',
         'blood_donor_request'=> 'Blood Donor Request',
     ];
+
+    const NOTIFICATION_ACCESS = [
+        'donor'              => ['event'],
+        'general_admin'      => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
+        'staff'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
+    ];
 }

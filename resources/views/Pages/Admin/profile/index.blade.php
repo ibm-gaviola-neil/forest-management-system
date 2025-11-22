@@ -15,6 +15,33 @@
         </div>
     </div>
 
+    @if (auth()->user()->role == 'donor')
+        <div class="row clearfix">
+            <div class="col-md-12">
+                <div class="card social">
+                    <div class="profile-header d-flex justify-content-between justify-content-center">
+                        <div class="d-flex">
+                            <div class="mr-3 mt-2">
+                                <img style="height: 100%" src="{{ Auth::user()->profile_image ? asset('storage/'.Auth::user()->profile_image) : asset('/assets/images/user.jpg') }}" class="user-photo" alt="User Profile Picture">
+                            </div>
+                            <div class="details">
+                                <h5 class="mb-0"><a href="/user/profile" class="text-white">{{ Auth::user()->last_name .' '.Auth::user()->first_name }}</a></h5>
+                                <span class="text-light">{{ $donor->province.', '.$donor->city.', '.$donor->barangay }}</span>
+                                <p class="mb-0"><span>Blood Type: <strong class="badge badge-white text-black">{{ $donor->blood_type }}</strong></span> <span>Gender:
+                                        <strong style="text-transform: uppercase">{{ $donor->gender }}</strong></span></span></p>
+                                <p class="mb-0 text-sm" style="font-size: 12px"><span>Added Date: {{ $donor->created_at->format('m-d-Y') }}</p>
+                            </div>
+                        </div>
+                        {{-- <div>
+                            <button class="btn btn-primary btn-sm">Follow</button>
+                            <button class="btn btn-success btn-sm">Message</button>
+                        </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="row clearfix">
         <div class="col-lg-12">
             <div class="card">
@@ -162,7 +189,13 @@
 
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary">Save</button>
-                                    <a href="/users" type="button" class="btn btn-secondary"
+                                    <a href="
+                                        @if(auth()->user()->role !== 'donor')
+                                        /users
+                                        @else
+                                        /donor-page
+                                        @endif
+                                    " type="button" class="btn btn-secondary"
                                         data-dismiss="modal">Cancel</a>
                                 </div>
                             </div>

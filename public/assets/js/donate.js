@@ -122,7 +122,6 @@ document
             icon: "warning",
             title: "Confirm Donation?",
             showCancelButton: true,
-            showConfirmButton: true,
             confirmButtonText: "Confirm",
             customClass: {
                 popup: "my-swal-popup",
@@ -130,77 +129,88 @@ document
                 confirmButton: "my-confirm-btn",
                 cancelButton: "my-cancel-btn",
             },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
         }).then(async (result) => {
             if(result.isConfirmed){
                 const button = document.getElementById("confirm-donate-btn");
                 button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving';
-    
-                const response = await fetch(`/donors/${donor_id.value}/confirm-donate/`, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": document
-                            .querySelector('meta[name="csrf-token"]')
-                            .getAttribute("content"),
-                        Accept: "application/json",
-                    },
-                    body: formData,
-                });
-    
-                if (!response.ok) {
-                    if (response.status === 422) {
-                        // Handle validation errors
-                        const errorData = await response.json().catch(() => {
-                            throw new Error("Invalid JSON response");
-                        });
-    
-                        const errors = errorData.errors;
-    
-                        for (const [key, messages] of Object.entries(errors)) {
-                            const errorSpan = document.getElementById(
-                                `${key}_Error`
-                            );
-                            if (errorSpan) {
-                                errorSpan.innerHTML = `
-                                                     <p class="text-sm text-danger text-italized"
-                                                            style="text-align: left !important; font-size: 11px;">
-                                                            ${messages.join(
-                                                                " "
-                                                            )}</p>
-                                                `;
-                            }
-
-                            console.log("key: " + key);
-                            console.log("message: " + messages);
-                        }
-    
-                        button.innerHTML = "Save";
-    
-                        document.getElementById("error-message").innerHTML = `
-                        <div class="p-2" style="background-color: #ffcbd1; color: #f94449;">Can't Create Request!</div>
-                    `;
-                        button.innerHTML = "Save";
-                    } else {
-                        document.getElementById("confirm-donate-btn").innerHTML =
-                            "Save";
-                        throw new Error("Network response was not ok");
-                    }
-                } else {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Donor Registered Successfuly",
-                        showCancelButton: true,
-                        showConfirmButton: false,
-                        cancelButtonText: "OK",
-                        customClass: {
-                            popup: "my-swal-popup",
-                            title: "my-swal-title",
-                            confirmButton: "my-confirm-btn",
-                            cancelButton: "my-cancel-btn",
+                button.disabled = true;
+        
+                try {
+                    const response = await fetch(`/donors/${donor_id.value}/confirm-donate/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": document
+                                .querySelector('meta[name="csrf-token"]')
+                                .getAttribute("content"),
+                            Accept: "application/json",
                         },
-                    }).then(() => {
-                        button.innerHTML =
-                            "Save";
-                        window.location.replace(`/donors/${donor_id.value}/view`);
+                        body: formData,
+                    });
+        
+                    if (!response.ok) {
+                        button.disabled = false;
+                        button.innerHTML = "Save";
+        
+                        if (response.status === 422) {
+                            // Handle validation errors
+                            const errorData = await response.json().catch(() => {
+                                throw new Error("Invalid JSON response");
+                            });
+        
+                            const errors = errorData.errors;
+                            for (const [key, messages] of Object.entries(errors)) {
+                                const errorSpan = document.getElementById(
+                                    `${key}_Error`
+                                );
+                                if (errorSpan) {
+                                    errorSpan.innerHTML = `
+                                         <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                ${messages.join(
+                                                    " "
+                                                )}</p>
+                                        `;
+                                }
+                            }
+        
+                            document.getElementById("error-message").innerHTML = `
+                                <div class="p-2" style="background-color: #ffcbd1; color: #f94449;">Can't Create Request!</div>
+                            `;
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Network or Server Error",
+                                text: "Please try again or contact support.",
+                                confirmButtonText: "OK",
+                            });
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Donor Registered Successfully",
+                            confirmButtonText: "OK",
+                            customClass: {
+                                popup: "my-swal-popup",
+                                title: "my-swal-title",
+                                confirmButton: "my-confirm-btn",
+                                cancelButton: "my-cancel-btn",
+                            },
+                        }).then(() => {
+                            button.innerHTML = "Save";
+                            button.disabled = false;
+                            window.location.replace(`/donors/${donor_id.value}/view`);
+                        });
+                    }
+                } catch (error) {
+                    button.disabled = false;
+                    button.innerHTML = "Save";
+                    Swal.fire({
+                        icon: "error",
+                        title: "Unexpected Error",
+                        text: error.message,
+                        confirmButtonText: "OK",
                     });
                 }
             }

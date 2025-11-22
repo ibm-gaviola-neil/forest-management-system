@@ -316,6 +316,14 @@
                                     </div>
                                 </div>
 
+                                @if ($donor->valid_id_image !== null)
+                                    <div class="col-lg-12" style="display: flex; align-items: center; justify-content: center;">
+                                        <img src="{{asset('storage/'.$donor->valid_id_image)}}" alt="">
+                                    </div>
+                                @else
+                                    <div class="p-2 col-lg-12 mb-3" style="background-color: #ffcbd1; color: #f94449;">No Valid ID Uploaded.</div>
+                                @endif
+
                                 <input type="hidden" id="donor_id" value="{{ $donor->id }}">
 
 

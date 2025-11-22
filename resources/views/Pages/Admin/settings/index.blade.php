@@ -25,21 +25,6 @@
                                     <div class="card">
                                         <div class="body">
                                             <input type="file"
-                                                data-default-file="{{ $settings?->logo ? asset('storage/' . $settings->logo) : '' }}"
-                                                name="logo" class="dropify" accept="image/*" data-show-remove="false">
-                                            @error('logo')
-                                                <p class="text-sm text-danger text-italized"
-                                                    style="text-align: left !important; font-size: 11px;">
-                                                    {{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="" class="form-label">Change Navbar Logo</label>
-                                    <div class="card">
-                                        <div class="body">
-                                            <input type="file"
                                                 data-default-file="{{ $settings?->navbar_logo ? asset('storage/' . $settings->navbar_logo) : '' }}"
                                                 name="navbar_logo" class="dropify" accept="image/*"
                                                 data-show-remove="false">
@@ -137,6 +122,56 @@
                                                     @enderror
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 mb-2">
+                                    <h6>Enter System Email Address <span class="text-danger" style="font-size: 12px;">(Instruction before adding the email address.)</span> <span style="color: rgb(37, 165, 215); cursor: pointer">?</span></h6>
+                                </div>
+                                <div class="card col-lg-12 col-md-12 col-sm-12">
+                                    <div class="body">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label>Enter Email</label>
+                                                        <div class="input-group">
+                                                            <input name="email_address" type="email"
+                                                                value="{{ old('email_address', isset($settings) ? $settings->email_address : '') }}"
+                                                                class="form-control @error('email_address') parsley-error @enderror">
+                                                        </div>
+                                                    </div>
+                                                    <span id="birth_date_Error" class="error"></span>
+                                                    @error('email_address')
+                                                        <p class="text-sm text-danger text-italized"
+                                                            style="text-align: left !important; font-size: 11px;">
+                                                            {{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label>Enter Password</label>
+                                                        <div class="input-group">
+                                                            <input name="email_password" type="text"
+                                                                value="{{ old('display_start_date', isset($settings) ? $settings->email_password : '') }}"
+                                                                class="form-control @error('email_password') parsley-error @enderror">
+                                                        </div>
+                                                    </div>
+                                                    <span id="birth_date_Error" class="error"></span>
+                                                    @error('email_password')
+                                                        <p class="text-sm text-danger text-italized"
+                                                            style="text-align: left !important; font-size: 11px;">
+                                                            {{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                            <div></div>
+                                            <a href="javascript:void(0)">View Added Email History</a>
                                         </div>
                                     </div>
                                 </div>

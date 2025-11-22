@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Domains\TraitAdmin;
 use App\Http\Services\DepartmentService;
 use App\Models\BloodIssuance;
 use App\Models\Department;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 
 class DepartmentConroller extends Controller
 {
+    use TraitAdmin;
     protected $department_service;
 
     public function __construct(DepartmentService $department_service){

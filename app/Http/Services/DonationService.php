@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Interfaces\DonationRepositoryInterface;
 use App\Http\Repositories\DonationRepository;
 use App\Models\DonationHistory;
+use App\Models\User;
 use Carbon\Carbon;
 
 class DonationService {
@@ -51,5 +52,31 @@ class DonationService {
         ->limit((int)$payload['qnty'])->get();
 
         return $saved_data;
+    }
+
+    public function donorNotifMessage(array $payload)
+    {
+        $staff = User::where('id', $payload['staff_id'])->first();
+        $message = "Dear Blood Donor,\n\n";
+        $message .= "We sincerely appreciate your generous gift of blood. Your donation plays a vital role in saving lives and supporting patients in need. Below are the details of your recent donation:\n\n";
+        $message .= "Number of Blood Bags: " . $payload['qnty'] . "\n\n";
+        foreach ($payload['blood_bag_id'] as $idx => $bag) {
+            $message .= "Blood Bag " . ($idx + 1) . ":\n";
+            $message .= "  - Serial Number: " . $payload['blood_bag_id'][$idx] . "\n";
+        }
+        $message .= "Date Processed: " . $payload['date_process'] . "\n";
+        if ($payload['expiration_setting_type'] === 'date') {
+            $message .= "Expiration Date: " . $payload['expiration_date'] . "\n";
+        } else {
+            $message .= "Expiration (Days): " . $payload['expiration_days'] . " days\n";
+        }
+        $message .= "Location: " . $payload['barangay'] . ", " . $payload['city'] . ", " . $payload['province'] . "\n";
+        $message .= "Processed by: " . ucwords($staff->first_name . " " . $staff->last_name) . "\n";
+        $message .= "Donation Type: " . $payload['donation_type'] . "\n\n";
+        $message .= "We appreciate your life-saving contribution!\n";
+        $message .= "Best regards,\n";
+        $message .= "Blood Bank Team";
+
+        return $message;
     }
 }

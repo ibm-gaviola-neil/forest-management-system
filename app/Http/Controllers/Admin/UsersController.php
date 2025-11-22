@@ -18,6 +18,7 @@ class UsersController extends Controller
     public function index() {
         $users = User::where('role', '!=' ,'general_admin')
             ->where('id', '!=' ,auth()->user()->id)
+            ->where('account_status',  1)
             ->orderBy('last_name')->get();
         return view('Pages.Admin.users', compact('users'));
     }
@@ -51,6 +52,7 @@ class UsersController extends Controller
         $payload = $request->validated();
         $payload['password'] = Hash::make($payload['password']);
         $payload['added_by'] = auth()->user()->id;
+        $payload['account_status'] = 1;
         $save = DB::transaction(function() use ($payload){
             $isSave = User::create($payload);
             $this->storeAuditTrails('create', 'user', '/users/edit/'.$isSave->id, 'Newly registered user.');

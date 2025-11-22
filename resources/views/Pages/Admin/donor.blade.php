@@ -6,9 +6,11 @@
             <div class="col-md-6 col-sm-12">
                 <h2>Donor's Profile</h2>
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Donation History</a></li>
-                    </ol>
+                    @if (auth()->user()->role !== 'donor')
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Donation History</a></li>
+                        </ol>
+                    @endif
                 </nav>
             </div>
             @if (auth()->user()->role !== 'donor')

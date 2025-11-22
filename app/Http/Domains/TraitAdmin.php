@@ -3,11 +3,13 @@
 namespace App\Http\Domains;
 
 use App\Events\AuditStored;
+use App\Mail\SystemNotificationEmail;
 use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Province;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Facades\Mail;
 
 trait TraitAdmin {
     public function expirationDays(int $number_of_days){
@@ -71,5 +73,28 @@ trait TraitAdmin {
             'blood_issuance_id' => $blood_issuance_id ?? null
         ];
         event(new AuditStored($data));
+    }
+
+    public function sendEmailNotification(string $to_email, string $subject, string $body)
+    {
+        $systemSettings = \App\Models\SystemSettings::first();
+
+        if (!$systemSettings || !$systemSettings->email_address || !$systemSettings->email_password) {
+            // Handle error
+            return false;
+        }
+
+        // Dynamically configure mail sender
+        config([
+            'mail.mailers.smtp.username' => $systemSettings->email_address,
+            'mail.mailers.smtp.password' => $systemSettings->email_password,
+            'mail.from.address' => $systemSettings->email_address,
+            'mail.from.name' => 'Biliran Blood Registry System',
+        ]);
+
+        // Send the email
+        Mail::to($to_email)->send(new SystemNotificationEmail($subject, $body));
+
+        return true;
     }
 }

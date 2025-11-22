@@ -44,7 +44,7 @@
                     <form class="" style="width: 100% !important; margin-top: 0px !important" action="/store" method="POST" id="add-donor-form">
                         @csrf
                         <center>
-                            <img src="{{ asset('./assets/images/bd-logo.png') }}" alt="">
+                            <img src="{{ isset($systemSettings) ? asset('storage/' . $systemSettings?->navbar_logo) : asset('/assets/images/bd-logo.png') }}" alt="">
                         </center>
                         <div class="mb-3">
                             <p class="lead text-center">Register</p>

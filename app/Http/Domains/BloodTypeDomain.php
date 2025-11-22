@@ -71,5 +71,30 @@ class BloodTypeDomain {
         'Date Added',
     ];
     
-
+    const PHILIPPINE_GOVT_IDS = [
+        "PhilID"             => "Philippine Identification (PhilID) Card / ePhilID",
+        "Passport"           => "Passport",
+        "Drivers_License"    => "Driver's License (LTO)",
+        "PRC_ID"             => "Professional Regulation Commission (PRC) ID",
+        "UMID"               => "Unified Multi-Purpose Identification (UMID) Card",
+        "SSS_ID"             => "Social Security System (SSS) ID",
+        "GSIS_eCard"         => "Government Service Insurance System (GSIS) eCard",
+        "Postal_ID"          => "Postal ID",
+        "Voters_ID"          => "Voter's ID / COMELEC Certification",
+        "TIN_ID"             => "Taxpayer's Identification Number (TIN) ID",
+        "OWWA_ID"            => "Overseas Workers Welfare Administration (OWWA) ID",
+        "PWD_ID"             => "Person with Disability (PWD) ID",
+        "Senior_Citizen_ID"  => "Senior Citizen ID",
+        "IBP_ID"             => "Integrated Bar of the Philippines (IBP) ID",
+        "NBI_Clearance"      => "National Bureau of Investigation (NBI) Clearance",
+        "Police_Clearance"   => "Police Clearance",
+        "PhilHealth_ID"      => "PhilHealth ID (Health Insurance Card ng Bayan)",
+        "PagIBIG_ID"         => "Pag-IBIG ID / Loyalty Card",
+        "Solo_Parent_ID"     => "Solo Parent ID",
+        "Barangay_ID"        => "Barangay ID / Certification",
+        "Company_ID"         => "Company / Office ID",
+        "School_ID"          => "School ID / Student Permit",
+        "Firearms_License"   => "Firearms License (PNP)",
+        "Seamans_Book"       => "Seaman's Book / Seafarer's ID",
+    ];
 }

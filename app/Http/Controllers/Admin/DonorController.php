@@ -120,6 +120,9 @@ class DonorController extends Controller
         $payload['is_approved'] = 1;
 
         $save = Donor::create($payload);
+        if ($save) {
+            // $this->sendEmailNotification()
+        }
 
         if(!$save){
             return response()->json([
@@ -221,6 +224,7 @@ class DonorController extends Controller
         });
 
         if($save){
+            $this->sendEmailNotification($donor->email, 'Thank You for Your Blood Donation', $this->donation_service->donorNotifMessage($payload));
             return response()->json([
                 'status' => 200,
                 'message' => 'Success'
@@ -259,6 +263,11 @@ class DonorController extends Controller
 
         if($save){
             // $this->storeAuditTrails('delete', 'donor', null, $donor_name.' was deleted');
+            $user = User::where('donor_id', $donor->id)->first();
+            $user->account_status = 1;
+            $user->save();
+
+            $this->sendEmailNotification($donor->email, 'Account Confirmation', $this->emailAccountMessage($donor));
             return response()->json([
                 'status' => 200,
                 'message' => 'Success'
@@ -269,5 +278,34 @@ class DonorController extends Controller
                 'message' => 'Server Error!'
             ]);
         }
+    }
+
+    private function emailAccountMessage($donor)
+    {
+        $user = User::where('donor_id', $donor->id)->first();
+
+        $message = "Dear " . ucwords($donor->first_name . " " . $donor->last_name) . ",\n\n";
+        $message .= "Congratulations! Your account registration as a blood donor has been approved by our administrator. You can now access our blood donation portal and participate in life-saving activities.\n\n";
+        $message .= "Your Account Information:\n";
+        $message .= "  - Username: " . $user->username . "\n";
+        $message .= "  - Password: " . $donor->temp_p . "\n";
+        $message .= "  - Email: " . $donor->email . "\n\n";
+        $message .= "Your Donor Profile:\n";
+        $message .= "  - Full Name: " . ucwords($donor->first_name . " " . $donor->middle_name . " " . $donor->last_name . (isset($donor->suffix) && $donor->suffix ? " " . $donor->suffix : "")) . "\n";
+        $message .= "  - Contact Number: " . $donor->contact_number . "\n";
+        $message .= "  - Birth Date: " . $donor->birth_date . "\n";
+        $message .= "  - Gender: " . ucfirst($donor->gender) . "\n";
+        $message .= "  - Civil Status: " . ucfirst($donor->civil_status) . "\n";
+        $message .= "  - Address: " . $donor->barangay . ", " . $donor->city . ", " . $donor->province . "\n";
+        $message .= "  - Blood Type: " . strtoupper($donor->blood_type) . "\n";
+        $message .= "  - Valid ID Type: " . $donor->id_type . "\n";
+        $message .= "  - Status: " . ucfirst($donor->status) . "\n";
+        $message .= "  - Account Approved: " . ($donor->is_approved ? 'Approved' : 'No') . "\n\n";
+        $message .= "Please keep your account information secure and do not share your password with anyone.\n";
+        $message .= "Thank you for joining our mission to save lives through blood donation.\n\n";
+        $message .= "Best regards,\n";
+        $message .= "Blood Bank Team";
+
+        return $message;
     }
 }

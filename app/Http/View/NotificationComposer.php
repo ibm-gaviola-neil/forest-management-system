@@ -10,12 +10,29 @@ class NotificationComposer
 {
     public function compose(View $view)
     {
-        $nofications = Notification::where('is_read', false)->orderBy('created_at', 'DESC')->get();
+        $nofications = $this->geNotification();
+        $view->with('nofications', $nofications);
+    }
+
+    protected function geNotification()
+    {
+        $userRole = null;
+
+        if (auth()->user() === null) {
+            return collect();
+        }
+
+        $userRole = auth()->user()->role;
+
+        $nofications = Notification::where('is_read', false)
+            ->whereIn('type', NotificationDomain::NOTIFICATION_ACCESS[$userRole])
+            ->orderBy('created_at', 'DESC')->get();
 
         foreach ($nofications as $notification) {
             $notification->icon = NotificationDomain::TYPES_ICONS[$notification->type] ?? '';
             $notification->title = NotificationDomain::TYPES_TITLES[$notification->type] ?? '';
         }
-        $view->with('nofications', $nofications);
+
+        return $nofications;
     }
 }

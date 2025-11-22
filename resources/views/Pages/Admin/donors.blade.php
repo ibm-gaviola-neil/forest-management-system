@@ -66,11 +66,10 @@
                             <div class="row clearfix">
                                 <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                     <div class="form-group">
-                                        <label for="" class="form-label">First Name <span
-                                                class="text-danger">*</span></label>
+                                        <label for="" class="form-label">First Name </label>
                                         <input type="text" name="first_name" value="{{ $request->first_name }}"
                                             class="form-control @error('first_name') parsley-error @enderror"
-                                            placeholder="First Name *">
+                                            placeholder="First Name ">
                                         <span id="first_name_Error" class="error"></span>
                                         @error('first_name')
                                             <p class="text-sm text-danger text-italized"
@@ -81,8 +80,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                     <div class="form-group">
-                                        <label for="" class="form-label">Last Name <span
-                                                class="text-danger">*</span></label>
+                                        <label for="" class="form-label">Last Name </label>
                                         <input type="text" name="last_name" value="{{ $request->last_name }}"
                                             class="form-control @error('last_name') parsley-error @enderror"
                                             placeholder="Last Name">
@@ -97,8 +95,7 @@
 
                                 <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
                                     <div class="form-group">
-                                        <label for="" class="form-label">Province <span
-                                                class="text-danger">*</span></label>
+                                        <label for="" class="form-label">Province </label>
                                         <select name="province"
                                             style="height: 100px !important; box-shadow: none !important;"
                                             id="province-select-a" 
@@ -124,8 +121,7 @@
 
                                 <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
                                     <div class="form-group">
-                                        <label for="" class="form-label">City / Municipality <span
-                                                class="text-danger">*</span></label>
+                                        <label for="" class="form-label">City / Municipality </label>
                                         <select name="city"
                                             onchange="getBarangay()"
                                             style="height: 100px !important; box-shadow: none !important;"
@@ -153,8 +149,7 @@
 
                                 <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
                                     <div class="form-group">
-                                        <label for="" class="form-label">Barangay <span
-                                                class="text-danger">*</span></label>
+                                        <label for="" class="form-label">Barangay </label>
                                         <select name="barangay"
                                             style="height: 100px !important; box-shadow: none !important;"
                                             id="barangay_select"
@@ -181,8 +176,7 @@
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
                                     <div class="form-group">
-                                        <label for="" class="form-label">Blood Type <span
-                                                class="text-danger">*</span></label>
+                                        <label for="" class="form-label">Blood Type </label>
                                         <select name="blood_type"
                                             style="height: 100px !important; box-shadow: none !important;"
                                             class="form-control select-two show-tick @error('role') parsley-error @enderror">

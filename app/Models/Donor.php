@@ -27,5 +27,8 @@ class Donor extends Model
         'with_account',
         'status',
         'is_approved',
+        'valid_id_image',
+        'id_type',
+        'temp_p'
     ];
 }

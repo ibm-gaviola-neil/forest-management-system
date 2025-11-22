@@ -49,7 +49,7 @@
         margin-top: 5px;
         font-weight: 400;
         letter-spacing: 2px;
-        color: #0042da;
+        font-size: 19px;
     }
 </style>
 </head>

@@ -117,6 +117,8 @@ Route::controller(\App\Http\Controllers\Client\AuthController::class)->group(fun
     Route::post('/login', 'login');
     Route::get('/', 'index')->name('login');
     Route::get('/register', 'create')->name('register');
+    Route::get('/register/account-setup/{donor}', 'setup')->name('setup');
+    Route::post('/register/account-setup/{donor}', 'setupStore')->name('setup-store');
     Route::post('/store', 'store')->name('user.store');
     Route::post('/store/confirm', 'confirm')->name('user.confirm');
 });

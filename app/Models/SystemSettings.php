@@ -14,6 +14,8 @@ class SystemSettings extends Model
         "display_start_date",
         "display_end_date",
         "logo",
-        "navbar_logo"
+        "navbar_logo",
+        "email_address",
+        "email_password"
     ];
 }
