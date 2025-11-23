@@ -67,7 +67,7 @@ class InventoryRepository {
     }
     
 
-    public function getInventoryCount($request, $blood_type_name, $address){
+    public function getInventoryCount($request, $blood_type_name, $address, $withCount = null){
         $query = DonationInventory::query();
 
         $query->when(isset($address['city']), function ($q) use ($address) {
@@ -86,10 +86,13 @@ class InventoryRepository {
             $query->whereBetween('donation_histories.created_at', [$request->start_date, $request->end_date]);
         }
 
+        if($withCount){
+            $query->where('donation_histories.count', 1);
+        }
+
         return $query->join('donation_histories', 'donation_inventories.donation_id', '=', 'donation_histories.id')
         ->join('donors', 'donation_histories.donor_id', '=', 'donors.id')
         ->where('donors.blood_type', $blood_type_name)
-        ->where('donation_histories.count', 1)
         ->groupBy('donors.blood_type')       
         ->count();
     }

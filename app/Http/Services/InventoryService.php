@@ -63,7 +63,7 @@ class InventoryService {
         $blood_types = BloodTypeDomain::BLOOD_TYPES;
         $types = [];
         foreach ($blood_types as $key => $value) {
-            $types[$key] = $this->inventory_repository->getInventoryCount($request, $value, $address);
+            $types[$key] = $this->inventory_repository->getInventoryCount($request, $value, $address, 1);
         }
         return $types;
     }

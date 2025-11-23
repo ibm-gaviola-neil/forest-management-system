@@ -7,8 +7,10 @@ use App\Http\Domains\TraitAdmin;
 use App\Http\Services\DepartmentService;
 use App\Models\BloodIssuance;
 use App\Models\Department;
+use App\Models\DepartmentHead;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DepartmentConroller extends Controller
 {
@@ -29,7 +31,14 @@ class DepartmentConroller extends Controller
         $payload['user_id'] = auth()->user()->id;
 
         try {
-            Department::create($payload);
+            DB::transaction(function () use ($payload) {
+                $department = Department::create($payload);
+                DepartmentHead::create([
+                    'department_id' => $department->id,
+                    'department_head' => $payload['department_head'],
+                    'status' => 1,
+                ]);
+            });
             return redirect()->back()->with('success', 'Department created successfully.');
         } catch (\Throwable $th) {
             return redirect()->back()->withErrors(['error' => $th->getMessage()]);
@@ -62,7 +71,10 @@ class DepartmentConroller extends Controller
     }
 
     public function show(Department $department){
-        return response()->json($department);
+        return response()->json([
+            'department' => $department,
+            'department_head' => DepartmentHead::where('department_id', $department->id)->orderBy('status', 'Desc')->get()
+        ]);
     }
 
     public function update(Department $department, Request $request){
@@ -72,6 +84,7 @@ class DepartmentConroller extends Controller
             'email' => 'required|email',
             'contact_number' => ['required','regex:/^(09|\+639)\d{9}$/', 'min:11'],
         ]);
+        $preDepartment = clone $department;
 
         $save = $department->update($payload);
 
@@ -82,9 +95,43 @@ class DepartmentConroller extends Controller
             ]);
         }
         
+        $this->storeDepartmentHead($payload, $preDepartment);
         return response()->json([
             'status' => 200,
             'message' => 'Department edited successfuly'
         ]);
+    }
+
+    private function storeDepartmentHead($payload, Department $department): bool
+    {
+        if (
+            isset($payload['department_head']) &&
+            $department &&
+            $payload['department_head'] !== $department->department_head
+        ) {
+            DB::transaction(function () use ($department, $payload) {
+                DepartmentHead::where('department_head', $department->department_head)
+                    ->update(['status' => 0]);
+
+                $presentDepHead = DepartmentHead::where('department_head', $payload['department_head'])->first();
+
+                if ($presentDepHead) {
+                    $presentDepHead->status = 1;
+                    $presentDepHead->save();
+                    return;
+                }
+    
+                $toStore = [
+                    'department_id'      => $department->id,
+                    'department_head'     => $payload['department_head'],
+                    'status' => 1,
+                ];
+    
+                DepartmentHead::create($toStore);
+            });
+            return true;
+        }
+        // No change, no history entry
+        return false;
     }
 }

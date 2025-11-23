@@ -43,7 +43,7 @@
             <div class="card">            
                 <div class="body">
                     <input type="hidden" value="{{$donor->id}}" id="donor-id">
-                    <form class="" style="width: 100% !important; margin-top: 0px !important" id="account-form">
+                    <form class="" style="width: 100% !important; margin-top: 0px !important" id="account-form" enctype="multipart/form-data">
                         @csrf
                         <center>
                             <img src="{{ asset('./assets/images/bd-logo.png') }}" alt="">

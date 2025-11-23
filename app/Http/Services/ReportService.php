@@ -68,8 +68,8 @@ class ReportService{
         $total = $numbeOfBloodDonated + $numberOfBloodIssued;
 
         // Prevent division by zero
-        $donatedPercent = $total > 0 ? round(($numbeOfBloodDonated / $total) * 100, 2) : 0;
-        $issuedPercent  = $total > 0 ? round(($numberOfBloodIssued / $total) * 100, 2) : 0;
+        $donatedPercent = $total > 0 ? round(($numbeOfBloodDonated / 100) * 100, 2) : 0;
+        $issuedPercent  = $total > 0 ? round(($numberOfBloodIssued / 100) * 100, 2) : 0;
 
         return [
             'numbeOfBloodDonated' => $donatedPercent . '%',

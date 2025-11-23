@@ -26,6 +26,7 @@ class EventsRequest extends FormRequest
             'content' => 'required',
             'display_start_date' => ['required', 'date'],
             'display_end_date' => ['required', 'date', 'after_or_equal:display_start_date'],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ];
     }
 

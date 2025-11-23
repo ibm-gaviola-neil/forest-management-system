@@ -17,6 +17,11 @@
                         <div class="timeline-content">
                             <h3 class="timeline-title" style="text-transform: capitalize">{{ $event->title }}</h3>
                             <p>{{ $event->content }}</p>
+                            @if($event->image !== null)
+                                <img id="side-logo" style="height: 100px; width: 100px;"
+                                src="{{ asset('storage/' . $event?->image)}}"
+                                alt="Biliran Province Logo" class="img-fluid logo event-image">
+                            @endif
                         </div>
                     </li>
                 @empty

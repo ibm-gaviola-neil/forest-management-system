@@ -13,7 +13,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="tab-content mt-0">
-                    <form method="POST" action="/events/store">
+                    <form method="POST" action="/events/store" enctype="multipart/form-data">
                         @csrf
                         <div class="body mt-2">
                             <div class="row clearfix mb-2">
@@ -64,7 +64,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 mb-2" id="expiration_type">
+                                <div class="col-lg-6 col-md-6 col-sm-12 mb-4" id="expiration_type">
                                     <div class="">
                                         <label for="" class="form-label">Display End Date <span
                                                 class="text-danger">*</span></label>
@@ -80,6 +80,26 @@
                                                 {{ $message }}</p>
                                         @enderror
                                     </div>
+                                </div>
+
+                                <div class="col-md-12 mb-4">
+                                    <label for="" class="form-label">Upload Images</label>
+                                    <div class="">
+                                        <div class="">
+                                            <input type="file" 
+                                                name="image" 
+                                                class="dropify" 
+                                                accept="image/*"
+                                            >
+                                            <input type="hidden" name="remove_profile_image" id="remove_profile_image" value="0">
+                                            <span id="valid_id_image_Error" class="error"></span>
+                                        </div>
+                                    </div>
+                                    @error('image')
+                                        <p class="text-sm text-danger text-italized"
+                                            style="text-align: left !important; font-size: 11px;">
+                                            {{ $message }}</p>
+                                    @enderror
                                 </div>
                               
 

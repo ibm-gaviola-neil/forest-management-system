@@ -17,6 +17,7 @@ class Event extends Model
         'display_start_date',
         'display_end_date',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'image'
     ];
 }

@@ -31,6 +31,13 @@ class EventController extends Controller
         $payload['user_id'] = auth()->user()->id;
         $payload['display_start_date'] = $this->formatDate($payload['display_start_date']);
         $payload['display_end_date'] = $this->formatDate($payload['display_end_date']);
+
+        if($request->has('image')){
+            $payload['image'] = $request->file('image')->store('images', 'public');
+        } else {
+            $payload['image'] = null;
+        }
+
         try {
             $events = Event::create($payload);
             $this->notificationService->saveNotification([

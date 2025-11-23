@@ -46,6 +46,14 @@
                             <span id="contact_number_Error" class="error"></span>
                         </div>
                     </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                        <div class="form-group">
+                            <label for="" class="form-label">Department Heads</label>
+                            <select id="department_head_select" name="department_head_select" class="form-control select-two show-tick">
+                                <option selected>Select Department</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
             </div>

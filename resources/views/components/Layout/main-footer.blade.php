@@ -1,5 +1,4 @@
 <!-- Javascript -->
-@stack('scripts')
 <script src="{{ asset('/assets/vendor/summernote/dist/summernote.js') }}"></script>
 <script src="{{ asset('/html/assets/bundles/libscripts.bundle.js') }}"></script>
 <script src="{{ asset('/html/assets/bundles/vendorscripts.bundle.js') }}"></script>
@@ -34,6 +33,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@stack('scripts')
 
 <script>
     async function fetchBloodBagInfo(val, param){
@@ -160,6 +160,21 @@
         issueToForm();
     }) 
     issueToForm();
+</script>
+
+<script>
+    const eventImages = document.querySelectorAll('.event-image');
+
+    eventImages.forEach(image => {
+        image.addEventListener('click', () => {
+            Swal.fire({
+                imageUrl: image.src,
+                imageAlt: 'Event Image',
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        });
+    });
 </script>
 </body>
 

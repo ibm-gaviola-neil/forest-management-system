@@ -1,6 +1,18 @@
 const deleteBtn = document.querySelectorAll('.delete-department')
 const editBtn = document.querySelectorAll('.edit-btn')
 
+// departments.js
+$(document).ready(function() {
+  $('.select-two').select2();
+
+  $('#department_head_select').on('change', () => {
+    const departmentHeadInput = document.getElementById('edit-department_head');
+    const selectedDepartmentHead = $('#department_head_select').val();
+    // alert(selectedDepartmentHead);
+    departmentHeadInput.value = selectedDepartmentHead;
+  })
+});
+
 const getDepartment = async (id) => {
     const departmentName = document.getElementById('edit-department_name')
     const departmentHead = document.getElementById('edit-department_head')
@@ -10,11 +22,25 @@ const getDepartment = async (id) => {
     try {
         const response = await fetch(`/departments/${id}`)
         const data = await response.json()
-        departmentName.value = data.department_name
-        departmentHead.value = data.department_head
-        email.value = data.email
-        number.value = data.contact_number
-        departmentId.value = data.id
+        departmentName.value = data.department.department_name
+        departmentHead.value = data.department.department_head
+        email.value = data.department.email
+        number.value = data.department.contact_number
+        departmentId.value = data.department.id
+
+        const select = document.getElementById('department_head_select');
+        select.innerHTML = ''; // Clear existing options
+
+        data.department_head.forEach((head, index) => {
+            const option = document.createElement('option');
+            option.value = head.department_head;
+            option.textContent = head.department_head;
+            if(index === 0) {
+                option.selected = true; // Select the first option
+            }
+            select.appendChild(option);
+        });
+
         const myModal = new bootstrap.Modal(document.getElementById('edit-department'));
         myModal.show();
     } catch (error) {
