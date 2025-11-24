@@ -224,6 +224,15 @@ class DonorController extends Controller
         $payload['city'] = $city_name->citymunDesc;
         $payload['expiration_date'] = $this->setExpirationDate($payload);
         // dd($payload);
+        $sent = $this->sendEmailNotification($donor->email, 'Thank You for Your Blood Donation', $this->donation_service->donorNotifMessage($payload));
+
+        if(!$sent){
+            return response()->json([
+                'status' => 500,
+                'message' => 'Unable to send email notification!'
+            ], 500);
+        }
+
         DB::transaction(function () use ($donor, $payload, &$save){
             // dd($payload);
             $donation = $this->donation_service->storeDonation($payload);
@@ -232,7 +241,6 @@ class DonorController extends Controller
         });
 
         if($save){
-            $this->sendEmailNotification($donor->email, 'Thank You for Your Blood Donation', $this->donation_service->donorNotifMessage($payload));
             return response()->json([
                 'status' => 200,
                 'message' => 'Success'

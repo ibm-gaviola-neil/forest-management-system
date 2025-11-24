@@ -86,10 +86,14 @@ trait TraitAdmin {
 
         // Dynamically configure mail sender
         config([
-            'mail.mailers.smtp.username' => $systemSettings->email_address,
-            'mail.mailers.smtp.password' => $systemSettings->email_password,
-            'mail.from.address' => $systemSettings->email_address,
-            'mail.from.name' => 'Biliran Blood Registry System',
+            'mail.mailers.smtp.transport' => 'smtp', // MAIL_MAILER
+            'mail.mailers.smtp.host' => 'smtp.gmail.com', // MAIL_HOST
+            'mail.mailers.smtp.port' => 587, // MAIL_PORT
+            'mail.mailers.smtp.username' => $systemSettings->email_address, // MAIL_USERNAME
+            'mail.mailers.smtp.password' => $systemSettings->email_password, // MAIL_PASSWORD
+            'mail.mailers.smtp.encryption' => 'tls', // MAIL_ENCRYPTION
+            'mail.from.address' => $systemSettings->email_address, // MAIL_FROM_ADDRESS
+            'mail.from.name' => 'Biliran Blood Registry System', // MAIL_FROM_NAME
         ]);
 
         // Send the email
