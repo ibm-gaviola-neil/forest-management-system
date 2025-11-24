@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Events\AuditStored;
 use App\Http\Controllers\Controller;
 use App\Http\Domains\TraitAdmin;
+use App\Models\City;
 use App\Models\Department;
 use App\Models\Donor;
+use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +118,9 @@ class UsersController extends Controller
             "last_name" => "required",
             "email" => "required|email|unique:users,email,".$targetUser->id,
             "username" => "required|min:6|unique:users,username,".$targetUser->id,
+            "province" => 'required',
+            "city" => 'required',
+            "barangay" => 'required',
         ]);
 
         if(isset($request['remove_profile_image']) && $request->input('remove_profile_image') == 1){
@@ -148,6 +153,23 @@ class UsersController extends Controller
             
             $payload['password'] = Hash::make($request->password); 
         }
+
+        $donor = Donor::where('id', $targetUser->donor_id)->first();
+
+        if ($donor) {
+            $province_name = Province::where('provCode', $request->province)->first();
+            $city_name = City::where('citymunCode', $request->city)->first();
+            $payload['province'] = $province_name->provDesc;
+            $payload['city'] = $city_name->citymunDesc;
+            $donor = $donor->update([
+                'first_name' => $payload['first_name'],
+                'last_name' => $payload['last_name'],
+                'province' => $payload['province'],
+                'city' => $payload['city'],
+                'barangay' => $payload['barangay'],
+            ]);
+        }
+
         $save = $targetUser->update($payload);
 
         if(!$save){

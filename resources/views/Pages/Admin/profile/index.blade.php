@@ -159,6 +159,78 @@
                                     </div>
                                 @endif
 
+                                @if(Auth::user()->role === 'donor')
+                                <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">Province <span
+                                                class="text-danger">*</span></label>
+                                        <select name="province"
+                                            style="height: 100px !important; box-shadow: none !important;"
+                                            id="province-select-a" onchange="getCity()"
+                                            class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                            <option value="{{ $province->provCode }}" selected>{{ $donor->province }}</option>
+                                            @foreach ($provinces as $value)
+                                                <option value="{{ $value->provCode }}">{{ $value->provDesc }}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('province')
+                                            <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                {{ $message }}</p>
+                                        @enderror
+                                        <span id="province_Error" class="error"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">City / Municipality <span
+                                                class="text-danger">*</span></label>
+                                        <select name="city" onchange="getBarangay()"
+                                            style="height: 100px !important; box-shadow: none !important;"
+                                            id="city_select"
+                                            class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                            <option value="{{ $city_default->citymunCode }}" selected hidden>
+                                                {{ $city_default->citymunDesc }}</option>
+                                            @foreach ($cities as $city)
+                                                <option value="{{ $city->citymunCode }}">{{ $city->citymunDesc }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('city')
+                                            <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                {{ $message }}</p>
+                                        @enderror
+                                        <span id="city_Error" class="error"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">Barangay <span
+                                                class="text-danger">*</span></label>
+                                        <select name="barangay"
+                                            style="height: 100px !important; box-shadow: none !important;"
+                                            id="barangay_select"
+                                            class="form-control select-two show-tick @error('role') parsley-error @enderror">
+                                            <option value="{{ $barangay_default->brgyDesc }}" selected>
+                                                {{ $barangay_default->brgyDesc }}</option>
+                                            @foreach ($barangays as $barangay)
+                                                <option value="{{ $barangay->brgyDesc }}">{{ $barangay->brgyDesc }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('barangay')
+                                            <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                {{ $message }}</p>
+                                        @enderror
+                                        <span id="barangay_Error" class="error"></span>
+                                    </div>
+                                </div>
+                                @endif
+
 
                                 <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                     <div class="form-group">
@@ -208,7 +280,50 @@
 
 @push('scripts')
     <script>
-        
+        async function getCity(){
+            const select = document.getElementById('province-select-a')
+            const city_select = document.getElementById('city_select')
+            const barangay_select = document.getElementById('barangay_select')
+            
+            barangay_select.innerHTML = `
+                <option value="" selected>Select Barangay</option>
+            `
+
+            const val = select.value
+            let items = '<option value="" selected>Select City</option>'
+
+            const response = await fetch(`/city?province_code=${val}`)
+            const data = await response.json()
+            
+            data.forEach(element => {
+                items += `
+                    <option value="${element.citymunCode}">${element.citymunDesc}</option>
+                `
+            });
+
+            city_select.innerHTML = items;
+            
+        }
+
+        async function getBarangay(){
+            const select = document.getElementById('city_select')
+            const barangay_select = document.getElementById('barangay_select')
+            const val = select.value
+            let items = '<option value="" selected>Select Barangay</option>'
+
+            const response = await fetch(`/barangay?city_code=${val}`)
+            const data = await response.json()
+            console.log(data);
+            
+            data.forEach(element => {
+                items += `
+                    <option value="${element.brgyDesc}">${element.brgyDesc}</option>
+                `
+            });
+
+            barangay_select.innerHTML = items;
+            
+        }
     </script>
 @endpush
 @endsection

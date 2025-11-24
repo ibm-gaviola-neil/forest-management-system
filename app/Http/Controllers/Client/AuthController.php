@@ -9,6 +9,7 @@ use App\Http\Requests\AccountSetupRequest;
 use App\Http\Requests\DonorRequest;
 use App\Http\Services\NotificationService;
 use App\Http\Services\SettingService;
+use App\Models\Barangay;
 use App\Models\City;
 use App\Models\Donor;
 use App\Models\Province;
@@ -179,7 +180,26 @@ class AuthController extends Controller
     public function profile(){
         $user_id = auth()->user()->id;
         $data['user_data'] = User::where('id', $user_id)->first();
-        $data['donor'] = $donor = Donor::where('id', auth()->user()->donor_id)->first();
+        $donor = Donor::where('id', auth()->user()->donor_id)->first();
+        $data['donor'] = $donor;
+
+        if ($donor){
+            $provinces = Province::orderBy('provDesc', 'ASC')->get();
+            $province = Province::where('provDesc', $donor->province)->first();
+    
+            $city_default = City::where('citymunDesc', $donor->city)->first();
+            $cities = City::where('provCode', $province->provCode)->orderBy('citymunDesc', 'ASC')->get();
+            
+            $barangays = Barangay::where('citymunCode', $city_default->citymunCode)->orderBy('brgyDesc', 'ASC')->get();
+            $barangay_default = Barangay::where('brgyDesc', $donor->barangay)->first();
+    
+            $data['provinces'] = $provinces;
+            $data['province'] = $province;
+            $data['cities'] = $cities;
+            $data['barangays'] = $barangays;
+            $data['city_default'] = $city_default;
+            $data['barangay_default'] = $barangay_default;
+        }
         return view('Pages.Admin.profile.index', $data);
     }
 
