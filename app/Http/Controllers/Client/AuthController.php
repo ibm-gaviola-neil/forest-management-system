@@ -155,7 +155,7 @@ class AuthController extends Controller
 
         $auth = $request->only('username', 'password');
 
-        if($checkUser->status !== 'active'){
+        if($checkUser->status !== 'active' || $checkUser->account_status === 0){
             return redirect()->back()->withErrors(['password'=> 'Account not found!']); 
         }
 

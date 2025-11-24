@@ -33,13 +33,13 @@ async function confirmDonor(data) {
                 `;
                 document.getElementById("confirm-donor-a").innerHTML = "Save";
             } else {
-                throw new Error("Network response was not ok");
                 document.getElementById("confirm-donor-a").innerHTML = "Save";
+                throw new Error("Network response was not ok");
             }
         } else {
             Swal.fire({
                 icon: "success",
-                title: "Donor Registered Successfuly",
+                title: "Blood Donation Store Successfuly",
                 showCancelButton: true,
                 showConfirmButton: false,
                 cancelButtonText: "OK",
