@@ -35,9 +35,15 @@ class DonorRepository implements DonorRepositoryInterface{
             $q->where('donors.blood_type', $request->blood_type);
         });
 
+        if($is_approved !== 1){
+            $query->where('donors.is_approved', $is_approved)
+                ->where('donors.valid_id_image', '!=', null);
+        } else {
+            $query->where('donors.is_approved', $is_approved);
+        }
+
         return $query->leftJoin('users', 'donors.user_id', '=', 'users.id')
         ->select('donors.*', 'users.last_name as a_last_name', 'users.first_name as a_first_name')
-        ->where('donors.is_approved', $is_approved)
         ->orderBy('last_name', 'ASC')
         ->get();
     }

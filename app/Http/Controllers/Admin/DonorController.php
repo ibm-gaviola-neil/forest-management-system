@@ -52,6 +52,12 @@ class DonorController extends Controller
         $city_name = City::where('citymunCode', $request->city)->first();
         $payload['province'] = $province_name->provDesc;
         $payload['city'] = $city_name->citymunDesc;
+
+        if($request->hasFile('valid_id_image')){
+            $logoImageFile = $request->file('valid_id_image')->store('images', 'public');
+            $payload['valid_id_image'] = $logoImageFile;
+        }
+
         return response()->json([
             'status' => 200,
             'data' => $payload
@@ -118,6 +124,7 @@ class DonorController extends Controller
         $payload['province'] = $province_name->provDesc;
         $payload['city'] = $city_name->citymunDesc;
         $payload['is_approved'] = 1;
+        $payload['valid_id_image'] = $request->valid_id_image_text;
 
         $save = Donor::create($payload);
         if ($save) {
@@ -135,7 +142,8 @@ class DonorController extends Controller
         $this->storeAuditTrails('create', 'donor', 'donors/'.$save->id.'/view', 'Newly registered donor');
         return response()->json([
             'status' => 200,
-            'data' => $payload
+            'data' => $payload,
+            'request' => $request->all()
         ]);
     }
 

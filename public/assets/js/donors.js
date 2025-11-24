@@ -32,8 +32,8 @@ async function confirmDonor (data){
                 `
                 document.getElementById('confirm-donor-a').innerHTML = 'Save'
             } else {
-                throw new Error('Network response was not ok');
                 document.getElementById('confirm-donor-a').innerHTML = 'Save'
+                throw new Error('Network response was not ok');
             }
         }else{
             Swal.fire({

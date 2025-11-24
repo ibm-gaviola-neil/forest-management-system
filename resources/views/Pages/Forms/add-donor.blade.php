@@ -285,6 +285,64 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12 mb-4">
+                                    <label for="" class="form-label">Upload Valid ID <span
+                                        class="text-danger">*</span></label>
+                                    <div class="">
+                                        <div class="">
+                                            <input type="file" 
+                                                name="valid_id_image" 
+                                                class="dropify" 
+                                                accept="image/*"
+                                            >
+                                            <input type="hidden" name="remove_profile_image" id="remove_profile_image" value="0">
+                                            <span id="valid_id_image_Error" class="error"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="" class="form-label">ID Type <span
+                                                class="text-danger">*</span></label>
+                                        <select name="id_type"
+                                            style="height: 100px !important; box-shadow: none !important;"
+                                            class="form-control select-two show-tick @error('id_type') parsley-error @enderror">
+                                            <option value="">-- Select ID Type --</option>
+                                            <option value="PhilID">Philippine Identification (PhilID) Card / ePhilID</option>
+                                            <option value="Passport">Passport</option>
+                                            <option value="Drivers_License">Driver's License (LTO)</option>
+                                            <option value="PRC_ID">Professional Regulation Commission (PRC) ID</option>
+                                            <option value="UMID">Unified Multi-Purpose Identification (UMID) Card</option>
+                                            <option value="SSS_ID">Social Security System (SSS) ID</option>
+                                            <option value="GSIS_eCard">Government Service Insurance System (GSIS) eCard</option>
+                                            <option value="Postal_ID">Postal ID</option>
+                                            <option value="Voters_ID">Voter's ID / COMELEC Certification</option>
+                                            <option value="TIN_ID">Taxpayer's Identification Number (TIN) ID</option>
+                                            <option value="OWWA_ID">Overseas Workers Welfare Administration (OWWA) ID</option>
+                                            <option value="PWD_ID">Person with Disability (PWD) ID</option>
+                                            <option value="Senior_Citizen_ID">Senior Citizen ID</option>
+                                            <option value="IBP_ID">Integrated Bar of the Philippines (IBP) ID</option>
+                                            <option value="NBI_Clearance">National Bureau of Investigation (NBI) Clearance</option>
+                                            <option value="Police_Clearance">Police Clearance</option>
+                                            <option value="PhilHealth_ID">PhilHealth ID (Health Insurance Card ng Bayan)</option>
+                                            <option value="PagIBIG_ID">Pag-IBIG ID / Loyalty Card</option>
+                                            <option value="Solo_Parent_ID">Solo Parent ID</option>
+                                            <option value="Barangay_ID">Barangay ID / Certification</option>
+                                            <option value="Company_ID">Company / Office ID</option>
+                                            <option value="School_ID">School ID / Student Permit</option>
+                                            <option value="Firearms_License">Firearms License (PNP)</option>
+                                            <option value="Seamans_Book">Seaman's Book / Seafarer's ID</option>
+                                        </select>
+                                        @error('id_type')
+                                            <p class="text-sm text-danger text-italized"
+                                                style="text-align: left !important; font-size: 11px;">
+                                                {{ $message }}</p>
+                                        @enderror
+                                        <span id="id_type_Error" class="error"></span>
+                                    </div>
+                                </div>
+
 
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary" id="submit-btn">Add</button>

@@ -35,6 +35,8 @@ class DonorRequest extends FormRequest
             "city" => 'required',
             "barangay" => 'required',
             "blood_type" => 'required',
+            'valid_id_image' => 'required|image|mimes:png,jpg,jpeg,svg',
+            'id_type' => 'required',
         ];
     }
 }

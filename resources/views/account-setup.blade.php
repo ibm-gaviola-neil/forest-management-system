@@ -69,7 +69,7 @@
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
                                 <div class="form-group">
-                                    <label for="" class="form-label">Blood Type <span
+                                    <label for="" class="form-label">ID Type <span
                                             class="text-danger">*</span></label>
                                     <select name="id_type"
                                         style="height: 100px !important; box-shadow: none !important;"

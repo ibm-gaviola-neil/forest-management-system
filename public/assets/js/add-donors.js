@@ -31,8 +31,8 @@ async function confirmDonor (data){
                 `
                 document.getElementById('confirm-donor-a').innerHTML = 'Save'
             } else {
-                throw new Error('Network response was not ok');
                 document.getElementById('confirm-donor-a').innerHTML = 'Save'
+                throw new Error('Network response was not ok');
             }
         }else{
             Swal.fire({
@@ -116,7 +116,7 @@ document.getElementById('add-donor-form').addEventListener('submit', async funct
                 const myModal = new bootstrap.Modal(document.getElementById('confirm-donor'));
                 myModal.show();
 
-                document.getElementById('td_name').innerHTML = `${data.data.last_name}, ${data.data.first_name}, ${data.data.middle_name ?? ' '}, ${data.data.suffix ?? ' '}` 
+                document.getElementById('td_name').innerHTML = `${data.data.last_name}, ${data.data.first_name} ${data.data.middle_name ? ` ${data.data.middle_name}`: ' '} ${data.data.suffix ? `, ${data.data.suffix}`: ' '}` 
                 document.getElementById('td_email').innerHTML = data.data.email 
                 document.getElementById('td_contact').innerHTML = data.data.contact_number 
                 document.getElementById('td_address').innerHTML = data.data.province + ', ' + data.data.city + ', ' + data.data.barangay 
@@ -124,7 +124,9 @@ document.getElementById('add-donor-form').addEventListener('submit', async funct
                 document.getElementById('td_status').innerHTML = data.data.civil_status 
                 document.getElementById('td_date').innerHTML = data.data.birth_date
                 document.getElementById('td_type').innerHTML = data.data.blood_type
+                document.getElementById('td_id_type').innerHTML = data.data.id_type
 
+                formData.append('valid_id_image_text', data.data.valid_id_image)
                 document.getElementById('confirm-donor-form').addEventListener('submit', (e) => {
                     e.preventDefault()
                     confirmDonor(formData)

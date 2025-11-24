@@ -81,6 +81,10 @@
                         <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">Blood Type: </th>
                         <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_type"></th>
                     </tr>
+                    <tr style="">
+                        <th style="font-weight: 500; border-bottom: 1px solid #D3D3D3;">ID Type: </th>
+                        <th style="font-weight:500; border-bottom: 1px solid #D3D3D3; text-transform: uppercase;" id="td_id_type"></th>
+                    </tr>
                 </table>
 
                 <span id="error-message"></span>
