@@ -172,7 +172,8 @@
                                         </div>
                                         <div class="d-flex align-items-center justify-content-between mb-3">
                                             <div></div>
-                                            <a href="javascript:void(0)">View Added Email History</a>
+                                            <a href="javascript:void(0)" data-toggle="modal" data-target=".emails-modal-lg">View Added Email History</a>
+                                            @include('Pages.Admin.settings.emails-modal')
                                         </div>
                                     </div>
                                 </div>

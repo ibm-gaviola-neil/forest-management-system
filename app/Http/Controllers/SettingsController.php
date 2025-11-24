@@ -7,6 +7,7 @@ use App\Models\SystemSettings;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Event\Telemetry\System;
 use Symfony\Component\Mime\Email;
 
@@ -18,6 +19,12 @@ class SettingsController extends Controller
         $user_id = auth()->user()->id;
         $data['user_data'] = User::where('id', $user_id)->first();
         $data['settings'] = SystemSettings::first();
+        $data['emails'] = DB::table('email_addresses')
+            ->join('users', 'email_addresses.user_id', '=', 'users.id')
+            ->orderBy('email_addresses.created_at', 'desc')
+            ->select('email_addresses.*', 'users.last_name', 'users.first_name')
+            ->get();
+
         return view('Pages.Admin.settings.index', $data);
     }
 
