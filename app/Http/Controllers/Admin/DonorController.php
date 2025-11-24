@@ -275,6 +275,16 @@ class DonorController extends Controller
         $donor_name = $donor->last_name . ' ' .$donor->first_name;
         $donor->is_approved = 1;
         $donor->user_id = auth()->user()->id;
+
+        $sent = $this->sendEmailNotification($donor->email, 'Account Confirmation', $this->emailAccountMessage($donor));
+
+        if(!$sent){
+            return response()->json([
+                'status' => 500,
+                'message' => 'Unable to send email notification!'
+            ], 500);
+        }
+
         $save = $donor->save();
 
         if($save){
@@ -283,7 +293,6 @@ class DonorController extends Controller
             $user->account_status = 1;
             $user->save();
 
-            $this->sendEmailNotification($donor->email, 'Account Confirmation', $this->emailAccountMessage($donor));
             return response()->json([
                 'status' => 200,
                 'message' => 'Success'
