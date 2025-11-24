@@ -7,6 +7,7 @@ use App\Models\SystemSettings;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use PHPUnit\Event\Telemetry\System;
 use Symfony\Component\Mime\Email;
 
 class SettingsController extends Controller
@@ -22,7 +23,10 @@ class SettingsController extends Controller
 
     public function update(Request $request){
         $targetSettings = SystemSettings::first();
-        $prevTargetSettings = clone $targetSettings;
+        $prevTargetSettings = null;
+        if ($targetSettings) {
+            $prevTargetSettings = clone $targetSettings;
+        }
         $payload = array();
 
         $validator = Validator::make($request->all(), [
@@ -94,7 +98,7 @@ class SettingsController extends Controller
         return redirect()->back();
     }
 
-    private function storeEmail($payload, SystemSettings $targetSettings): bool
+    private function storeEmail($payload, $targetSettings): bool
     {
         if (
             isset($payload['email_address'], $payload['email_password']) &&
@@ -108,6 +112,17 @@ class SettingsController extends Controller
                 'email_address'      => $payload['email_address'],
                 'email_password'     => $payload['email_password'],
                 'system_settings_id' => $targetSettings->id,
+                'user_id'            => auth()->user()->id,
+            ];
+
+            EmailAddress::create($toStore);
+            return true;
+        } else {
+            $newSettings = SystemSettings::first();
+            $toStore = [
+                'email_address'      => $payload['email_address'],
+                'email_password'     => $payload['email_password'],
+                'system_settings_id' => $newSettings->id,
                 'user_id'            => auth()->user()->id,
             ];
 

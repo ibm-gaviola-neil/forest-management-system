@@ -49,7 +49,7 @@
 
                                 <div class="col-lg-6 col-md-6 col-sm-12 mb-3">
                                     <div class="form-group">
-                                        <label for="" class="form-label">Into Departmental Email Address <span
+                                        <label for="" class="form-label">Departmental Email Address <span
                                                 class="text-danger">*</span></label>
                                         <input type="email" value="{{ old('email') }}" name="email" class="form-control @error('email') parsley-error @enderror" placeholder="Email">
                                         @error('email')
