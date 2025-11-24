@@ -127,7 +127,8 @@
                                 </div>
 
                                 <div class="col-lg-12 mb-2">
-                                    <h6>Enter System Email Address <span class="text-danger" style="font-size: 12px;">(Instruction before adding the email address.)</span> <span style="color: rgb(37, 165, 215); cursor: pointer">?</span></h6>
+                                    <h6>Enter System Email Address <span class="text-danger" style="font-size: 12px;">(Instruction before adding the email address.)</span> <span style="color: rgb(37, 165, 215); cursor: pointer" data-toggle="modal" data-target=".bd-example-modal-lg">?</span></h6>
+                                    @include('Pages.Admin.settings.instruction-modal')
                                 </div>
                                 <div class="card col-lg-12 col-md-12 col-sm-12">
                                     <div class="body">

@@ -174,14 +174,13 @@
                                         </label>
                                         <label class="fancy-radio">
                                             <input type="radio" name="civil_status"
-                                                {{ old('civil_status') == 'single' ? 'checked' : '' }} value="single"
-                                                data-parsley-errors-container="#error-radio">
-                                            <span><i></i>Single</span>
+                                                {{ old('civil_status') == 'married' ? 'checked' : '' }} value="married">
+                                            <span><i></i>Married</span>
                                         </label>
                                         <label class="fancy-radio">
                                             <input type="radio" name="civil_status"
-                                                {{ old('civil_status') == 'married' ? 'checked' : '' }} value="divorced">
-                                            <span><i></i>Married</span>
+                                                {{ old('civil_status') == 'divorced' ? 'checked' : '' }} value="divorced">
+                                            <span><i></i>Divorced</span>
                                         </label>
                                         <label class="fancy-radio">
                                             <input type="radio" name="civil_status" value="widowed"

@@ -203,6 +203,11 @@
                                         </label>
                                         <label class="fancy-radio">
                                             <input type="radio" name="civil_status"
+                                            {{ $donor->civil_status == 'married' ? 'checked' : '' }} value="married">
+                                            <span><i></i>Married</span>
+                                        </label>
+                                        <label class="fancy-radio">
+                                            <input type="radio" name="civil_status"
                                                 {{ $donor->civil_status == 'divorced' ? 'checked' : '' }} value="divorced">
                                             <span><i></i>Divorced</span>
                                         </label>
