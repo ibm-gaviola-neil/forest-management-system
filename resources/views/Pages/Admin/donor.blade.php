@@ -13,7 +13,7 @@
                     @endif
                 </nav>
             </div>
-            @if (auth()->user()->role !== 'donor')
+            @if (auth()->user()->role !== 'donor' && $donor->is_approved == 1) 
                 <div class="col-md-6 col-sm-12 text-right hidden-xs">
                     <a style="margin-right: 5px" href="/donors/{{ $donor_id }}/donate-page" class="btn btn-sm btn-primary btn-round" title="">Donate</button> {{ ' ' }}
                     <a href="/donors/{{ $donor_id }}/edit" class="btn btn-sm btn-success btn-round" title="">Edit Profile</a>

@@ -39,7 +39,7 @@ async function confirmDonor(data) {
         } else {
             Swal.fire({
                 icon: "success",
-                title: "Blood Donation Store Successfuly",
+                title: "Blood Donation Stored Successfuly",
                 showCancelButton: true,
                 showConfirmButton: false,
                 cancelButtonText: "OK",
@@ -189,7 +189,7 @@ document
                     } else {
                         Swal.fire({
                             icon: "success",
-                            title: "Donor Registered Successfully",
+                            title: "Blood Donation Stored Successfuly",
                             confirmButtonText: "OK",
                             customClass: {
                                 popup: "my-swal-popup",
