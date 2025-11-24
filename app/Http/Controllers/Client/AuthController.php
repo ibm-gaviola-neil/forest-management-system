@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Domains\NotificationDomain;
 use App\Http\Domains\TraitAdmin;
 use App\Http\Requests\AccountSetupRequest;
+use App\Http\Requests\DonorRegisterRequest;
 use App\Http\Requests\DonorRequest;
 use App\Http\Services\NotificationService;
 use App\Http\Services\SettingService;
@@ -47,7 +48,7 @@ class AuthController extends Controller
         return view('register', $data);
     }
 
-    public function store(DonorRequest $request)
+    public function store(DonorRegisterRequest $request)
     {
         $payload = $request->validated();
 
