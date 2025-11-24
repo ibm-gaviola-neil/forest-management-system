@@ -134,4 +134,20 @@ class DepartmentConroller extends Controller
         // No change, no history entry
         return false;
     }
+
+    public function headHistories(Department $department) 
+    {
+        $histories = DepartmentHead::where('department_id', $department->id)
+            ->orderBy('status', 'Desc')->get();
+
+        return response()->json(
+            $histories->map(function ($item) {
+                return [
+                    'department_head' => $item->department_head,
+                    'status' => $item->status,
+                    'created_at' => $item->created_at->format('M d, Y h:i A'),
+                ];
+            })
+        );
+    }
 }

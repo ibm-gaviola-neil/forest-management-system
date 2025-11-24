@@ -112,6 +112,8 @@
                                     <td>{{ $department->email }}</td>
                                     <td>{{ $department->created_at->format('m-d-Y') }}</td>
                                     <td>
+                                        <button value="{{ $department->id }}" class="btn btn-sm btn-default info-btn" title="Info"><i
+                                            class="fa fa-info"></i></button>
                                         <button value="{{ $department->id }}" class="btn btn-sm btn-default edit-btn" title="Edit"><i
                                                 class="fa fa-edit"></i></button>
                                         <button value="{{ $department->id }}" type="button" class="btn btn-sm btn-default js-sweetalert delete-department" title="Delete"
@@ -132,6 +134,7 @@
     </div>
 
 @include('components.Modals.edit-department')
+@include('Pages.Admin.departments.history')
 @push('scripts')
     <script src="{{ asset('assets/js/departments.js') }}"></script>
 @endpush

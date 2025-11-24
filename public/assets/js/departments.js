@@ -1,5 +1,6 @@
 const deleteBtn = document.querySelectorAll('.delete-department')
 const editBtn = document.querySelectorAll('.edit-btn')
+const infoBtn = document.querySelectorAll('.info-btn')
 
 // departments.js
 $(document).ready(function() {
@@ -48,6 +49,49 @@ const getDepartment = async (id) => {
     }
 }
 
+const getDeptHeadHistory = async (id) => {
+    const tbody = document.getElementById('dept-table');
+    let rows = '';
+    try {
+        const response = await fetch(`/departments/head-history/${id}`);
+        const data = await response.json();
+
+        data.forEach(element => {
+            let statusIcon;
+            if (element.status === 1) {
+                statusIcon = `<i class="fa fa-check text-success"></i>`;
+            } else if (element.status === 0) {
+                statusIcon = `<i class="fa fa-times text-danger"></i>`;
+            } else {
+                statusIcon = element.status; // fallback for other statuses
+            }
+
+            rows += `
+                <tr>
+                    <td>${element.department_head}</td>
+                    <td>${statusIcon}</td>
+                    <td>${element.created_at}</td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = rows;
+        // if ($.fn.DataTable.isDataTable('#dept-head')) {
+        //     $('#dept-head').DataTable().clear().destroy();
+        // }
+        // $('#dept-head').DataTable({
+        //     order: [[2, 'desc']]
+        // });
+
+        // Show the modal
+        const myModal = new bootstrap.Modal(document.getElementById('info-modal'));
+        myModal.show();
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 editBtn.forEach(btn => {
    btn.addEventListener('click', async ()=> {
@@ -57,6 +101,17 @@ editBtn.forEach(btn => {
     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>'
     const exe = await getDepartment(btn.value)
     btn.innerHTML = '<i class="fa fa-edit"></i>'
+   })
+})
+
+infoBtn.forEach(btn => {
+   btn.addEventListener('click', async ()=> {
+    document.querySelectorAll('.error').forEach(errorSpan => {
+        errorSpan.textContent = '';
+    });
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i>'
+    const exe = await getDeptHeadHistory(btn.value)
+    btn.innerHTML = '<i class="fa fa-info"></i>'
    })
 })
 

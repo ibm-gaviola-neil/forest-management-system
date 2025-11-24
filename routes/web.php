@@ -62,6 +62,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
     Route::prefix('departments')->controller(\App\Http\Controllers\Admin\DepartmentConroller::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/{department}', 'show');
+        Route::get('/head-history/{department}', 'headHistories');
         Route::post('/store', 'store');
         Route::delete('/delete/{department}', 'delete');
         Route::post('/update/{department}', 'update');
