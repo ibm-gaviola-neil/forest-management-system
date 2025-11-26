@@ -8,6 +8,7 @@ class NotificationDomain {
     const LOW_STOCK = 'low_stock';
     const EVENT = 'event';
     const BLOOD_DONOR_REQUEST = 'blood_donor_request';
+    const DONOR_REQUEST = 'donor_request';
 
     const RELATED_TABLES = [
         'donor_registration'  => 'donors',
@@ -21,6 +22,7 @@ class NotificationDomain {
         'event'              => '<div class="feeds-left bg-green text-white"><i class="icon-calendar"></i></div>',    // Yellow, calendar icon
         'low_stock'          => '<div class="feeds-left bg-green text-white"><i class="fa fa-exclamation-triangle"></i></div>', // Red, warning icon
         'blood_donor_request'=> '<div class="feeds-left bg-green text-white"><i class="fa fa-hand-holding-medical"></i></div>', // Dark blue, medical hand icon
+        'donor_request'=> '<div class="feeds-left bg-green text-white"><i class="fa fa-bell"></i></div>', // Dark blue, medical hand icon
     ];
 
     const TYPES_TITLES = [
@@ -31,7 +33,7 @@ class NotificationDomain {
     ];
 
     const NOTIFICATION_ACCESS = [
-        'donor'              => ['event'],
+        'donor'              => ['event', 'donor_request'],
         'general_admin'      => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
         'staff'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
     ];
@@ -41,5 +43,6 @@ class NotificationDomain {
         'event'              => '/events?event_id=:id&notification_id=',
         'low_stock'          => '/low-stocks?notification_id=',
         'blood_donor_request'=> '/requests/:id?notification_id=',
+        'donor_request'      => '/donor-page/requests?notification_id=',
     ];
 }

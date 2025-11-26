@@ -56,6 +56,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
 
     Route::prefix('donor-page')->controller(\App\Http\Controllers\Admin\DonorController::class)->group(function(){
         Route::get('/', 'donorUser');
+        Route::get('/requests', 'donorRequest');
     });
 
 

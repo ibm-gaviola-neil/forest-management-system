@@ -36,12 +36,20 @@ class NotificationComposer
         }
 
         $userRole = auth()->user()->role;
+        $specificRelatedId = auth()->user()->donor_id;
 
         $nofications = Notification::where('is_read', false)
             ->whereIn('type', NotificationDomain::NOTIFICATION_ACCESS[$userRole])
             ->orderBy('created_at', 'DESC')->get();
 
-        foreach ($nofications as $notification) {
+        foreach ($nofications as $key => $notification) {
+            // Check for donor_request type and related_id
+            if ($notification->type == 'donor_request' && $notification->related_id != $specificRelatedId) {
+                // Skip this notification for this user
+                unset($nofications[$key]);
+                continue;
+            }
+
             $notification->icon = NotificationDomain::TYPES_ICONS[$notification->type] ?? '';
             $notification->title = NotificationDomain::TYPES_TITLES[$notification->type] ?? '';
             $route = NotificationDomain::NOTIFICATION_ROUTE[$notification->type] ?? '';

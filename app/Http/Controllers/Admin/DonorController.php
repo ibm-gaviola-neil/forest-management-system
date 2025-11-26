@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Domains\TraitAdmin;
+use App\Models\RequestMessage;
 
 class DonorController extends Controller
 {
@@ -171,6 +172,23 @@ class DonorController extends Controller
         }
         $events = $this->donor_service->getEvents();
         return view('Pages.Admin.donor', compact('histories', 'provinces', 'donor_id', 'staffs', 'donor', 'events'));
+    }
+
+    public function donorRequest(Request $request){
+        $donor = Donor::where('id', auth()->user()->donor_id)->first();
+        if(!isset($donor)){
+            return redirect('/')->withErrors(['password'=> 'User not found!']);
+        }
+        $donor_id = null;
+        $provinces = Province::orderBy('provDesc', 'ASC')->get();
+        if(isset($donor)){
+            $donor_id = $donor->id;
+        }
+        $message = RequestMessage::where('donor_id', auth()->user()->donor_id)
+            ->where('notification_id', $request->notification_id)->first();
+
+        $processedMessage = nl2br($message->message);
+        return view('Pages.Admin.request.index', compact('provinces', 'donor_id','donor', 'message', 'processedMessage'));
     }
 
     public function show(Donor $donor){
