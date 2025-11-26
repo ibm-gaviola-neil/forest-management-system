@@ -117,6 +117,7 @@ class DepartmentConroller extends Controller
 
                 if ($presentDepHead) {
                     $presentDepHead->status = 1;
+                    // $presentDepHead->updated_at = now();
                     $presentDepHead->save();
                     return;
                 }
@@ -138,7 +139,7 @@ class DepartmentConroller extends Controller
     public function headHistories(Department $department) 
     {
         $histories = DepartmentHead::where('department_id', $department->id)
-            ->orderBy('status', 'Desc')->get();
+            ->orderBy('created_at', 'Desc')->get();
 
         return response()->json(
             $histories->map(function ($item) {
@@ -146,6 +147,7 @@ class DepartmentConroller extends Controller
                     'department_head' => $item->department_head,
                     'status' => $item->status,
                     'created_at' => $item->created_at->format('M d, Y h:i A'),
+                    'updated_at' => $item->updated_at->format('M d, Y h:i A'),
                 ];
             })
         );

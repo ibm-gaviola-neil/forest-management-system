@@ -1,5 +1,68 @@
 const donation_btn = document.querySelectorAll('.donation-id')
 const expiration_setting_type = document.querySelectorAll('.expiration_setting_type')
+const requestDonor = document.getElementById('request-donor')
+
+requestDonor.addEventListener('click', () => {
+    const id = requestDonor.value
+    Swal.fire({
+        icon: "warning",
+        title: "Request Blood Donation?",
+        text: "Your about to send request to this donor.",
+        showCancelButton: true,
+        confirmButtonText: "Confirm",
+        customClass: {
+            popup: "my-swal-popup",
+            title: "my-swal-title",
+            confirmButton: "my-confirm-btn",
+            cancelButton: "my-cancel-btn",
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+    }).then(async (result) => {
+        requestDonor.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Requesting..'
+        if(result.isConfirmed){
+            try {
+                const request = await fetch(`/notifications/request/${id}`)
+                
+                if(request.ok){
+                    Swal.fire({
+                        icon: "success",
+                        title: "Blood Donation Request Sent Successfully",
+                        confirmButtonText: "OK",
+                        customClass: {
+                            popup: "my-swal-popup",
+                            title: "my-swal-title",
+                            confirmButton: "my-confirm-btn",
+                            cancelButton: "my-cancel-btn",
+                        },
+                    }).then(() => {
+                        requestDonor.innerHTML = '<i class="fa fa-bell"></i> Request Donation';
+                        button.disabled = false;
+                        window.location.replace(`/donors/${donor_id.value}/view`);
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Unable to make request.",
+                        text: "Please try again or contact support.",
+                        confirmButtonText: "OK",
+                    });
+    
+                    requestDonor.innerHTML = '<i class="fa fa-bell"></i> Request Donation';
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Unable to make request.",
+                    text: "Please try again or contact support.",
+                    confirmButtonText: "OK",
+                });
+
+                requestDonor.innerHTML = '<i class="fa fa-bell"></i> Request Donation';
+            }
+        }
+    })
+});
 
 async function getBarangay() {
     const select = document.getElementById("city_select");

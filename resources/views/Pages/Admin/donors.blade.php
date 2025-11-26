@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="/donors/register" class="btn btn-sm btn-primary" title="">Register Donor</a>
+                    <a style="color: #ffff" href="/donors/register" class="btn btn-sm btn-primary" title="">Register Donor</a>
                 </li>
             </ul>
         </div>

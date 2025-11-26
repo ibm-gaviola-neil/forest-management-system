@@ -33,6 +33,15 @@
             width: 200px;
             height: 200px;
         }
+
+        input {
+            color: black !important;
+        }
+
+        .btn-primary {
+            background-color: #5cb65f !important;
+            border-color: #5cb65f !important;
+        }
     </style>
 
 </head>

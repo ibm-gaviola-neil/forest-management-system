@@ -51,6 +51,27 @@
         letter-spacing: 2px;
         font-size: 19px;
     }
+
+    .btn-primary {
+        background-color: #5cb65f !important;
+        border-color: #5cb65f !important;
+    }
+
+    .nav-item .nav-link.active {
+        background-color: #5cb65f !important;
+        border-color: #5cb65f !important;
+        color: #fff !important;
+    }
+
+    .nav-item .nav-link:hover {
+        background-color: #5cb65f !important;
+        border-color: #5cb65f !important;
+        color: #fff !important;
+    }
+
+    input {
+        color: black !important;
+    }
 </style>
 </head>
 <body class="theme-cyan font-montserrat light_version">

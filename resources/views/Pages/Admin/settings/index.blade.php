@@ -178,6 +178,34 @@
                                     </div>
                                 </div>
 
+                                <div class="col-lg-12 mb-2">
+                                    <h6>System Contact Number</h6>
+                                </div>
+                                <div class="card col-lg-12 col-md-12 col-sm-12">
+                                    <div class="body">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <div>
+                                                        <label>Enter Contact Number</label>
+                                                        <div class="input-group">
+                                                            <input name="contact_number" type="text"
+                                                                value="{{ old('contact_number', isset($settings) ? $settings->contact_number : '') }}"
+                                                                class="form-control @error('contact_number') parsley-error @enderror">
+                                                        </div>
+                                                    </div>
+                                                    <span id="birth_date_Error" class="error"></span>
+                                                    @error('contact_number')
+                                                        <p class="text-sm text-danger text-italized"
+                                                            style="text-align: left !important; font-size: 11px;">
+                                                            {{ $message }}</p>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-primary">Save</button>
                                     <a href="/users" type="button" class="btn btn-secondary"

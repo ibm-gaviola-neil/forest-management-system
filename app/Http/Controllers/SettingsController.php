@@ -48,6 +48,7 @@ class SettingsController extends Controller
                     : "nullable|image|mimetypes:image/jpeg,image/png",
             "email_address" => "required|email|unique:system_settings,email_address,". $targetSettings?->id,
             "email_password" => "required",
+            "contact_number" => ['required','regex:/^(09|\+639)\d{9}$/', 'min:11'],
         ],
         [
             'is_enable.required' => 'The enable field is required.',
@@ -60,6 +61,7 @@ class SettingsController extends Controller
 
             'logo.required' => 'Please upload a logo.',
             'logo.mimes'    => 'The logo must be a file of type: png, jpg, jpeg.',
+            'contact_number.regex' => 'Contact number must be a valid mobile number.'
         ]
         );
         

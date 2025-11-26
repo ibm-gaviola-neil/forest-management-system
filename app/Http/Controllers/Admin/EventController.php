@@ -21,8 +21,13 @@ class EventController extends Controller
     }
 
 
-    public function index(){
+    public function index(Request $request){
         $events = Event::orderBy('created_at', 'desc')->get();
+
+        if (isset($request->event_id)) {
+            $events = Event::where('id', $request->event_id)->orderBy('created_at', 'desc')->get();
+        }
+
         return view('Pages.Admin.events', compact('events'));
     }
 

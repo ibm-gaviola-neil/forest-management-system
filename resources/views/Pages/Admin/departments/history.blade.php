@@ -14,7 +14,8 @@
                             <tr>
                                 <th>Department Head</th>
                                 <th>Status</th>
-                                <th>Updated Date</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                             </tr>
                         </thead>
                         <tbody id="dept-table">

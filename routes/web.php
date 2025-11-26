@@ -104,6 +104,11 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::get('/export', 'export');
     });
 
+    Route::prefix('notifications')->controller(\App\Http\Controllers\NotificationController::class)->group(function(){
+        Route::get('/clear', 'destroy');
+        Route::get('/request/{donor}', 'request');
+    });
+
     Route::middleware(['ifAdmin'])->prefix('audit-trails')->controller(\App\Http\Controllers\AuditTrailController::class)->group(function(){
         Route::get('/', 'index');
     });

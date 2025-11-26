@@ -24,13 +24,20 @@
                         <li class="dropdown">
                             <a href="javascript:void(0);" class="dropdown-toggle icon-menu" data-toggle="dropdown">
                                 <i class="icon-bell"></i>
-                                <span class="notification-dot bg-azura">{{count($nofications)}}</span>
+                                <span class="notification-dot bg-green" id="count-notif">{{count($nofications)}}</span>
                             </a>
-                            <ul class="dropdown-menu feeds_widget vivify fadeIn" style="left: -290px">
-                                <li class="header blue">You have {{count($nofications)}} New Notifications</li>
+                            <ul class="dropdown-menu feeds_widget vivify fadeIn" style="left: -290px" id="notification-ul">
+                                <li class="header green">You have {{count($nofications)}} New Notifications</li>
+                                {{-- @if ($nofications->count() > 0)
+                                    <li>
+                                        <a href="javascript:void(0);" style="font-size: 12px; font-size: small; text-decoration: underline; color: blue;" id="clear-notification">
+                                            Clear Notifications
+                                        </a>
+                                    </li>
+                                @endif --}}
                                 @forelse ($nofications as $item)
                                     <li>
-                                        <a href="javascript:void(0);">
+                                        <a href="{{$item->route}}">
                                             {!!$item->icon!!}
                                             <div class="feeds-body">
                                                 <h6 class="title text-info">{{$item->title}} <small

@@ -17,10 +17,10 @@ class NotificationDomain {
     ];
 
     const TYPES_ICONS = [
-        'donor_registration' => '<div class="feeds-left bg-info text-white"><i class="fa fa-user"></i></div>',              // Blue, user icon
-        'event'              => '<div class="feeds-left bg-warning text-white"><i class="icon-calendar"></i></div>',    // Yellow, calendar icon
-        'low_stock'          => '<div class="feeds-left bg-danger text-white"><i class="fa fa-exclamation-triangle"></i></div>', // Red, warning icon
-        'blood_donor_request'=> '<div class="feeds-left bg-primary text-white"><i class="fa fa-hand-holding-medical"></i></div>', // Dark blue, medical hand icon
+        'donor_registration' => '<div class="feeds-left bg-green text-white"><i class="fa fa-user"></i></div>',              // Blue, user icon
+        'event'              => '<div class="feeds-left bg-green text-white"><i class="icon-calendar"></i></div>',    // Yellow, calendar icon
+        'low_stock'          => '<div class="feeds-left bg-green text-white"><i class="fa fa-exclamation-triangle"></i></div>', // Red, warning icon
+        'blood_donor_request'=> '<div class="feeds-left bg-green text-white"><i class="fa fa-hand-holding-medical"></i></div>', // Dark blue, medical hand icon
     ];
 
     const TYPES_TITLES = [
@@ -34,5 +34,12 @@ class NotificationDomain {
         'donor'              => ['event'],
         'general_admin'      => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
         'staff'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
+    ];
+
+    const NOTIFICATION_ROUTE = [
+        'donor_registration' => '/donors/:id/view?notification_id=',
+        'event'              => '/events?event_id=:id&notification_id=',
+        'low_stock'          => '/low-stocks?notification_id=',
+        'blood_donor_request'=> '/requests/:id?notification_id=',
     ];
 }

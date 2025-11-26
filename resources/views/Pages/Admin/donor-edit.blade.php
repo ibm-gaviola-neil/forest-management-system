@@ -323,7 +323,7 @@
 
                                 @if ($donor->valid_id_image !== null)
                                     <div class="col-lg-12" style="display: flex; align-items: center; justify-content: center;">
-                                        <img src="{{asset('storage/'.$donor->valid_id_image)}}" alt="">
+                                        <img src="{{asset('storage/'.$donor->valid_id_image)}}" alt="" style="width: 100%; height: auto; max-width: 500px; border: 1px solid #000;" class="event-image">
                                     </div>
                                 @else
                                     <div class="p-2 col-lg-12 mb-3" style="background-color: #ffcbd1; color: #f94449;">No Valid ID Uploaded.</div>

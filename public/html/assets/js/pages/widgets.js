@@ -84,7 +84,7 @@ $(async function() {
             ],
             type: 'bar', // default type of chart
             colors: {
-                'data1': '#467fcf', // blue            
+                'data1': '#5cb65f', // blue            
             },
             names: {
                 // name of each serie

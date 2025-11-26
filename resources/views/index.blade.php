@@ -39,6 +39,15 @@
             width: 120% !important;
             height: 100%;
         }
+
+        input {
+            color: black !important;
+        }
+
+        .btn-primary {
+            background-color: #5cb65f !important;
+            border-color: #5cb65f !important;
+        }
     </style>
 
 </head>

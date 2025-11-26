@@ -15,5 +15,7 @@ class Department extends Model
         'email',
         'contact_number',
         'user_id',
+        'created_at',
+        'updated_at',
     ];
 }

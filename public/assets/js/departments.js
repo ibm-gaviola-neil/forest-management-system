@@ -29,19 +29,6 @@ const getDepartment = async (id) => {
         number.value = data.department.contact_number
         departmentId.value = data.department.id
 
-        const select = document.getElementById('department_head_select');
-        select.innerHTML = ''; // Clear existing options
-
-        data.department_head.forEach((head, index) => {
-            const option = document.createElement('option');
-            option.value = head.department_head;
-            option.textContent = head.department_head;
-            if(index === 0) {
-                option.selected = true; // Select the first option
-            }
-            select.appendChild(option);
-        });
-
         const myModal = new bootstrap.Modal(document.getElementById('edit-department'));
         myModal.show();
     } catch (error) {
@@ -71,19 +58,12 @@ const getDeptHeadHistory = async (id) => {
                     <td>${element.department_head}</td>
                     <td>${statusIcon}</td>
                     <td>${element.created_at}</td>
+                    <td>${element.status == 1 ? 'N/A' : element.updated_at}</td>
                 </tr>
             `;
         });
 
         tbody.innerHTML = rows;
-        // if ($.fn.DataTable.isDataTable('#dept-head')) {
-        //     $('#dept-head').DataTable().clear().destroy();
-        // }
-        // $('#dept-head').DataTable({
-        //     order: [[2, 'desc']]
-        // });
-
-        // Show the modal
         const myModal = new bootstrap.Modal(document.getElementById('info-modal'));
         myModal.show();
 

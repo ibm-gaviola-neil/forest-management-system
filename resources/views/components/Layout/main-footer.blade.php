@@ -164,6 +164,8 @@
 
 <script>
     const eventImages = document.querySelectorAll('.event-image');
+    // const clearNotification = document.getElementById('clear-notification');
+    // const ulNotification = document.getElementById('notification-ul');
 
     eventImages.forEach(image => {
         image.addEventListener('click', () => {
@@ -175,6 +177,24 @@
             });
         });
     });
+
+    // clearNotification.addEventListener('click', async () => {
+    //     try {
+    //         const request = await fetch('/notifications/clear');
+    //         const response = await request.json();
+
+    //         ulNotification.innerHTML = `<li class="header green">You have 0 New Notifications</li>
+    //             <li>
+    //                 <a href="javascript:void(0);">
+    //                     No New Notifications
+    //                 </a>
+    //             </li>`;
+
+    //         document.getElementById('count-notif').innerHTML = 0;
+    //     } catch (error) {
+    //         alert('Unable to clear notifications');
+    //     }
+    // });
 </script>
 </body>
 

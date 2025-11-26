@@ -16,7 +16,10 @@
             @if (auth()->user()->role !== 'donor' && $donor->is_approved == 1) 
                 <div class="col-md-6 col-sm-12 text-right hidden-xs">
                     <a style="margin-right: 5px" href="/donors/{{ $donor_id }}/donate-page" class="btn btn-sm btn-primary btn-round" title="">Donate</button> {{ ' ' }}
-                    <a href="/donors/{{ $donor_id }}/edit" class="btn btn-sm btn-success btn-round" title="">Edit Profile</a>
+                    <a href="/donors/{{ $donor_id }}/edit" class="btn btn-sm btn-primary btn-round" title="">Edit Profile</a>
+                    <button type="button" class="btn btn-primary btn-round btn-sm" id="request-donor" value="{{$donor_id}}">
+                        <i class="fa fa-bell"></i> Request Donation
+                    </button>
                 </div>
             @endif
         </div>

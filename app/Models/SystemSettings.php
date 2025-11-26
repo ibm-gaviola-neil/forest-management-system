@@ -16,6 +16,7 @@ class SystemSettings extends Model
         "logo",
         "navbar_logo",
         "email_address",
-        "email_password"
+        "email_password",
+        "contact_number"
     ];
 }
