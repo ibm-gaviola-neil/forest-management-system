@@ -1,6 +1,9 @@
 export async function submitForm({ url, formData, buttonId, errorDisplayId, btnLoadingText = null }) {
     const button = document.getElementById(buttonId);
     document.getElementById(errorDisplayId).innerHTML = '';
+    document.querySelectorAll('[name].error-input').forEach(function(el) {
+        el.classList.remove('error-input');
+    });
 
     const response = await fetch(url, {
         method: 'POST',

@@ -193,7 +193,9 @@ class AuthController extends Controller
             ],200);
         }
 
-        return redirect()->back()->withErrors(['password'=> 'Wrong Credentials']);
+        return response([
+            'errors' => ['password' => ['Invalid Credentials!']]
+        ],422);
     }
 
     public function user(){
