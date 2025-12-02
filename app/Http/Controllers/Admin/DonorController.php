@@ -34,7 +34,7 @@ class DonorController extends Controller
         $donors = $this->donor_service->getDonors($request);
         $provinces = Province::orderBy('provDesc', 'ASC')->get();
         $address = $this->donor_service->getDonorRequestAddress($request);
-        return view('Pages.Admin.donors', compact('donors', 'provinces', 'request', 'address'));
+        return view('Pages.Admin.qualified-applicant.index', compact('donors', 'provinces', 'request', 'address'));
     }
 
     public function addDonor(){

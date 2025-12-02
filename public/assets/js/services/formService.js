@@ -1,6 +1,5 @@
 export async function submitForm({ url, formData, buttonId, errorDisplayId, btnLoadingText = null }) {
     const button = document.getElementById(buttonId);
-    button.innerHTML = `<i class="fa fa-spinner fa-spin"></i> ${btnLoadingText ?? 'Saving'}`;
     document.getElementById(errorDisplayId).innerHTML = '';
 
     const response = await fetch(url, {
@@ -16,15 +15,28 @@ export async function submitForm({ url, formData, buttonId, errorDisplayId, btnL
 
     button.innerHTML = 'Save';
 
+    // Read response body once
+    let data;
+    try {
+        data = await response.json();
+    } catch (e) {
+        // If response is not JSON, fallback
+        data = null;
+    }
+
     if (!response.ok) {
-        if (response.status === 422) {
-            const data = await response.json();
+        if (response.status === 422 && data) {
             const errors = data.errors;
             document.querySelectorAll('.error').forEach(span => span.textContent = '');
             for (const [field, messages] of Object.entries(errors)) {
                 const el = document.getElementById(`${field}_Error`);
+                const input = document.querySelector(`[name="${field}"]`);
                 if (el) {
                     el.innerHTML = `<p class="text-sm text-danger" style="font-size: 11px;">${messages.join(' ')}</p>`;
+                }
+
+                if (input) {
+                    input.classList.add('error-input');
                 }
             }
         } else {
@@ -33,7 +45,9 @@ export async function submitForm({ url, formData, buttonId, errorDisplayId, btnL
                 `
             throw new Error('Unexpected server error');
         }
+        // Optionally throw for 422 as well, if you want to stop further processing
+        throw new Error('Validation error');
     }
 
-    return await response.json();
+    return data;
 }

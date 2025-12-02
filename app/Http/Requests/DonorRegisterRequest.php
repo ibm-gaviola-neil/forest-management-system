@@ -26,15 +26,20 @@ class DonorRegisterRequest extends FormRequest
             "last_name" => 'required',
             "middle_name" => 'nullable',
             "suffix" => 'nullable',
-            "email" => 'required|email|unique:donors,email',
+            "email" => 'required|email|unique:users,email',
             "contact_number" => ['required','regex:/^(09|\+639)\d{9}$/', 'min:11'],
             "birth_date" => 'required',
-            "gender" => 'required',
-            "civil_status" => 'required',
-            "province" => 'required',
-            "city" => 'required',
-            "barangay" => 'required',
-            "blood_type" => 'required',
+            "address" => 'required',
+            "confirmEmail" => 'required|same:email',
+            "password" => 'required|min:8|confirmed',
+        ];
+    }
+    
+    public function messages()
+    {
+        return [
+            "confirmEmail.same" => "The confirm email and email must match.",
+            "confirmEmail.required" => "Please confirm you email address.",
         ];
     }
 }

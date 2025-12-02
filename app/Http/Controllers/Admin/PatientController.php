@@ -28,7 +28,7 @@ class PatientController extends Controller
         $data['request'] = $request;
         $data['provinces']= Province::orderBy('provDesc', 'ASC')->get();
         $data['address'] = $this->donor_service->getDonorRequestAddress($request);
-        return view('Pages.Admin.patients.index', $data);
+        return view('Pages.Admin.app-review.index', $data);
     }
 
     public function create(){

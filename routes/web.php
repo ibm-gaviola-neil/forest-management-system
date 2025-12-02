@@ -37,7 +37,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/update/{user}', 'update');
     });
 
-    Route::prefix('donors')->controller(\App\Http\Controllers\Admin\DonorController::class)->group(function(){
+    Route::prefix('/admin/applicants')->controller(\App\Http\Controllers\Admin\DonorController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/register', 'addDonor');
         Route::get('/{donor}/edit', 'edit');
@@ -89,7 +89,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/store-confirm', 'confirm');
     });
 
-    Route::prefix('patients')->controller(\App\Http\Controllers\Admin\PatientController::class)->group(function(){
+    Route::prefix('/admin/app-review')->controller(\App\Http\Controllers\Admin\PatientController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/register', 'create');
         Route::get('/{patient}/show', 'show');
@@ -100,7 +100,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::delete('/{patient}/delete', 'delete');
     });
 
-    Route::prefix('reports')->controller(\App\Http\Controllers\Admin\ReportController::class)->group(function(){
+    Route::prefix('/admin/reports')->controller(\App\Http\Controllers\Admin\ReportController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/export', 'export');
     });
@@ -117,6 +117,10 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
     Route::middleware(['ifAdmin'])->prefix('settings')->controller(\App\Http\Controllers\SettingsController::class)->group(function(){
         Route::get('/', 'index');
         Route::post('/update', 'update');
+    });
+
+    Route::prefix('/applicant')->controller(\App\Http\Controllers\ApplicantController::class)->group(function(){
+        Route::get('/dashboard', 'index');
     });
 });
 

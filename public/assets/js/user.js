@@ -23,72 +23,70 @@ window.addEventListener("load", async () => {
         const icon = item.querySelector('i')
         const url = new URL(link.href)
         const path = url.pathname
-        console.log(path + ', ' + pathname) 
         
-        if(path === pathname || pathname.includes(path)){
+        if(path === pathname){
             item.classList.add('active', 'open')
-            item.style.backgroundColor = '#f62d51'
-            link.style.color = '#fff'
-            icon.style.color = "#fff"
+            item.style.backgroundColor = '#d7ebe0'
+            link.style.color = '#1b8b63'
+            icon.style.color = "#1b8b63"
         }
-
     })
     
-    logout_btn.addEventListener("click", () => {
-        Swal.fire({
-            title: "Are you sure you want to logout?",
-            icon: "warning",
-            showCancelButton: true,
-            // confirmButtonColor: "#d33",
-            confirmButtonText: "Confirm",
-            focusConfirm: false,
+    // logout_btn.addEventListener("click", () => {
+    //     Swal.fire({
+    //         title: "Are you sure you want to logout?",
+    //         icon: "warning",
+    //         showCancelButton: true,
+    //         // confirmButtonColor: "#d33",
+    //         confirmButtonText: "Confirm",
+    //         focusConfirm: false,
 
-            customClass: {
-                popup: "my-swal-popup",
-                title: "my-swal-title",
-                confirmButton: "my-confirm-btn",
-                cancelButton: "my-cancel-btn",
-            },
-            preConfirm: async () => {
-                const confirmBtn = Swal.getConfirmButton();
-                confirmBtn.innerHTML = `<span class="loader"></span> Logging out...`;
-                confirmBtn.disabled = true; // prevent double click
+    //         customClass: {
+    //             popup: "my-swal-popup",
+    //             title: "my-swal-title",
+    //             confirmButton: "my-confirm-btn",
+    //             cancelButton: "my-cancel-btn",
+    //         },
+    //         preConfirm: async () => {
+    //             const confirmBtn = Swal.getConfirmButton();
+    //             confirmBtn.innerHTML = `<span class="loader"></span> Logging out...`;
+    //             confirmBtn.disabled = true; // prevent double click
 
-                try {
-                    const response = await fetch("/logout", {
-                        method: "POST", // usually logout should be POST
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "X-CSRF-TOKEN": document
-                                .querySelector('meta[name="csrf-token"]')
-                                .getAttribute("content"),
-                        },
-                    });
+    //             try {
+    //                 const response = await fetch("/logout", {
+    //                     method: "POST", // usually logout should be POST
+    //                     headers: {
+    //                         "Content-Type": "application/json",
+    //                         "X-Requested-With": "XMLHttpRequest",
+    //                         "X-CSRF-TOKEN": document
+    //                             .querySelector('meta[name="csrf-token"]')
+    //                             .getAttribute("content"),
+    //                     },
+    //                 });
 
-                    if (!response.ok) {
-                        throw new Error("Logout request failed.");
-                    }
+    //                 if (!response.ok) {
+    //                     throw new Error("Logout request failed.");
+    //                 }
 
-                    const data = await response.json();
-                    if(data.status == 1){
-                        window.location.replace('/')
-                    }
-                } catch (error) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Unable to logout, Please Try Again!",
-                        showCancelButton: true,
-                        showConfirmButton: false,
-                        cancelButtonText: 'Close',
-                        customClass: {
-                            popup: "my-swal-popup-error",
-                            title: "my-swal-title-error",
-                            cancelButton: "my-cancel-btn-error"
-                        },
-                    });
-                }
-            },
-        });
-    });
+    //                 const data = await response.json();
+    //                 if(data.status == 1){
+    //                     window.location.replace('/')
+    //                 }
+    //             } catch (error) {
+    //                 Swal.fire({
+    //                     icon: "error",
+    //                     title: "Unable to logout, Please Try Again!",
+    //                     showCancelButton: true,
+    //                     showConfirmButton: false,
+    //                     cancelButtonText: 'Close',
+    //                     customClass: {
+    //                         popup: "my-swal-popup-error",
+    //                         title: "my-swal-title-error",
+    //                         cancelButton: "my-cancel-btn-error"
+    //                     },
+    //                 });
+    //             }
+    //         },
+    //     });
+    // });
 });

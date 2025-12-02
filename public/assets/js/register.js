@@ -1,3 +1,5 @@
+import { loader } from "./ui/html-ui.js";
+
 const deleteBtn = document.querySelectorAll('.delete-btn')
 
 async function confirmDonor (data){
@@ -80,7 +82,7 @@ async function isEditPage(){
 document.getElementById('add-donor-form').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent form submission
     const button = document.getElementById('submit-btn')
-    button.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving';
+    button.innerHTML = loader('Signin Up....');
     var endPoint
     const isEdit = await isEditPage();
     if(!isEdit[0]){
@@ -95,6 +97,14 @@ document.getElementById('add-donor-form').addEventListener('submit', async funct
     // Clear previous error messages
     document.querySelectorAll('.error').forEach(errorSpan => {
         errorSpan.textContent = '';
+    });
+
+    // Select all input elements with the class 'error-input'
+    const inputsWithError = document.querySelectorAll('input.error-input');
+
+        // Loop through each input and remove the class
+    inputsWithError.forEach(function(input) {
+        input.classList.remove('error-input');
     });
 
     try {
@@ -121,6 +131,7 @@ document.getElementById('add-donor-form').addEventListener('submit', async funct
                 // Display the validation errors
                 for (const [key, messages] of Object.entries(errors)) {
                     const errorSpan = document.getElementById(`${key}_Error`);
+                    const input = document.querySelector(`[name="${key}"]`);
                     if (errorSpan) {
                         errorSpan.innerHTML = `
                              <p class="text-sm text-danger text-italized"
@@ -128,9 +139,13 @@ document.getElementById('add-donor-form').addEventListener('submit', async funct
                                     ${messages.join(' ')}</p>
                         `;
                     }
+
+                    if (input) {
+                        input.classList.add('error-input');
+                    }
                 }
             } else {
-                throw new Error('Network response was not ok');
+                alert('Server Error Please Try Again!');
             }
         } else {
             const data = await response.json().catch(() => {
@@ -138,202 +153,176 @@ document.getElementById('add-donor-form').addEventListener('submit', async funct
             });
 
             if (data.status == 200) {
-                const myModal = new bootstrap.Modal(document.getElementById('confirm-donor'));
-                myModal.show();
-
-                document.getElementById('td_name').innerHTML = `${data.data.last_name}, ${data.data.first_name}` 
-                document.getElementById('td_email').innerHTML = data.data.email 
-                document.getElementById('td_contact').innerHTML = data.data.contact_number 
-                document.getElementById('td_address').innerHTML = data.data.province + ', ' + data.data.city + ', ' + data.data.barangay 
-                document.getElementById('td_gender').innerHTML = data.data.gender 
-                document.getElementById('td_status').innerHTML = data.data.civil_status 
-                document.getElementById('td_date').innerHTML = data.data.birth_date
-                document.getElementById('td_type').innerHTML = data.data.blood_type
-
-                document.getElementById('confirm-donor-form').addEventListener('submit', (e) => {
-                    e.preventDefault()
-                    confirmDonor(formData)
-                })
+                window.location.replace('/');
             } else {
-                Swal.fire({
-                    icon: "error",
-                    title: data.message,
-                    showCancelButton: true,
-                    showConfirmButton: false,
-                    cancelButtonText: 'Close',
-                    customClass: {
-                        popup: "my-swal-popup-error",
-                        title: "my-swal-title-error",
-                        cancelButton: "my-cancel-btn-error"
-                    },
-                });
+                alert('Server Error Please Try Again!');
             }
         }
     } catch (error) {
         console.log(error);
         alert('An error occurred: ' + error.message);
     } finally {
-        button.innerHTML = 'Save';
+        button.innerHTML = 'Sign Up';
     }
 });
 
-async function getCity(){
-    var isEdit = false;
-    var editResponse;
-    var editData;
-    const pathName = window.location.pathname.split('/')
+// async function getCity(){
+//     var isEdit = false;
+//     var editResponse;
+//     var editData;
+//     const pathName = window.location.pathname.split('/')
     
-    const select = document.getElementById('province-select-a')
-    const city_select = document.getElementById('city_select')
-    const barangay_select = document.getElementById('barangay_select')
+//     const select = document.getElementById('province-select-a')
+//     const city_select = document.getElementById('city_select')
+//     const barangay_select = document.getElementById('barangay_select')
     
-    barangay_select.innerHTML = `
-         <option value="" selected>Select Barangay</option>
-    `
+//     barangay_select.innerHTML = `
+//          <option value="" selected>Select Barangay</option>
+//     `
 
-    const val = select.value
+//     const val = select.value
 
-    if(pathName.includes('edit')){
-        isEdit = true;
-        editResponse = await fetch(`/patients/${pathName[2]}/show`)
-        editData = await editResponse.json()
-    }
+//     if(pathName.includes('edit')){
+//         isEdit = true;
+//         editResponse = await fetch(`/patients/${pathName[2]}/show`)
+//         editData = await editResponse.json()
+//     }
 
-    let items = '<option value="" selected>Select City</option>'
+//     let items = '<option value="" selected>Select City</option>'
 
-    const response = await fetch(`/city?province_code=${val}`)
-    const data = await response.json()
+//     const response = await fetch(`/city?province_code=${val}`)
+//     const data = await response.json()
     
-    data.forEach(element => {
-        items += `
-            <option value="${element.citymunCode}" ${editData ? editData.city === element.citymunDesc ? 'selected' : '' : ''}>${element.citymunDesc}</option>
-        `
-    });
+//     data.forEach(element => {
+//         items += `
+//             <option value="${element.citymunCode}" ${editData ? editData.city === element.citymunDesc ? 'selected' : '' : ''}>${element.citymunDesc}</option>
+//         `
+//     });
 
-    city_select.innerHTML = items;
-    getBarangay()
+//     city_select.innerHTML = items;
+//     getBarangay()
     
-}
+// }
 
-async function getBarangay(){
-    var isEdit = false;
-    var editResponse;
-    var editData;
-    const pathName = window.location.pathname.split('/')
+// async function getBarangay(){
+//     var isEdit = false;
+//     var editResponse;
+//     var editData;
+//     const pathName = window.location.pathname.split('/')
 
-    if(pathName.includes('edit')){
-        isEdit = true;
-        editResponse = await fetch(`/patients/${pathName[2]}/show`)
-        editData = await editResponse.json()
-    }
+//     if(pathName.includes('edit')){
+//         isEdit = true;
+//         editResponse = await fetch(`/patients/${pathName[2]}/show`)
+//         editData = await editResponse.json()
+//     }
 
-    const select = document.getElementById('city_select')
-    const barangay_select = document.getElementById('barangay_select')
-    const val = select.value
-    let items = '<option value="" selected>Select Barangay</option>'
+//     const select = document.getElementById('city_select')
+//     const barangay_select = document.getElementById('barangay_select')
+//     const val = select.value
+//     let items = '<option value="" selected>Select Barangay</option>'
 
-    const response = await fetch(`/barangay?city_code=${val}`)
-    const data = await response.json()
+//     const response = await fetch(`/barangay?city_code=${val}`)
+//     const data = await response.json()
 
     
-    data.forEach(element => {
-        items += `
-            <option value="${element.brgyDesc}" ${editData ? editData.barangay === element.brgyDesc ? 'selected' : '' : ''}>${element.brgyDesc}</option>
-        `
-    });
+//     data.forEach(element => {
+//         items += `
+//             <option value="${element.brgyDesc}" ${editData ? editData.barangay === element.brgyDesc ? 'selected' : '' : ''}>${element.brgyDesc}</option>
+//         `
+//     });
 
-    barangay_select.innerHTML = items;
-}
+//     barangay_select.innerHTML = items;
+// }
 
-deleteBtn.forEach(btn => {
-    btn.addEventListener('click', () => {
-        Swal.fire({
-            title: "Are you sure you want to delete this patient?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#EB5A3C",
-            confirmButtonText: "Delete",
-            focusConfirm: false,
+// deleteBtn.forEach(btn => {
+//     btn.addEventListener('click', () => {
+//         Swal.fire({
+//             title: "Are you sure you want to delete this patient?",
+//             icon: "warning",
+//             showCancelButton: true,
+//             confirmButtonColor: "#EB5A3C",
+//             confirmButtonText: "Delete",
+//             focusConfirm: false,
 
-            customClass: {
-                popup: "my-swal-popup",
-                title: "my-swal-title",
-                confirmButton: "my-confirm-btn",
-                cancelButton: "my-cancel-btn",
-            },
-            preConfirm: async () => {
-                const confirmBtn = Swal.getConfirmButton();
-                confirmBtn.innerHTML = `<span class="loader"></span> Deleting...`;
-                confirmBtn.disabled = true; // prevent double click
+//             customClass: {
+//                 popup: "my-swal-popup",
+//                 title: "my-swal-title",
+//                 confirmButton: "my-confirm-btn",
+//                 cancelButton: "my-cancel-btn",
+//             },
+//             preConfirm: async () => {
+//                 const confirmBtn = Swal.getConfirmButton();
+//                 confirmBtn.innerHTML = `<span class="loader"></span> Deleting...`;
+//                 confirmBtn.disabled = true; // prevent double click
 
-                try {
-                    const response = await fetch("/departments/delete/" + btn.value, {
-                        method: "delete", // usually logout should be POST
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-Requested-With": "XMLHttpRequest",
-                            "X-CSRF-TOKEN": document
-                                .querySelector('meta[name="csrf-token"]')
-                                .getAttribute("content"),
-                        },
-                    });
+//                 try {
+//                     const response = await fetch("/departments/delete/" + btn.value, {
+//                         method: "delete", // usually logout should be POST
+//                         headers: {
+//                             "Content-Type": "application/json",
+//                             "X-Requested-With": "XMLHttpRequest",
+//                             "X-CSRF-TOKEN": document
+//                                 .querySelector('meta[name="csrf-token"]')
+//                                 .getAttribute("content"),
+//                         },
+//                     });
 
-                    if (!response.ok) {
-                        throw new Error("Logout request failed.");
-                    }
+//                     if (!response.ok) {
+//                         throw new Error("Logout request failed.");
+//                     }
 
-                    const data = await response.json();
-                    if(data.status == 200){
-                        Swal.fire({
-                            icon: "success",
-                            title: "Department Deleted Successfuly",
-                            showCancelButton: true,
-                            showConfirmButton: false,
-                            cancelButtonText: 'OK',
-                            customClass: {
-                                popup: "my-swal-popup",
-                                title: "my-swal-title",
-                                confirmButton: "my-confirm-btn",
-                                cancelButton: "my-cancel-btn",
-                            },
-                        }).then(() => {
-                            window.location.reload()
-                        });
-                    }else{
-                        Swal.fire({
-                            icon: "error",
-                            title: data.message,
-                            showCancelButton: true,
-                            showConfirmButton: false,
-                            cancelButtonText: 'Close',
-                            customClass: {
-                                popup: "my-swal-popup-error",
-                                title: "my-swal-title-error",
-                                cancelButton: "my-cancel-btn-error"
-                            },
-                        });
-                    }
-                } catch (error) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Unable to delete department, Please Try Again!",
-                        showCancelButton: true,
-                        showConfirmButton: false,
-                        cancelButtonText: 'Close',
-                        customClass: {
-                            popup: "my-swal-popup-error",
-                            title: "my-swal-title-error",
-                            cancelButton: "my-cancel-btn-error"
-                        },
-                    });
-                }
-            },
-        });
-    })
-})
+//                     const data = await response.json();
+//                     if(data.status == 200){
+//                         Swal.fire({
+//                             icon: "success",
+//                             title: "Department Deleted Successfuly",
+//                             showCancelButton: true,
+//                             showConfirmButton: false,
+//                             cancelButtonText: 'OK',
+//                             customClass: {
+//                                 popup: "my-swal-popup",
+//                                 title: "my-swal-title",
+//                                 confirmButton: "my-confirm-btn",
+//                                 cancelButton: "my-cancel-btn",
+//                             },
+//                         }).then(() => {
+//                             window.location.reload()
+//                         });
+//                     }else{
+//                         Swal.fire({
+//                             icon: "error",
+//                             title: data.message,
+//                             showCancelButton: true,
+//                             showConfirmButton: false,
+//                             cancelButtonText: 'Close',
+//                             customClass: {
+//                                 popup: "my-swal-popup-error",
+//                                 title: "my-swal-title-error",
+//                                 cancelButton: "my-cancel-btn-error"
+//                             },
+//                         });
+//                     }
+//                 } catch (error) {
+//                     Swal.fire({
+//                         icon: "error",
+//                         title: "Unable to delete department, Please Try Again!",
+//                         showCancelButton: true,
+//                         showConfirmButton: false,
+//                         cancelButtonText: 'Close',
+//                         customClass: {
+//                             popup: "my-swal-popup-error",
+//                             title: "my-swal-title-error",
+//                             cancelButton: "my-cancel-btn-error"
+//                         },
+//                     });
+//                 }
+//             },
+//         });
+//     })
+// })
 
-getCity()
-getBarangay()
+// getCity()
+// getBarangay()
 
 
 

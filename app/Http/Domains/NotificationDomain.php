@@ -33,7 +33,7 @@ class NotificationDomain {
     ];
 
     const NOTIFICATION_ACCESS = [
-        'donor'              => ['event', 'donor_request'],
+        'applicant'              => ['event', 'donor_request'],
         'general_admin'      => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
         'staff'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
     ];

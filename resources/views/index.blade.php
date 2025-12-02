@@ -1,126 +1,99 @@
-@php
-  if (Auth::check()) {
-    echo '<script>window.location.replace("admin/")</script>';
-  }
-@endphp
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Blood Registry System</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <meta name="description"
-        content="Oculux Bootstrap 4x admin is super flexible, powerful, clean &amp; modern responsive admin dashboard with unlimited possibilities.">
-    <meta name="author" content="GetBootstrap, design by: puffintheme.com">
-
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- VENDOR CSS -->
-    <link rel="stylesheet" href="{{ asset('/assets/vendor/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/vendor/font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('/assets/vendor/animate-css/vivify.min.css') }}">
-
-    <!-- MAIN CSS -->
-    <link rel="stylesheet" href="{{ asset('/html/assets/css/site.min.css') }}">
-
-    <style>
-        img{
-            width: 200px;
-            height: 200px;
-        }
-
-        .body{
-            width: 100%;
-            border-radius: 20px;
-        }
-
-        .card{
-            width: 120% !important;
-            height: 100%;
-        }
-
-        input {
-            color: black !important;
-        }
-
-        .btn-primary {
-            background-color: #5cb65f !important;
-            border-color: #5cb65f !important;
-        }
-    </style>
-
+  <meta charset="UTF-8" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Forest Monitoring System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="theme-cyan font-montserrat light_version">
+<style>
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
 
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-            <div class="bar4"></div>
-            <div class="bar5"></div>
+  .error-input {
+    border-color: red !important;
+  }
+</style>
+
+<body class="bg-green-50 font-sans text-gray-900">
+
+<div class="min-h-screen flex items-center justify-center px-4">
+  <div class="bg-white rounded-2xl shadow-lg flex max-w-5xl w-full">
+    <div class="w-1/2 p-8 bg-green-200 hidden md:flex flex-col justify-start rounded-l-2xl">
+      <div class="flex items-center mb-6">
+        <img src="{{asset('./assets/images/logo.jpg')}}" alt="Logo" class="w-14 h-14 mr-3 rounded-full border-2 border-white shadow-md">
+        <h1 class="text-sm font-bold leading-tight">
+          WEB-BASED FOREST MONITORING<br>AND PERMITTING SYSTEM
+        </h1>
+      </div>
+      <div class="flex justify-center items-center flex-grow">
+        <img src="{{asset('./assets/images/log-in.png')}}" alt="Illustration" class="w-[3000px] h-auto max-w-full">
+      </div>
+    </div>
+
+    <div class="w-full md:w-1/2 p-8 flex flex-col justify-center">
+      <h2 class="text-2xl font-semibold mb-1">Welcome to</h2>
+      <h1 class="text-3xl font-bold text-green-600 mb-6">Permitting System</h1>
+
+      <div class="mb-4">
+        <button onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-3 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-100">
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" />
+          <span class="text-sm font-medium text-gray-700">Login with Google</span>
+        </button>
+      </div>
+
+      <div class="flex items-center my-4">
+        <hr class="flex-grow border-gray-300">
+        <span class="mx-2 text-sm text-gray-500">or</span>
+        <hr class="flex-grow border-gray-300">
+      </div>
+
+      <form id="loginForm">
+        <div class="mb-4">
+          <label class="block text-sm font-medium">Email</label>
+          <input type="email" name="email" id="loginEmail" class="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-md focus:ring-green-500 focus:outline-none"  />
+          <span id="email_Error" class="error italic"></span>
         </div>
-    </div>
 
-    <div class="pattern">
-        <span class="red"></span>
-        <span class="indigo"></span>
-        <span class="blue"></span>
-        <span class="green"></span>
-        <span class="orange"></span>
-    </div>
-
-    <div class="auth-main particles_js">
-        <div class="auth_div vivify popIn">
-            {{-- <div class="auth_brand">
-            <a class="navbar-brand" href="javascript:void(0);"><img src="../assets/images/icon.svg" width="30" height="30" class="d-inline-block align-top mr-2" alt="">Oculux</a>
-        </div> --}}
-            <div class="card">
-                <div class="body">
-                    <img src="{{ isset($systemSettings) ? asset('storage/' . $systemSettings?->navbar_logo) : asset('/assets/images/bd-logo.png') }}" alt="">
-                    <p class="lead">Login to your account</p>
-                    <form class="form-auth-small m-t-20" action="/login" method="post" novalidate>
-                        @csrf
-                        <div class="form-group mb-4">
-                            <label for="signin-email" class="control-label sr-only">Username</label>
-                            <input type="text" name="username" value="{{ old('username') }}"
-                                class="form-control @error('username') parsley-error @enderror round"
-                                @error('username') data-parsley-id="29" @enderror id="signin-email"
-                                placeholder="Username" novalidate>
-                            @error('username')
-                                <p class="text-sm text-danger text-italized" style="text-align: left !important; font-size: 11px;">
-                                    {{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="form-group mb-4">
-                            <label for="signin-pass" class="control-label sr-only">Username</label>
-                            <input type="password" name="password" value="{{ old('password') }}"
-                                class="form-control @error('password') parsley-error @enderror round"
-                                @error('password') data-parsley-id="29" @enderror id="signin-pass"
-                                placeholder="Password" novalidate>
-                            @error('password')
-                                <p class="text-sm text-danger text-italized" style="text-align: left !important; font-size: 11px;">
-                                    {{ $message }}</p>
-                            @enderror
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-round btn-block mb-4">LOGIN</button>
-                        @if ($is_enable)
-                            <a href="/register">Don't have an Account?</a>
-                        @endif
-                    </form>
-                </div>
-            </div>
+        <div class="mb-4 relative">
+          <label class="block text-sm font-medium">Password</label>
+          <input type="password" name="password" id="loginPassword" class="w-full border border-gray-300 rounded-lg px-4 py-2 pr-10 shadow-md focus:ring-green-500 focus:outline-none"  />
+          <span id="password_Error" class="error italic"></span>
+          <button type="button" onclick="togglePassword()" class="absolute right-3 top-8 text-gray-500 text-sm"></button>
         </div>
-        <div id="particles-js"></div>
-    </div>
-    <!-- END WRAPPER -->
 
-    <script src="{{ asset('/html/assets/bundles/libscripts.bundle.js') }}"></script>
-    <script src="{{ asset('/html/assets/bundles/vendorscripts.bundle.js') }}"></script>
-    <script src="{{ asset('/html/assets/bundles/mainscripts.bundle.js') }}"></script>
+        <div class="flex items-center justify-between mb-4 text-sm">
+          <label class="flex items-center">
+            <input type="checkbox" class="mr-2">
+            Remember me
+          </label>
+          <a href="#" onclick="handleForgotPassword()" class="text-green-600 hover:underline">Forgot Password?</a>
+        </div>
+
+        <button id="login-btn" type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+          Log In
+        </button>
+      </form>
+
+      <p class="text-sm text-center mt-6">
+        Don’t have an account?
+        <a href="/register" class="text-green-600 font-semibold hover:underline">Register</a>
+      </p>
+
+      <div id="loginResponse" class="text-center mt-4 text-red-500 hidden">
+        Invalid email or password!
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{asset('/assets/js/features/login.js')}}" type="module"></script>
+
 </body>
-
 </html>

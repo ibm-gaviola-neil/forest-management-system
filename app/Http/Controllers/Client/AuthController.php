@@ -40,9 +40,9 @@ class AuthController extends Controller
     public function create(){
         $settings = $this->systemSettings->getSettings();
 
-        if(!$settings['is_enable']){
-            return redirect('/');
-        }
+        // if(!$settings['is_enable']){
+        //     return redirect('/');
+        // }
 
         $data['provinces'] = Province::orderBy('provDesc', 'ASC')->get();
         return view('register', $data);
@@ -50,12 +50,26 @@ class AuthController extends Controller
 
     public function store(DonorRegisterRequest $request)
     {
-        $payload = $request->validated();
+        $request->validated();
 
-        $province_name = Province::where('provCode', $request->province)->first();
-        $city_name = City::where('citymunCode', $request->city)->first();
-        $payload['province'] = $province_name->provDesc;
-        $payload['city'] = $city_name->citymunDesc;
+        $payload = $request->except('confirmEmail');
+        $payload['role'] = 'applicant';
+        $payload['username'] = $payload['email'];
+        $payload['password'] = Hash::make($payload['password']);
+
+        $save = DB::transaction(function() use ($payload){
+            $isSave = User::create($payload);
+            return $isSave;
+        });
+
+        if(!$save){
+            return response()->json([
+                'status' => 500,
+                'data' => $payload,
+                'message' => 'Unable to save Patient!'
+            ]); 
+        }
+
         return response()->json([
             'status' => 200,
             'data' => $payload
@@ -152,19 +166,31 @@ class AuthController extends Controller
 
     public function login(\App\Http\Requests\LoginRequest $request){
         $request->validated();
-        $checkUser = User::where('username', $request['username'])->first();
+        $checkUser = User::where('email', $request['email'])->first();
 
-        $auth = $request->only('username', 'password');
+        if(!isset($checkUser)) {
+            return response([
+                'errors' => ['password' => ['Account not found!']]
+            ],422);
+        }
+
+        $auth = $request->only('email', 'password');
 
         if($checkUser->status !== 'active' || $checkUser->account_status === 0){
-            return redirect()->back()->withErrors(['password'=> 'Account not found!']); 
+            return response([
+                'errors' => ['password' => ['Account not found!']]
+            ],422);
         }
 
         if(Auth::attempt($auth)){
-            if(auth()->user()->role === 'donor'){
-                return redirect('/donor-page');
+            if(auth()->user()->role === 'applicant'){
+                return response([
+                    'redirect' => '/applicant/dashboard' 
+                ],200);
             }
-            return redirect('/admin');
+            return response([
+                'redirect' => '/admin' 
+            ],200);
         }
 
         return redirect()->back()->withErrors(['password'=> 'Wrong Credentials']);
@@ -207,8 +233,6 @@ class AuthController extends Controller
     public function logout(){
         Auth::logout();
 
-        return response()->json([
-            'status' => 1
-        ]);
+        return redirect('/');
     }
 }

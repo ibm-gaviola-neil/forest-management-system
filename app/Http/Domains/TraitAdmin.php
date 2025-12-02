@@ -96,6 +96,8 @@ trait TraitAdmin {
             'mail.from.name' => 'Biliran Blood Registry System', // MAIL_FROM_NAME
         ]);
 
+        $body = nl2br($body);
+
         // Send the email
         Mail::to($to_email)->send(new SystemNotificationEmail($subject, $body));
 
