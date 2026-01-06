@@ -129,8 +129,14 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::get('/settings', 'settings');
     });
 
-    Route::prefix('/trees')->controller(\App\Http\Controllers\TreeController::class)->group(function(){
+    Route::prefix('/applicant/trees')->controller(\App\Http\Controllers\TreeController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::get('/view/{tree}', 'show');
+        Route::get('/edit/{tree}', 'edit');
+        Route::get('/trees-list', 'treesList');
         Route::post('/store', 'store');
+        Route::post('/update/{tree}', 'update');
+        Route::post('/cancel/{tree}', 'cancel');
         Route::post('/store/chainsaw', 'storeChainsaw');
     });
 });

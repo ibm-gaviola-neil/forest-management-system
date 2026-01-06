@@ -33,7 +33,7 @@ class ApplicantController extends Controller
 
     public function treeRegistration()
     {
-        return view('Pages.Applicant.tree-registration.index');
+        return view('Pages.Applicant.tree-registration.create');
     }
 
     public function settings()

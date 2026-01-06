@@ -35,7 +35,7 @@ export async function submitForm({ url, formData, buttonId, errorDisplayId, btnL
                 const el = document.getElementById(`${field}_Error`);
                 const input = document.querySelector(`[name="${field}"]`);
                 if (el) {
-                    el.innerHTML = `<p class="text-sm text-danger" style="font-size: 11px;">${messages.join(' ')}</p>`;
+                    el.innerHTML = `<p class="text-sm error" style="font-size: 11px;">${messages.join(' ')}</p>`;
                 }
 
                 if (input) {
@@ -50,6 +50,32 @@ export async function submitForm({ url, formData, buttonId, errorDisplayId, btnL
         }
         // Optionally throw for 422 as well, if you want to stop further processing
         throw new Error('Validation error');
+    }
+
+    return data;
+}
+
+export async function submitPlainPost({url}) {
+    let data;
+    const response = await fetch(url, {
+        method: "POST", // usually logout should be POST
+        headers: {
+            "Content-Type": "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Logout request failed.");
+    }
+
+    try {
+        data = await response.json();
+    } catch (error) {
+        data = null;
     }
 
     return data;

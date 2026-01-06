@@ -19,4 +19,11 @@ class Tree extends Model
         'description',
         'user_id',
     ];
+
+    public const TREE_TYPES = [
+        'Fruit-Bearing' => 'Fruit-Bearing',
+        'Timber'        => 'Timber',
+        'Medicinal'     => 'Medicinal',
+        'Ornamental'    => 'Ornamental',
+    ];
 }

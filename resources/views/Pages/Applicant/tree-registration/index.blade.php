@@ -1,63 +1,54 @@
 @extends('components.layout.applicant-layout')
 
 @section('applicant-content')
-<div class="flex items-center justify-center">
-  <div class="w-full max-w-4xl bg-white p-8 rounded shadow">
-      <h2 class="text-3xl font-bold mb-6 text-center">Tree Registration</h2>
-  
-      <form class="grid grid-cols-1 sm:grid-cols-2 gap-6" id="treeForm">
-        <div>
-          <label class="block mb-1 font-medium">Tree ID</label>
-          <input type="text" name="treeId" class="w-full p-2 border border-gray-300 rounded" />
-          <span id="treeId_Error" class="error italic"></span>
-        </div>
-        <div>
-          <label class="block mb-1 font-medium">Tree Type</label>
-          <select name="treeType" class="w-full p-2 border border-gray-300 rounded" >
-            <option value="">Select type</option>
-            <option value="Fruit-Bearing">Fruit-Bearing</option>
-            <option value="Timber">Timber</option>
-            <option value="Medicinal">Medicinal</option>
-            <option value="Ornamental">Ornamental</option>
-          </select>
-          <span id="treeType_Error" class="error italic"></span>
-        </div>
-       
-        <div>
-          <label class="block mb-1 font-medium">Date Planted</label>
-          <input type="date" name="datePlanted" class="w-full p-2 border border-gray-300 rounded"  />
-          <span id="datePlanted_Error" class="error italic"></span>
-        </div>
-        <div>
-          <label class="block mb-1 font-medium">Height (meters)</label>
-          <input type="number" name="height" class="w-full p-2 border border-gray-300 rounded"  />
-          <span id="height_Error" class="error italic"></span>
-        </div>
-        <div>
-          <label class="block mb-1 font-medium">Diameter (centimeters)</label>
-          <input type="number" name="diameter" class="w-full p-2 border border-gray-300 rounded" />
-          <span id="diameter_Error" class="error italic"></span>
-        </div>
-        <div class="col-span-2">
-          <label class="block mb-1 font-medium">Location</label>
-          <input type="text" name="location" placeholder="Enter location" class="w-full p-2 border border-gray-300 rounded" />
-          <span id="location_Error" class="error italic"></span>
-        </div>
-        <div class="col-span-2">
-          <label class="block mb-1 font-medium">Description (optional)</label>
-          <textarea name="description" rows="3" class="w-full p-2 border border-gray-300 rounded"></textarea>
-          <span id="description_Error" class="error italic"></span>
-        </div>
-        <div id="loginResponse"></div>
-        <div class="col-span-2 text-right">
-          <button type="submit" id="submit-btn" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
-            Submit
-          </button>
-        </div>
-      </form>
+<div class="max-w-full mx-auto mt-8 p-4 bg-white shadow rounded">
+  <!-- Controls: Search, Status Filter, Register -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+    <!-- Search -->
+    <div class="w-full md:w-1/3">
+      <input 
+        type="text" 
+        placeholder="Search by Tree ID, Type, or Location..." 
+        id="treeSearch"
+        class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+      >
     </div>
+  
+    <!-- Status Filter + Register Button Group -->
+    <div class="flex gap-2 w-full md:w-auto justify-end">
+      <select class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="status-search">
+        <option value="">All Statuses</option>
+        <option value="0">Pending</option>
+        <option value="1">Approved</option>
+        <option value="2">Rejected</option>
+        <option value="3">Cancelled</option>
+      </select>
+      <a href="/applicant/treeRegistration" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition duration-200">
+        Register
+      </a>
+    </div>
+  </div>
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Tree ID</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Tree Type</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Date Planted</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Height / Diameter</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Location</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Status</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Action</th>
+        </tr>
+      </thead>
+      <tbody id="treeTable" class="transition-opacity duration-500 opacity-0">
+        
+      </tbody>
+    </table>
+    <div id="treeTablePagination"></div>
+  </div>
 </div>
-
 @push('scripts')
     <script src="{{asset('./assets/js/features/tree.js')}}" type="module"></script>
 @endpush
