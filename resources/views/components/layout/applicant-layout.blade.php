@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard - Forest Monitoring System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{asset('/assets/js/features/tailwind.min.js')}}" type="module"></script>
     <style>
         .error {
             color: red !important;
