@@ -139,6 +139,29 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/cancel/{tree}', 'cancel');
         Route::post('/store/chainsaw', 'storeChainsaw');
     });
+
+    Route::prefix('/applicant/chainsaw')->controller(\App\Http\Controllers\ChainsawController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::get('/view/{chainsaw}', 'show');
+        Route::get('/edit/{chainsaw}', 'edit');
+        Route::get('/register', 'create');
+        Route::get('/list', 'list');
+        Route::post('/store', 'store');
+        Route::post('/update/{chainsaw}', 'update');
+        Route::post('/cancel/{chainsaw}', 'cancel');
+    });
+
+    Route::prefix('/applicant/cutting-permit')->controller(\App\Http\Controllers\CuttingPermitController::class)->group(function(){
+        Route::get('/', 'index');
+        Route::get('/register', 'create');
+        // Route::get('/view/{chainsaw}', 'show');
+        // Route::get('/edit/{chainsaw}', 'edit');
+        // Route::get('/register', 'create');
+        // Route::get('/list', 'list');
+        // Route::post('/store', 'store');
+        // Route::post('/update/{chainsaw}', 'update');
+        // Route::post('/cancel/{chainsaw}', 'cancel');
+    });
 });
 
 Route::controller(\App\Http\Controllers\Client\AuthController::class)->group(function(){

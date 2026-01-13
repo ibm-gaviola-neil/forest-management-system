@@ -10,7 +10,7 @@
         .error {
             color: red !important;
             font-size: 0.875rem;
-            margin-top: 0.25rem;
+            margin-top: 0.25rem;   
             display: block;
         }
         .error-input {
@@ -114,7 +114,7 @@
                     <img src="{{ asset('./assets/images/chain.png') }}" alt="Chainsaw Registration"
                         class="w-8 h-8" /><span>Chainsaw Registration</span>
                 </a>
-                <a href="/applicant/cutting"
+                <a href="/applicant/cutting-permit"
                     class="flex sidebar-link items-center space-x-3 hover:text-green-800 px-3 py-2 text-xl rounded-lg hover:bg-white">
                     <img src="{{ asset('./assets/images/cutting permit.png') }}" alt="Tree Cutting Permit"
                         class="w-8 h-8" /><span>Tree Cutting Permit</span>
@@ -150,7 +150,8 @@
         </main>
     </div>
 
-    <script src="{{assert('./assets/js/features/global.js')}}" type="module"></script>
+    <script src="{{asset('./assets/js/features/global.js')}}" type="module"></script>
+    <script src="{{asset('./assets/js/ui/select.js')}}"></script>
     <script>
         const logout_btn = document.getElementById("logout-link");
         const sidebarItem = document.querySelectorAll('.sidebar-item')

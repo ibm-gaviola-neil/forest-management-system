@@ -1,66 +1,56 @@
 @extends('components.layout.applicant-layout')
 
 @section('applicant-content')
-<div class="flex items-center justify-center">
-<div class="w-full max-w-4xl bg-white p-8 rounded-lg shadow-md">
-    <h2 class="text-3xl font-bold mb-6">Chainsaw Registration</h2>
-
-    <form class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl" id="chainsawForm">
-      <div>
-        <label class="block mb-1 font-medium">Serial Number</label>
-        <input name="serial_number" type="text" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter serial number" />
-        <span id="serial_number_Error" class="error italic"></span>
-      </div>
-
-      <div>
-        <label class="block mb-1 font-medium">Brand</label>
-        <input type="text" name="brand" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter brand" />
-        <span id="brand_Error" class="error italic"></span>
-      </div>
-
-      <div>
-        <label class="block mb-1 font-medium">Model</label>
-        <input type="text" name="model" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter model" />
-        <span id="model_Error" class="error italic"></span>
-      </div>
-
-      <div>
-        <label class="block mb-1 font-medium">Bar Length</label>
-        <input type="text" name="bar_length" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter bar length (inches/cm)" />
-        <span id="bar_length_Error" class="error italic"></span>
-      </div>
-
-      <div>
-        <label class="block mb-1 font-medium">Engine Displacement</label>
-        <input type="text" name="engine_displacement" class="w-full p-2 border border-gray-300 rounded" placeholder="Enter engine displacement" />
-        <span id="engine_displacement_Error" class="error italic"></span>
-      </div>
-
-      <div>
-        <label class="block mb-1 font-medium">Date of Acquisition</label>
-        <input type="date" name="date_acquisition" class="w-full p-2 border border-gray-300 rounded" />
-        <span id="date_acquisition_Error" class="error italic"></span>
-      </div>
-
-      <div class="col-span-2">
-        <label class="block mb-1 font-medium">Description</label>
-        <textarea class="w-full p-2 border border-gray-300 rounded" rows="3" placeholder="Optional description"></textarea>
-        <span id="description_Error" class="error italic"></span>
-      </div>
-
-      <div id="loginResponse"></div>
-
-      <div class="col-span-2 text-right">
-        <button id="submit-btn" type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">
-          Submit
-        </button>
-      </div>
-    </form>
+<div class="max-w-full mx-auto mt-8 p-4 bg-white shadow rounded">
+  <!-- Controls: Search, Status Filter, Register -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+    <!-- Search -->
+    <div class="w-full md:w-1/3">
+      <input 
+        type="text" 
+        placeholder="Search by Tree ID, Type, or Location..." 
+        id="treeSearch"
+        class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+      >
+    </div>
+  
+    <!-- Status Filter + Register Button Group -->
+    <div class="flex gap-2 w-full md:w-auto justify-end">
+      <select class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="status-search">
+        <option value="">All Statuses</option>
+        <option value="0">Pending</option>
+        <option value="1">Approved</option>
+        <option value="2">Rejected</option>
+        <option value="3">Cancelled</option>
+      </select>
+      <a href="/applicant/chainsaw/register" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition duration-200">
+        Register
+      </a>
+    </div>
+  </div>
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white">
+      <thead>
+        <tr>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Serial Number</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Brand</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Model</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Bar Lenght</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Engine Displacement</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Date Acquisition</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Status</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Action</th>
+        </tr>
+      </thead>
+      <tbody id="treeTable" class="transition-opacity duration-500 opacity-0">
+        
+      </tbody>
+    </table>
+    <div id="treeTablePagination"></div>
   </div>
 </div>
-
 @push('scripts')
     <script src="{{asset('./assets/js/features/chainsaw-registration.js')}}" type="module"></script>
 @endpush
 @endsection  
-    

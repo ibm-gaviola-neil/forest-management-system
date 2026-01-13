@@ -13,7 +13,7 @@ class ApplicantController extends Controller
 
     public function chainsaw()
     {
-        return view('Pages.Applicant.chainsaw-registration.index');
+        return view('Pages.Applicant.chainsaw-registration.create');
     }
 
     public function cutting()
