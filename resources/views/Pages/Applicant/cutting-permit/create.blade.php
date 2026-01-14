@@ -5,7 +5,7 @@
   <div class="w-full max-w-4xl bg-white p-8 rounded shadow">
       <h2 class="text-3xl font-bold mb-6 text-center">Tree Cutting Permit Application</h2>
   
-      <form class="grid grid-cols-1 sm:grid-cols-2 gap-6" id="chainsawForm">
+      <form class="grid grid-cols-1 sm:grid-cols-2 gap-6" id="permit-form" enctype="multipart/form-data">
         @include('Pages.Applicant.cutting-permit.form')
         <div id="loginResponse"></div>
         <div class="col-span-2 text-right flex justify-between gap-2">
@@ -24,8 +24,8 @@
     </div>
 </div>
 
-{{-- @push('scripts')
-    <script src="{{asset('./assets/js/features/chainsaw-registration.js')}}" type="module"></script>
-@endpush --}}
+@push('scripts')
+    <script src="{{asset('./assets/js/features/cutting-permit.js')}}" type="module"></script>
+@endpush
 @endsection  
     

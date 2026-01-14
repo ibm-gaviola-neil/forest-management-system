@@ -158,7 +158,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         // Route::get('/edit/{chainsaw}', 'edit');
         // Route::get('/register', 'create');
         // Route::get('/list', 'list');
-        // Route::post('/store', 'store');
+        Route::post('/store', 'store');
         // Route::post('/update/{chainsaw}', 'update');
         // Route::post('/cancel/{chainsaw}', 'cancel');
     });
