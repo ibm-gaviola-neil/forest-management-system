@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('tree_id')->constrained()->onDelete('cascade');
+            $table->string('permit_id')->unique();
             $table->text('reason');
             $table->string('document_path');
             $table->string('document_original_name');
-            $table->integer('status')->default(0)->comment('0=pending, 1=approved, 2=rejected, 3=expired');
+            $table->integer('status')->default(0)->comment('0=pending, 1=approved, 2=rejected, 3=cancelled');
             $table->text('rejection_reason')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('rejected_at')->nullable();
