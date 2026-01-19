@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Requests;
-
 use Illuminate\Foundation\Http\FormRequest;
 
 class CuttingPermitRequest extends FormRequest
@@ -30,11 +28,17 @@ class CuttingPermitRequest extends FormRequest
                 'min:10',
                 'max:1000',
             ],
-            'document' => [
+            // Remove the single document validation as it's now multiple
+            'documents' => [
+                'required',
+                'array', // Ensure it's an array of files
+                'min:1',  // At least one file
+            ],
+            'documents.*' => [
                 'required',
                 'file',
                 'mimes:pdf,jpeg,jpg,png',
-                'max:5120', // 5MB in kilobytes (5 * 1024)
+                'max:10240', // 10MB in kilobytes
             ],
         ];
     }
@@ -55,10 +59,21 @@ class CuttingPermitRequest extends FormRequest
             'reason.min' => 'The reason must be at least 10 characters long.',
             'reason.max' => 'The reason cannot exceed 1000 characters.',
             
-            // Document validation messages
+            // Multiple documents validation messages
+            'documents.required' => 'Please upload at least one supporting document.',
+            'documents.array' => 'The supporting documents are not in the correct format.',
+            'documents.min' => 'Please upload at least one supporting document.',
+            
+            // Individual document validation messages
+            'documents.*.required' => 'Each document is required.',
+            'documents.*.file' => 'One of the uploaded files is not valid.',
+            'documents.*.mimes' => 'All documents must be PDF files or images (JPG, JPEG, PNG) only.',
+            'documents.*.max' => 'Each document size cannot exceed 10MB.',
+            
+            // Keep the old document messages for backward compatibility
             'document.required' => 'Please upload a supporting document.',
             'document.file' => 'The uploaded file is not valid.',
-            'document.mimes' => 'The document must be a PDF file or image (JPG, PNG) only.', // Updated message
+            'document.mimes' => 'The document must be a PDF file or image (JPG, PNG) only.',
             'document.max' => 'The document size cannot exceed 5MB.',
         ];
     }
@@ -71,7 +86,17 @@ class CuttingPermitRequest extends FormRequest
         return [
             'tree_id' => 'registered tree',
             'reason' => 'reason for cutting',
-            'document' => 'supporting document',
+            'document' => 'supporting document', // Keep for backward compatibility
+            'documents' => 'supporting documents',
+            'documents.*' => 'supporting document',
         ];
+    }
+
+    /**
+     * Get data except documents.
+     */
+    public function getDataExceptDocuments()
+    {
+        return collect($this->validated())->except(['document', 'documents'])->toArray();
     }
 }

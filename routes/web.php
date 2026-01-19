@@ -154,13 +154,13 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
     Route::prefix('/applicant/cutting-permit')->controller(\App\Http\Controllers\CuttingPermitController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/register', 'create');
-        // Route::get('/view/{chainsaw}', 'show');
+        Route::get('/view/{cutting_permit}', 'show');
+        Route::get('/list', 'list');
         // Route::get('/edit/{chainsaw}', 'edit');
         // Route::get('/register', 'create');
-        // Route::get('/list', 'list');
         Route::post('/store', 'store');
         // Route::post('/update/{chainsaw}', 'update');
-        // Route::post('/cancel/{chainsaw}', 'cancel');
+        Route::post('/cancel/{cuttingPermit}', 'cancel');
     });
 });
 

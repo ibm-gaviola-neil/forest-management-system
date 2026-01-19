@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CuttingPermitRequest;
 use App\Http\Services\CuttingPermitService;
+use App\Models\CuttingPermit;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +24,14 @@ class CuttingPermitController extends Controller
     public function index()
     {
         return view('Pages.Applicant.cutting-permit.index');
+    }
+
+    public function list(Request $request) 
+    {
+        $role = auth()->user()->role;
+        $data = $this->cuttingPermitService->getCuttingPermitData($role, $request);
+
+        return response()->json($data);
     }
 
     public function create()
@@ -43,7 +53,7 @@ class CuttingPermitController extends Controller
                 'tree_id' => $payload['tree_id'] ?? null
             ]);
             
-            $cuttingPermit = $this->cuttingPermitService->saveCuttingPermit($payload, $request);
+            $cuttingPermit = $this->cuttingPermitService->saveCuttingPermit($request->getDataExceptDocuments(), $request);
             
             DB::commit();
             
@@ -113,7 +123,7 @@ class CuttingPermitController extends Controller
             
             return response()->json([
                 'status' => 'error',
-                'message' => 'Database error occurred. Please try again.'
+                'message' => 'Database error occurred.'.$e->getMessage()
             ], 500);
             
         } catch (\Throwable $e) {
@@ -130,6 +140,31 @@ class CuttingPermitController extends Controller
                 'status' => 'error',
                 'message' => 'A system error occurred. Our team has been notified.',
                 'error_code' => 'CP_' . time() // Error tracking code
+            ], 500);
+        }
+    }
+
+    public function show(CuttingPermit $cuttingPermit) 
+    {
+        $data['cutting_permit'] = $cuttingPermit;
+        $data['requirements'] = $cuttingPermit->requirements;
+        return view('Pages.Applicant.cutting-permit.view', $data);
+    }
+
+    public function cancel(CuttingPermit $cuttingPermit)
+    {
+        try {
+            $this->cuttingPermitService->cancelCuttingPermit($cuttingPermit);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Cutting permit application data cancelled successfully.',
+                'data' => $cuttingPermit
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed. Please try again.',
+                'log' => $th->getMessage()
             ], 500);
         }
     }

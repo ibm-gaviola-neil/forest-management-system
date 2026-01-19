@@ -1,5 +1,5 @@
 import { submitForm, submitPlainPost } from "../services/formService.js";
-import { closeModal, showSuccessAlert } from "../ui/alert.js";
+import { closeModal, redirectModal, showSuccessAlert } from "../ui/alert.js";
 import { buttonLoader, loader } from "../ui/html-ui.js";
 import { debounce, getStatusBadge, renderPaginatedTable } from "../ui/table-loader.js";
 
@@ -10,31 +10,25 @@ const loginForm = document.getElementById('permit-form');
 const editForm = document.getElementById("EditChainsawForm");
 const cancelBtn = document.getElementById("cancel-btn");
 
-function buildTreeRow(chainsaw) {
+function buildTreeRow(data) {
     return `
       <tr>
-        <td class="px-4 py-4 border-b border-gray-200">${chainsaw.serial_number || ""}</td>
+        <td class="px-4 py-4 border-b border-gray-200">${data.tree.treeId || ""}</td>
         <td class="px-4 py-4 border-b border-gray-200">${
-            chainsaw.brand || ""
+            data.tree.treeType || ""
         }</td>
         <td class="px-4 py-4 border-b border-gray-200">${
-            chainsaw.model || ""
+            data.tree.datePlanted || ""
         }</td>
         <td class="px-4 py-4 border-b border-gray-200">${
-            chainsaw.bar_length}</td>
-        <td class="px-4 py-4 border-b border-gray-200">${
-            chainsaw.engine_displacement || ""
-        }</td>
-        <td class="px-4 py-4 border-b border-gray-200">${
-            chainsaw.date_acquisition || ""
-        }</td>
+            data.tree.location}</td>
         <td class="px-4 py-4 border-b border-gray-200">${getStatusBadge(
-            chainsaw.status
+            data.status
         )}</td>
         <td class="px-4 py-4 border-b border-gray-200">
           <div class="flex gap-2">
-            <a href="/applicant/chainsaw/view/${
-                chainsaw.id
+            <a href="/applicant/cutting-permit/view/${
+                data.id
             }" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs font-semibold">View</a>
           </div>
         </td>
@@ -43,25 +37,32 @@ function buildTreeRow(chainsaw) {
 }
 
 if(loginForm){
-    loginForm.addEventListener('submit', async (e) =>{
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const loginBtn = document.getElementById('submit-btn');
         const loading = buttonLoader(' Loading...');
         const formData = new FormData(e.target);
         loginBtn.innerHTML = `${loading}`;
-    
+        
         try {
             const response = await submitForm({
                 url: '/applicant/cutting-permit/store',
                 formData,
                 buttonId: 'submit-btn',
-                errorDisplayId: 'loginResponse', 
-            })
+                errorDisplayId: 'loginResponse',
+            });
+            
             loginBtn.innerHTML = `Submit`;
+            
+            // Show the standard success alert that you already have
             showSuccessAlert('Cutting permit application submitted successfully. Redirecting', 'success');
-            setTimeout(() => {
-                window.location.replace('/applicant/cutting-permit');
-            }, 2000);
+            
+            // Create a success confirmation popup
+            redirectModal(
+                'Your cutting permit application has been successfully submitted for review.',
+                '/applicant/cutting-permit'
+            );
+            
         } catch (error) {
             showSuccessAlert('Something went wrong, please try again.', 'error');
             loginBtn.innerHTML = `Submit`;
@@ -77,14 +78,20 @@ if (cancelBtn) {
 
         try {
           const data = await submitPlainPost({
-            url: "/applicant/chainsaw/cancel/" + treeId
+            url: "/applicant/cutting-permit/cancel/" + treeId
           });
 
           if(data.status == 200){
             closeModal()
             cancelBtn.innerHTML = "Yes, Cancel"
-            showSuccessAlert("Chainsaw registration cancelled successfuly!");
-            document.getElementById('status-badge').innerHTML = `<h2 class="text-3xl font-bold text-center">Tree Information</h2> ${getStatusBadge(3)}`
+            // Show the standard success alert that you already have
+            showSuccessAlert('Cutting permit application cancelled successfully. Redirecting', 'success');
+            
+            // Create a success confirmation popup
+            redirectModal(
+                'Your cutting permit application has been successfully submitted for review.',
+                `/applicant/cutting-permit/view/${treeId}`
+            );
           }else{
             cancelBtn.innerHTML = "Yes, Cancel"
             showSuccessAlert(data.message, "error");
@@ -104,7 +111,7 @@ function loadTreeTable(page = 1) {
     renderPaginatedTable({
         tbodyId: "treeTable",
         paginationId: "treeTablePagination",
-        endpoint: "/applicant/chainsaw/list",
+        endpoint: "/applicant/cutting-permit/list",
         page,
         buildRowFn: buildTreeRow,
         columns: 7,

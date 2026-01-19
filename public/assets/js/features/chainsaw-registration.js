@@ -1,5 +1,5 @@
 import { submitForm, submitPlainPost } from "../services/formService.js";
-import { closeModal, showSuccessAlert } from "../ui/alert.js";
+import { closeModal, redirectModal, showSuccessAlert } from "../ui/alert.js";
 import { buttonLoader, loader } from "../ui/html-ui.js";
 import { debounce, getStatusBadge, renderPaginatedTable } from "../ui/table-loader.js";
 
@@ -106,8 +106,8 @@ if(loginForm){
                 errorDisplayId: 'loginResponse', 
             })
             loginBtn.innerHTML = `Submit`;
-            alert('Tree registered successfully!');
-            window.location.reload();
+            showSuccessAlert('Chainsaw registered successfully!', 'success');
+            redirectModal('Chainsaw submitted for review!', `/applicant/chainsaw/`);
         } catch (error) {
             console.log(error)
             loginBtn.innerHTML = `Submit`;
@@ -132,8 +132,9 @@ if (editForm) {
                 errorDisplayId: "loginResponse",
             });
             loginBtn.innerHTML = `Submit`;
-            alert("Chainsaw updated successfully!");
-            window.location.replace(`/applicant/chainsaw/view/${chainsawId.value}`);
+            // Show the standard success alert that you already have
+            showSuccessAlert('Chainsaw updated successfully!', 'success');
+            redirectModal('Chainsaw updated successfully!', `/applicant/chainsaw/view/${chainsawId.value}`);
         } catch (error) {
             console.log(error);
             loginBtn.innerHTML = `Update`;

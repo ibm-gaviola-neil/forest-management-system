@@ -33,12 +33,10 @@
     <table class="min-w-full bg-white">
       <thead>
         <tr>
-          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Serial Number</th>
-          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Brand</th>
-          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Model</th>
-          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Bar Lenght</th>
-          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Engine Displacement</th>
-          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Date Acquisition</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Tree ID</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Tree Type</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Date Planted</th>
+          <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Location</th>
           <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Status</th>
           <th class="px-4 py-3 border-b-2 border-gray-200 bg-gray-50 text-left text-xs font-semibold text-gray-700 uppercase">Action</th>
         </tr>
@@ -51,6 +49,6 @@
   </div>
 </div>
 @push('scripts')
-    <script src="{{asset('./assets/js/features/chainsaw-registration.js')}}" type="module"></script>
+    <script src="{{asset('./assets/js/features/cutting-permit.js')}}" type="module"></script>
 @endpush
 @endsection  

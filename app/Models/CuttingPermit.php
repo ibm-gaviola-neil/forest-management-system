@@ -35,7 +35,7 @@ class CuttingPermit extends Model
     const STATUS_PENDING = 0;
     const STATUS_APPROVED = 1;
     const STATUS_REJECTED = 2;
-    const STATUS_EXPIRED = 3;
+    const STATUS_CANCEL = 3;
 
     // Status labels
     public static function getStatusLabels(): array
@@ -44,7 +44,7 @@ class CuttingPermit extends Model
             self::STATUS_PENDING => 'Pending',
             self::STATUS_APPROVED => 'Approved',
             self::STATUS_REJECTED => 'Rejected',
-            self::STATUS_EXPIRED => 'Expired',
+            self::STATUS_CANCEL => 'Cancelled',
         ];
     }
 
@@ -61,7 +61,7 @@ class CuttingPermit extends Model
             self::STATUS_PENDING => 'bg-yellow-100 text-yellow-800',
             self::STATUS_APPROVED => 'bg-green-100 text-green-800',
             self::STATUS_REJECTED => 'bg-red-100 text-red-800',
-            self::STATUS_EXPIRED => 'bg-gray-100 text-gray-800',
+            self::STATUS_CANCEL => 'bg-gray-100 text-gray-800',
             default => 'bg-gray-100 text-gray-800',
         };
     }
@@ -105,7 +105,7 @@ class CuttingPermit extends Model
 
     public function scopeExpired($query)
     {
-        return $query->where('status', self::STATUS_EXPIRED);
+        return $query->where('status', self::STATUS_CANCEL);
     }
 
     // Helper methods
@@ -124,9 +124,9 @@ class CuttingPermit extends Model
         return $this->status === self::STATUS_REJECTED;
     }
 
-    public function isExpired(): bool
+    public function isCancel(): bool
     {
-        return $this->status === self::STATUS_EXPIRED;
+        return $this->status === self::STATUS_CANCEL;
     }
 
     // Method to approve the permit
@@ -154,18 +154,22 @@ class CuttingPermit extends Model
     }
 
     // Method to mark as expired
-    public function markAsExpired(): void
+    public function markAsCancel(): bool
     {
-        $this->update([
-            'status' => self::STATUS_EXPIRED,
+        if($this->status === self::STATUS_CANCEL) {
+            return false;
+        }
+
+        return $this->update([
+            'status' => self::STATUS_CANCEL,
         ]);
     }
 
     // Check if permit is expired based on expires_at date
-    public function checkIfExpired(): bool
+    public function checkIfCancelled(): bool
     {
         if ($this->expires_at && now()->greaterThan($this->expires_at)) {
-            $this->markAsExpired();
+            $this->markAsCancel();
             return true;
         }
         return false;
@@ -204,5 +208,10 @@ class CuttingPermit extends Model
                 $permit->checkIfExpired();
             }
         });
+    }
+
+    public function requirements()
+    {
+        return $this->hasMany(CuttingPermitRequirement::class);
     }
 }
