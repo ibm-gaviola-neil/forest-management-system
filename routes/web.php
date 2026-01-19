@@ -162,6 +162,18 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         // Route::post('/update/{chainsaw}', 'update');
         Route::post('/cancel/{cuttingPermit}', 'cancel');
     });
+
+    Route::prefix('/applicant/profile')->controller(\App\Http\Controllers\ProfileSettingController::class)->group(function(){
+        Route::get('/', 'index');
+        // Route::get('/register', 'create');
+        // Route::get('/view/{cutting_permit}', 'show');
+        // Route::get('/list', 'list');
+        // Route::get('/edit/{chainsaw}', 'edit');
+        // Route::get('/register', 'create');
+        // Route::post('/store', 'store');
+        // Route::post('/update/{chainsaw}', 'update');
+        // Route::post('/cancel/{cuttingPermit}', 'cancel');
+    });
 });
 
 Route::controller(\App\Http\Controllers\Client\AuthController::class)->group(function(){

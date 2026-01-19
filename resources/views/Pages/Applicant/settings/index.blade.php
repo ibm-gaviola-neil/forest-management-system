@@ -6,7 +6,7 @@
 
   <!-- Settings Options -->
   <div class="space-y-3">
-    <a href="account-info.html" class="block bg-gray-50 p-4 rounded-lg flex items-center space-x-4 shadow hover:bg-gray-100">
+    <a href="/applicant/profile" class="block bg-gray-50 p-4 rounded-lg flex items-center space-x-4 shadow hover:bg-gray-100">
       <div class="text-green-600 text-2xl">👤</div>
       <div>
         <h4 class="font-semibold">Account Information</h4>
