@@ -66,13 +66,7 @@
                   <div class="flex flex-col sm:flex-row items-center">
                     <div class="mb-4 sm:mb-0 sm:mr-6 flex-shrink-0">
                       <img class="h-20 w-20 sm:h-24 sm:w-24 rounded-full object-cover"
-                        src="
-                        @if($user_profile->profile_image)
-                        {{asset('storage/profile_images/'.$user_profile->profile_image)}}
-                        @else
-                        {{asset('./assets/images/user-default.avif')}}
-                        @endif
-                        "
+                        src="@if($user_profile->profile_image){{asset('storage/profile_images/'.$user_profile->profile_image)}}@else{{asset('./assets/images/user-default.avif')}}@endif"
                         alt="Profile photo">
                     </div>
                     <div class="text-center sm:text-left">
