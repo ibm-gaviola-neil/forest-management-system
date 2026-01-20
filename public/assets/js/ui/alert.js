@@ -33,7 +33,7 @@ export function closeModal() {
     modal.addEventListener('animationend', hideModal, { once: true });
 }
 
-export function redirectModal(message = '', redirectUrl = '') {
+export function redirectModal(message = '', redirectUrl = '', secondMessage = `You will be redirected to your applications list.`) {
   const successCard = document.createElement('div');
   successCard.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-xl z-50 w-full max-w-md text-center border-t-4 border-green-500 animate-fade-in';
   successCard.innerHTML = `
@@ -42,7 +42,7 @@ export function redirectModal(message = '', redirectUrl = '') {
       </svg>
       <h3 class="text-xl font-bold text-gray-900 mb-2">Submitted!</h3>
       <p class="text-gray-600 mb-4">${message}</p>
-      <div class="text-sm text-gray-500 mb-4">You will be redirected to your applications list.</div>
+      <div class="text-sm text-gray-500 mb-4">${secondMessage}</div>
   `;
   
   // Add overlay background

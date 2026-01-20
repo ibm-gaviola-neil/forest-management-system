@@ -185,9 +185,9 @@
           overflow-y-auto shadow-lg">
 
             <div class="p-6 flex flex-col space-y-6 h-full">
-                <div class="flex items-center space-x-3 mb-8 pb-4 border-b border-green-300">
+                <div class="flex items-center space-x-3 mb-8 pb-4 border-b border-green-300 gap-2">
                     <!-- Close button for mobile -->
-                    <button id="close-sidebar" class="absolute top-4 right-4 lg:hidden text-green-800">
+                    <button id="close-sidebar" class="absolute top-4 right-4 lg:hidden text-green-800 ml-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -268,20 +268,20 @@
         <!-- Main content -->
         <main class="flex-1 overflow-y-auto relative w-full lg:ml-0 mb-5">
             <!-- Top navigation bar -->
-            <div class="fixed top-0 left-0 right-0 bg-white shadow-md p-3 z-10 lg:absolute lg:bg-transparent lg:shadow-none lg:top-4 lg:right-4 lg:left-auto flex justify-between items-center">
-              <div class="lg:hidden flex items-center">
+            <div class="fixed top-0 left-1 right-0 bg-white shadow-md p-3 z-10 lg:absolute lg:bg-transparent lg:shadow-none lg:top-4 lg:right-4 lg:left-auto flex justify-between items-center">
+              <div class="lg:hidden flex items-center mt-1 ml-2">
                 <!-- Logo for mobile top nav -->
                 <img src="{{ asset('./assets/images/img2.jpeg') }}" alt="Logo" class="w-10 h-10 rounded-full object-cover ml-10">
-                <span class="ml-2 font-semibold text-green-900">Forest Monitor</span>
+                <span class="ml-2 font-semibold text-sm text-green-900">Forest Monitoring and Permitting System</span>
               </div>
               
               <!-- Right side icons -->
               <div class="flex space-x-2 md:space-x-6">
-                <a href="notification.html" class="flex items-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
-                  <img src="{{ asset('./assets/images/notif.png') }}" alt="Notification" class="w-6 h-6 md:w-8 md:h-8" />
+                <a href="notification.html" class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
+                    <img src="{{ asset('./assets/images/notif.png') }}" alt="Notification" class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
                 </a>
-                <a href="/applicant/settings" class="flex items-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
-                  <img src="{{ asset('./assets/images/settings.png') }}" alt="Settings" class="w-6 h-6 md:w-8 md:h-8" />
+                <a href="/applicant/settings" class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
+                    <img src="{{ asset('./assets/images/settings.png') }}" alt="Settings" class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
                 </a>
               </div>
             </div>

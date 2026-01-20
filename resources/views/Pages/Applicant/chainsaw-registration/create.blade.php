@@ -5,7 +5,7 @@
   <div class="w-full max-w-4xl bg-white p-8 rounded shadow">
       <h2 class="text-3xl font-bold mb-6 text-center">Chainsaw Registration</h2>
   
-      <form class="grid grid-cols-1 sm:grid-cols-2 gap-6" id="chainsawForm">
+      <form class="" id="chainsawForm">
         @include('Pages.Applicant.chainsaw-registration.form')
         <div id="loginResponse"></div>
         <div class="col-span-2 text-right flex justify-between gap-2">

@@ -23,12 +23,17 @@ class User extends Authenticatable
         'added_by',
         'designation',
         'last_name',
+        'middle_name',
         'email',
         'username',
         'role',
         'password',
         'donor_id',
-        'account_status'
+        'account_status',
+        'contact_number',
+        'birth_date',
+        'address',
+        'profile_image',
     ];
 
     /**

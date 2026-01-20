@@ -44,7 +44,7 @@ export async function submitForm({ url, formData, buttonId, errorDisplayId, btnL
             }
         } else {
             document.getElementById(errorDisplayId).innerHTML = `
-                    <div class="p-2" style="background-color: #ffcbd1; color: #f94449;">Unexpected server error!</div>
+                    <div class="p-2 rounded-md" style="background-color: #ffcbd1; color: #f94449;">Unexpected server error!</div>
                 `
             throw new Error('Unexpected server error');
         }
