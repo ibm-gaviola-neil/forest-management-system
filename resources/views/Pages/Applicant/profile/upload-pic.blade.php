@@ -46,7 +46,7 @@
                         </path>
                     </svg>
                     <span class="mt-2 text-base text-blue-600">Select a photo</span>
-                    <span class="mt-1 text-xs text-gray-500">JPG, PNG or GIF (Max. 2MB)</span>
+                    <span class="mt-1 text-xs text-gray-500">JPG, PNG or GIF (Max. 1MB)</span>
                     <input type="file" class="hidden" name="profile_image" id="profilePhotoInput" accept="image/*">
                 </label>
                 <span id="profile_image_Error" class="error italic"></span>
