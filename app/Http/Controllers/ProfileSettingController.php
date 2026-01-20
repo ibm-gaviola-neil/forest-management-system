@@ -68,7 +68,7 @@ class ProfileSettingController extends Controller
             if ($request->hasFile('profile_image')) {
                 $file = $request->file('profile_image');
                 $filename = 'profile_' . auth()->user()->id . '_' . time() . '.' . $file->getClientOriginalExtension();
-                $file->storeAs('public/profile_images', $filename);
+                $file->storeAs('profile_images/', $filename, 'public');
                 $payload['profile_image'] = $filename;
             }
 
