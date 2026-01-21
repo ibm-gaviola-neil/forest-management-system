@@ -23,9 +23,17 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/logout', 'logout');
     });
 
-    Route::prefix('admin')->controller(\App\Http\Controllers\Admin\DashboardController::class)->group(function(){
-        Route::get('/', 'index');
-        Route::get('/number-donors', 'getNumberOfDonors');
+    Route::middleware(['ifAdmin'])->group(function() {
+        Route::prefix('admin')->controller(\App\Http\Controllers\Admin\DashboardController::class)->group(function(){
+            Route::get('/', 'index');
+            Route::get('/cutting-permit', 'pendingCuttingPermit');
+            Route::get('/number-donors', 'getNumberOfDonors');
+        });
+
+        Route::prefix('admin')->controller(\App\Http\Controllers\Admin\AdminCuttingPermitController::class)->group(function(){
+            // Route::get('/', 'index');
+            Route::get('/permit/view/{cuttingPermit}', 'show');
+        });
     });
 
     Route::prefix('users')->controller(\App\Http\Controllers\Admin\UsersController::class)->group(function(){

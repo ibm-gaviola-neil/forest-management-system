@@ -38,14 +38,14 @@ export function getStatusBadge(status) {
     }
 }
 
-function buildPagination({ current_page, last_page }, onPageChange) {
+function buildPagination({ current_page, last_page }, bgColor = 'blue') {
     let html = '<nav class="flex justify-center mt-4 gap-1">';
     // Previous Button
     html += `<button 
         class="px-3 py-1 rounded ${
             current_page === 1
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-blue-500 text-white hover:bg-blue-600"
+                : `bg-${bgColor}-500 text-white hover:bg-blue-600`
         }"
         ${current_page === 1 ? "disabled" : ""}
         data-page="${current_page - 1}" 
@@ -57,8 +57,8 @@ function buildPagination({ current_page, last_page }, onPageChange) {
         html += `<button 
         class="px-3 py-1 rounded ${
             i === current_page
-                ? "bg-blue-700 text-white"
-                : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                ? `bg-${bgColor}-700 text-white`
+                : `bg-${bgColor}-100 text-blue-700 hover:bg-blue-200`
         }"
         data-page="${i}"
         >${i}</button>`;
@@ -68,7 +68,7 @@ function buildPagination({ current_page, last_page }, onPageChange) {
         class="px-3 py-1 rounded ${
             current_page === last_page
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-blue-500 text-white hover:bg-blue-600"
+                : `bg-${bgColor}-500 text-white hover:bg-blue-600`
         }"
         ${current_page === last_page ? "disabled" : ""}
         data-page="${current_page + 1}" 
@@ -86,6 +86,7 @@ export async function renderPaginatedTable({
     query = {}, // Optional: { search: 'foo', status: 'active' }
     columns = 7, // Optional: number of columns for colspan
     loaderFn = tableLoader, // Optional: custom loader function
+    paginationBgColor = 'blue', // Optional: pagination button color
 }) {
     const tbody = document.getElementById(tbodyId);
     const pagination = document.getElementById(paginationId);
@@ -112,7 +113,7 @@ export async function renderPaginatedTable({
             : `<tr><td colspan="${columns}" class="py-8 text-center text-gray-500">No data found.</td></tr>`;
 
         // Build pagination
-        if (pagination) pagination.innerHTML = buildPagination(meta);
+        if (pagination) pagination.innerHTML = buildPagination(meta, paginationBgColor);
 
         // Attach page change listeners
         if (pagination) {
@@ -129,6 +130,7 @@ export async function renderPaginatedTable({
                             query,
                             columns,
                             loaderFn,
+                            paginationBgColor
                         });
                     }
                 };

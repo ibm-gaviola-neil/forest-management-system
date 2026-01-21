@@ -16,9 +16,9 @@ class CuttingPermitService {
         $this->cuttingPermitRepository = $cuttingPermitRepository;
     }
 
-    public function getCuttingPermitData($role = 'applicant', $request)
+    public function getCuttingPermitData($role = 'applicant', $request, $status = null)
     {
-        return $this->cuttingPermitRepository->getCuttingPermitData($role, $request);
+        return $this->cuttingPermitRepository->getCuttingPermitData($role, $request, $status);
     }
 
     public function getSelectableData()

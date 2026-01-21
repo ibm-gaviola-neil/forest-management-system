@@ -1,14 +1,44 @@
-<div class="sidebar" id="sidebar">
-    <div class="logo-container">
-        <img src="{{asset('assets/images/logo.jpg')}}" alt="System Logo" class="logo" onerror="this.style.display='none'">
-        <span class="logo-text">WEB-BASED FOREST MONITORING AND PERMITTING SYSTEM</span>
+<div class="sidebar bg-[#e2f0eb] h-screen w-64 fixed left-0 top-0 overflow-y-auto shadow-lg transition-all duration-300 ease-in-out" id="sidebar">
+    <div class="logo-container flex items-center justify-center p-5 border-b border-green-200">
+      <img src="{{asset('assets/images/logo.jpg')}}" alt="System Logo" class="logo h-10 w-10 rounded-full mr-3 shadow-sm" onerror="this.style.display='none'">
+      <span class="logo-text font-medium text-sm text-gray-800 leading-tight tracking-tight">WEB-BASED FOREST MONITORING AND PERMITTING SYSTEM</span>
     </div>
-    <ul class="nav-links" id="navLinks">
-        <li data-page="index" class="sidebar-item"><a href="/admin" class="sidebar-link"><i class="fas fa-home"></i> Dashboard</a></li>
-        <li data-page="qualified" class="sidebar-item"><a href="/admin/applicants" class="sidebar-link"><i class="fas fa-user-check"></i> Applicant Qualified</a></li>
-        <li data-page="review" class="sidebar-item"><a href="/admin/app-review" class="sidebar-link"><i class="fas fa-users"></i> Application Review</a></li>
-        <li data-page="notification" class="sidebar-item"><a href="/notifications" class="sidebar-link"><i class="fas fa-bell"></i> Notification</a></li>
-        <li data-page="report" class="sidebar-item"><a href="/admin/reports" class="sidebar-link"><i class="fas fa-chart-bar"></i> Report</a></li>
-        <li data-page="setting" class="sidebar-item"><a href="/settings" class="sidebar-link"><i class="fas fa-cog"></i> Setting</a></li>
+    <ul class="nav-links space-y-1 mt-6 px-3" id="navLinks">
+      <li data-page="index" class="sidebar-item">
+        <a href="/admin" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
+          <i class="fas fa-home mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i> 
+          <span class="font-medium group-hover:text-green-800">Dashboard</span>
+        </a>
+      </li>
+      <li data-page="qualified" class="sidebar-item">
+        <a href="/admin/applicants" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
+          <i class="fas fa-user-check mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i> 
+          <span class="font-medium group-hover:text-green-800">Applicant Qualified</span>
+        </a>
+      </li>
+      <li data-page="review" class="sidebar-item">
+        <a href="/admin/app-review" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
+          <i class="fas fa-users mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i> 
+          <span class="font-medium group-hover:text-green-800">Application Review</span>
+        </a>
+      </li>
+      <li data-page="notification" class="sidebar-item">
+        <a href="/notifications" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
+          <i class="fas fa-bell mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i> 
+          <span class="font-medium group-hover:text-green-800">Notification</span>
+        </a>
+      </li>
+      <li data-page="report" class="sidebar-item">
+        <a href="/admin/reports" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
+          <i class="fas fa-chart-bar mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i> 
+          <span class="font-medium group-hover:text-green-800">Report</span>
+        </a>
+      </li>
+      <li data-page="setting" class="sidebar-item">
+        <a href="/settings" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
+          <i class="fas fa-cog mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i> 
+          <span class="font-medium group-hover:text-green-800">Setting</span>
+        </a>
+      </li>
     </ul>
-</div>
+  </div>

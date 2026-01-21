@@ -5,7 +5,7 @@ namespace App\Http\Repositories;
 use App\Models\CuttingPermit;
 
 class CuttingPermitRepository {
-    public function getCuttingPermitData($role = 'applicant', $request)
+    public function getCuttingPermitData($role = 'applicant', $request, $status = null)
     {
         $data = [];
 
@@ -25,6 +25,10 @@ class CuttingPermitRepository {
 
         if ($role === 'applicant') {
             $query->where('user_id', auth()->user()->id);
+        } 
+        
+        if ($status) {
+            $query->where('status', $status);
         } 
 
         $data = $query->with('tree')

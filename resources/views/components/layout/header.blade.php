@@ -6,8 +6,9 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Report — Web-Based Forest Monitoring</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="{{asset('/assets/js/font-awesome.min.js')}}"></script>
-  <script src="{{asset('/assets/js/features/chart.min.js')}}"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  {{-- <script src="{{asset('./assets/js/font-awesome.min.js')}}"></script> --}}
+  <script src="{{asset('./assets/js/features/chart.min.js')}}"></script>
   <script src="{{asset('./assets/js/tailwind/plus.js')}}"></script>
 
   <style>
@@ -16,33 +17,14 @@
     body { font-family: Arial, sans-serif; }
 
     /* --- Sidebar --- */
-    .sidebar {
-      width: 250px;
-      background: #e2f0eb;
-      min-height: 100vh;
-      padding: 20px 10px;
-      position: fixed;
-      left: 0; top: 0;
-      z-index: 9999;
-      overflow-y: auto;
-      border-right: 1px solid rgba(0,0,0,0.04);
+    .sidebar-item.active .sidebar-link {
+      background-color: #91c9ab; /* Darker shade of the base color */
+      color: #1e3a29;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
-    .sidebar .logo-container { display:flex; align-items:center; gap:10px; margin-bottom:30px; }
-    .sidebar .logo { width:50px; height:50px; border-radius:6px; object-fit:cover; background:#fff; display:block; }
-    .sidebar .logo-text { font-weight:700; font-size:13px; line-height:1.2; }
-
-    .sidebar .nav-links { list-style:none; padding:0; }
-    .sidebar .nav-links li { margin-bottom:12px; }
-    .sidebar .nav-links li:last-child { margin-bottom:0; }
-    .sidebar .nav-links a {
-      display:flex; align-items:center; gap:10px;
-      text-decoration:none; color:#111;
-      padding:10px 12px; border-radius:6px; font-size:15px;
-      transition:0.15s;
-    }
-    .sidebar .nav-links li.active a,
-    .sidebar .nav-links a:hover {
-      background:#d7ebe0; color:#1b8b63;
+    
+    .sidebar-item.active i {
+      color: #1e3a29;
     }
 
     /* --- Main Content --- */
@@ -89,6 +71,66 @@
     @media(max-width:520px){
       .report-container { grid-template-columns: repeat(1,1fr); gap:12px; }
     }
+
+    .fade-in {
+            animation: fadeIn 0.3s forwards;
+        }
+
+        .fade-out {
+            animation: fadeOut 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+        }
+
+        .fade-in-left {
+            animation: fadeInLeft 0.4s forwards;
+        }
+
+        .fade-out-right {
+            animation: fadeOutRight 0.4s forwards;
+        }
   </style>
 </head>
 <body>
