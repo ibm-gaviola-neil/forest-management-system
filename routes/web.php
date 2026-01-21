@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\GoogleCallbackController;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
@@ -182,4 +183,9 @@ Route::controller(AddressController::class)->group(function () {
     Route::get('/province', 'province');
     Route::get('/city', 'city');
     Route::get('/barangay', 'barangay');
+});
+
+Route::prefix('/auth/google')->controller(GoogleCallbackController::class)->group(function () {
+    Route::get('/', 'redirectToGoogle');
+    Route::get('/callback', 'handleGoogleCallback');
 });

@@ -34,6 +34,7 @@ class User extends Authenticatable
         'birth_date',
         'address',
         'profile_image',
+        'google_id',
     ];
 
     /**

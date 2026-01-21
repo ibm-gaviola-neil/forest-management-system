@@ -82,56 +82,6 @@
         </div>
       </div>
     </a>
-
-    <!-- Box 4: Upload Requirements -->
-    <a href="/applicant/requirements" class="group relative overflow-hidden bg-gray-300 hover:bg-gray-400 transition-all duration-300 text-gray-700 rounded-2xl shadow-lg flex flex-col h-auto sm:h-56">
-      <div class="absolute top-0 right-0 w-32 h-32 bg-gray-200 rounded-full opacity-30 -mr-10 -mt-10"></div>
-      <div class="absolute bottom-0 left-0 w-24 h-24 bg-gray-200 rounded-full opacity-30 -ml-10 -mb-10"></div>
-      
-      <div class="p-6 sm:p-8 flex flex-col h-full relative z-10">
-        <div class="flex justify-between items-start mb-auto">
-          <div>
-            <h2 class="font-bold text-xl sm:text-2xl mb-2">Upload Requirements</h2>
-            <p class="text-gray-600 text-sm sm:text-base">Submit necessary documents</p>
-          </div>
-          <div class="bg-white bg-opacity-40 p-3 rounded-lg transform group-hover:rotate-3 transition-transform duration-300">
-            <img src="{{asset('./assets/images/requirements.png')}}" alt="Upload Requirements" class="w-8 h-8 sm:w-10 sm:h-10"/>
-          </div>
-        </div>
-        
-        <div class="mt-4 flex items-center text-sm text-gray-600 group-hover:text-gray-800">
-          <span class="font-medium">Upload files</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </div>
-    </a>
-
-    <!-- Box 5: View Permits -->
-    <a href="/applicant/permit" class="group relative overflow-hidden bg-orange-300 hover:bg-orange-400 transition-all duration-300 text-white rounded-2xl shadow-lg flex flex-col h-auto sm:h-56">
-      <div class="absolute top-0 right-0 w-32 h-32 bg-orange-200 rounded-full opacity-30 -mr-10 -mt-10"></div>
-      <div class="absolute bottom-0 left-0 w-24 h-24 bg-orange-200 rounded-full opacity-30 -ml-10 -mb-10"></div>
-      
-      <div class="p-6 sm:p-8 flex flex-col h-full relative z-10">
-        <div class="flex justify-between items-start mb-auto">
-          <div>
-            <h2 class="font-bold text-xl sm:text-2xl mb-2">View Permits</h2>
-            <p class="text-orange-100 text-sm sm:text-base">Check status of your applications</p>
-          </div>
-          <div class="bg-white bg-opacity-20 p-3 rounded-lg transform group-hover:rotate-3 transition-transform duration-300">
-            <img src="{{asset('./assets/images/permit.png')}}" alt="Permit Status" class="w-8 h-8 sm:w-10 sm:h-10"/>
-          </div>
-        </div>
-        
-        <div class="mt-4 flex items-center text-sm text-orange-100 group-hover:text-white">
-          <span class="font-medium">Check status</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-      </div>
-    </a>
   </div>
 
   <!-- JavaScript for welcome message -->

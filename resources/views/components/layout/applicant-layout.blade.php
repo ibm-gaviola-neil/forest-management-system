@@ -239,24 +239,6 @@
                         </div>
                         <span class="font-medium">Tree Cutting Permit</span>
                     </a>
-
-                    <a href="/applicant/requirements"
-                        class="flex sidebar-link items-center space-x-3 text-green-800 px-3 py-2 md:px-4 md:py-3 rounded-lg text-base md:text-lg hover:bg-white transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5 group">
-                        <div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
-                            <img src="{{ asset('./assets/images/upload.png') }}" alt="Upload Requirements"
-                                class="w-6 h-6 md:w-8 md:h-8 transition-transform duration-300 group-hover:scale-110" />
-                        </div>
-                        <span class="font-medium">Upload Requirements</span>
-                    </a>
-
-                    <a href="/applicant/permit"
-                        class="flex sidebar-link items-center space-x-3 text-green-800 px-3 py-2 md:px-4 md:py-3 rounded-lg text-base md:text-lg hover:bg-white transition-all duration-200 hover:shadow-md transform hover:-translate-y-0.5 group">
-                        <div class="w-8 h-8 md:w-10 md:h-10 flex items-center justify-center">
-                            <img src="{{ asset('./assets/images/status.png') }}" alt="Permit Status"
-                                class="w-6 h-6 md:w-8 md:h-8 transition-transform duration-300 group-hover:scale-110" />
-                        </div>
-                        <span class="font-medium">Permit Status</span>
-                    </a>
                 </nav>
 
                 <div class="mt-auto pt-4 border-t border-green-300 text-center text-sm text-green-800">

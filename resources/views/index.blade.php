@@ -42,10 +42,10 @@
       <h1 class="text-3xl font-bold text-green-600 mb-6">Permitting System</h1>
 
       <div class="mb-4">
-        <button onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-3 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-100">
+        <a href="/auth/google" class="w-full flex items-center justify-center gap-3 border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-100">
           <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" />
           <span class="text-sm font-medium text-gray-700">Login with Google</span>
-        </button>
+        </a>
       </div>
 
       <div class="flex items-center my-4">
@@ -79,6 +79,23 @@
         <button id="login-btn" type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
           Log In
         </button>
+
+        @if (session('error'))
+          <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4 mt-5">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">
+                  {{ session('error') }}
+                </p>
+              </div>
+            </div>
+          </div>
+        @endif
       </form>
 
       <p class="text-sm text-center mt-6">
