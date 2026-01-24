@@ -2,26 +2,19 @@ import {debounce, getStatusBadge, renderPaginatedTable} from '../../ui/table-loa
 import {submitForm, submitPlainPost} from '../../services/formService.js'
 import {redirectModal, showSuccessAlert, hideSuccessAlert} from '../../ui/alert.js'
 import {buttonLoader, loader} from '../../ui/html-ui.js';
-import { getInitials } from '../../domain/text-helper.js';
 import initMapViewer from '../../domain/map-view.js';
 
 let currentSearch = "";
-let currentTreeSearch = "";
-let statusSearch = null; // To keep track of the current page
-let permitStatusSearchVal = null; // To keep track of the current page
+let statusSearch = 0; // To keep track of the current page
 
 const loginForm = document.getElementById('permit-form');
 const editForm = document.getElementById("EditChainsawForm");
 const rejectBtn = document.getElementById("reject-btn");
 const approveBtn = document.getElementById("approve-btn");
 const searchInput = document.getElementById("treeSearch");
-const pendingTreeSearch = document.getElementById("pendingTreeSearch");
-const treeStatusSearch = document.getElementById("tree-status-search");
-const permitStatusSearch = document.getElementById("permit-status-search");
 const modalBtns = document.querySelectorAll(".modal-btn");
 const closeModalBtns = document.querySelectorAll(".close-modal");
 const viewMapSection = document.getElementById("view-map-section");
-const adminId = document.getElementById('adminId')
 
 function openModal(modalSelector = '') {
     const modal = document.getElementById(modalSelector);
@@ -75,47 +68,6 @@ function buildTreeRow(data) {
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
             <a href="/admin/permit/view/${data.id}" class="text-green-600 hover:text-green-900 mr-3">View</a>
-        </td>
-      </tr>
-    `;
-}
-
-function buildPendingTreeRow(data) {
-    return `
-      <tr class="hover:bg-gray-50 transition-colors duration-200">
-        <td class="px-6 py-4 whitespace-nowrap">
-            <div class="flex items-center">
-            <div class="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-medium">${getInitials(`${data.user.last_name} ${data.user.first_name}`)}</div>
-            <div class="ml-4">
-                <div class="text-sm font-medium text-gray-900">${data.user.last_name} ${data.user.first_name}</div>
-                <div class="text-xs text-gray-500">${data.user.contact_number}</div>
-            </div>
-            </div>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">
-            <div class="flex items-center">
-            <div class="ml-4">
-                <div class="text-xs text-gray-500">ID: ${data.treeId || ""}</div>
-            </div>
-            </div>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">
-            <div class="text-sm text-gray-900">${
-                data.treeType || ""
-            }</div>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">
-            <div class="text-sm text-gray-900">${
-                data.location || ""
-            }</div>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">
-        ${getStatusBadge(
-            data.status
-        )}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <a href="/admin/trees/view/${data.id}" class="text-green-600 hover:text-green-900 mr-3">View</a>
         </td>
       </tr>
     `;
@@ -176,7 +128,7 @@ if(loginForm){
 if (rejectBtn) {
     rejectBtn.addEventListener("click", async () => {
         const id = rejectBtn.value;
-        const btnText = "Yes";
+        const btnText = "Yes, Reject";
         const loading = buttonLoader(" Loading...");
         const reasonInput = document.getElementById("reject-reason");
         rejectBtn.innerHTML = loading
@@ -190,7 +142,7 @@ if (rejectBtn) {
 
         try {
           const data = await submitPlainPost({
-            url: "/admin/permit/reject/" + id,
+            url: "/admin/trees/reject/" + id,
             payload: {
               reason: reasonInput.value,
             },
@@ -199,10 +151,10 @@ if (rejectBtn) {
           if(data.status == 200){
             closeModal('reject-modal')
             rejectBtn.innerHTML = btnText
-            showSuccessAlert('Cutting permit application rejected successfully. Redirecting', 'success');
+            showSuccessAlert('Trees registration rejected successfully. Redirecting', 'success');
             redirectModal(
-                'Cutting permit application has been successfully rejected.',
-                `/admin/permit/view/${id}`
+                'Tree registration has been successfully rejected.',
+                `/admin/trees/view/${id}`
             );
           }else{
             rejectBtn.innerHTML = btnText
@@ -225,7 +177,7 @@ if (approveBtn) {
 
         try {
           const data = await submitPlainPost({
-            url: "/admin/permit/approve/" + id,
+            url: "/admin/trees/approve/" + id,
             payload: {
               reason: reasonInput.value,
             },
@@ -234,10 +186,10 @@ if (approveBtn) {
           if(data.status == 200){
             closeModal('approve-modal')
             approveBtn.innerHTML = btnText
-            showSuccessAlert('Cutting permit application approved successfully. Redirecting', 'success');
+            showSuccessAlert('Trees registration approved successfully. Redirecting', 'success');
             redirectModal(
-                'Cutting permit application has been successfully approved.',
-                `/admin/permit/view/${id}`
+                'Trees registration has been successfully approved.',
+                `/admin/trees/view/${id}`
             );
           }else{
             approveBtn.innerHTML = btnText
@@ -254,11 +206,7 @@ function loadTreeTable(page = 1) {
     console.log('test')
     const query = {};
     if (currentSearch) query.search = currentSearch;
-    if (adminId) {
-        query.status = permitStatusSearchVal ?? 1;
-    } else {
-        query.status = 0;
-    }
+    query.status = 0;
 
     renderPaginatedTable({
         tbodyId: "appsBody",
@@ -272,36 +220,9 @@ function loadTreeTable(page = 1) {
     });
 }
 
-function loadPendingTreeTable(page = 1) {
-    const adminId = document.getElementById('adminId')
-    const query = {};
-    if (currentTreeSearch) query.search = currentTreeSearch;
-    if (adminId) {
-        query.status = statusSearch ?? 1;
-    } else {
-        query.status = 0;
-    }
-
-    renderPaginatedTable({
-        tbodyId: "treesBody",
-        paginationId: "pendingtreeTablePagination",
-        endpoint: "/admin/trees",
-        page,
-        buildRowFn: buildPendingTreeRow,
-        columns: 7,
-        query,
-        paginationBgColor: 'green',
-    });
-}
-
 const debouncedSearch = debounce(function (e) {
     currentSearch = e.target.value;
     loadTreeTable(1);
-}, 400);
-
-const debouncedTreeSearch = debounce(function (e) {
-    currentTreeSearch = e.target.value;
-    loadPendingTreeTable(1);
 }, 400);
 
 if (editForm) {
@@ -337,33 +258,8 @@ if(searchInput){
         .addEventListener("input", debouncedSearch);
 }
 
-if(pendingTreeSearch){
-    document
-        .getElementById("pendingTreeSearch")
-        .addEventListener("input", debouncedTreeSearch);
-}
-
-if(treeStatusSearch){
-    treeStatusSearch
-        .addEventListener("input", (e) => {
-            const value = e.target.value;
-            statusSearch = value !== "" ? parseInt(value) : null;
-            loadPendingTreeTable(1);
-        });
-}
-
-if(permitStatusSearch){
-    permitStatusSearch
-        .addEventListener("input", (e) => {
-            const value = e.target.value;
-            permitStatusSearchVal = value !== "" ? parseInt(value) : null;
-            loadTreeTable(1);
-        });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
     loadTreeTable();
-    loadPendingTreeTable();
 
     if (viewMapSection) {
         const mapLatitude = document.getElementById("map-latitude");

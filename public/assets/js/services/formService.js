@@ -55,7 +55,7 @@ export async function submitForm({ url, formData, buttonId, errorDisplayId, btnL
     return data;
 }
 
-export async function submitPlainPost({url}) {
+export async function submitPlainPost({url, payload = {}}) {
     let data;
     const response = await fetch(url, {
         method: "POST", // usually logout should be POST
@@ -66,6 +66,7 @@ export async function submitPlainPost({url}) {
                 .querySelector('meta[name="csrf-token"]')
                 .getAttribute("content"),
         },
+        body: JSON.stringify(payload),
     });
 
     if (!response.ok) {

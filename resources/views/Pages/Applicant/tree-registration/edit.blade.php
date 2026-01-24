@@ -8,7 +8,7 @@
         <input type="hidden" value="{{$tree->id}}" id="tree-id">
       @endif
   
-      <form class="grid grid-cols-1 sm:grid-cols-2 gap-6" id="editTreeForm">
+      <form class="" id="editTreeForm">
         @include('Pages.Applicant.tree-registration.form')
         <div id="loginResponse"></div>
         <div class="col-span-2 text-right flex justify-between gap-2">
@@ -30,5 +30,6 @@
 @push('scripts')
     <script src="{{asset('./assets/js/features/tree.js')}}" type="module"></script>
 @endpush
-@endsection  
+@endsection 
+ 
     

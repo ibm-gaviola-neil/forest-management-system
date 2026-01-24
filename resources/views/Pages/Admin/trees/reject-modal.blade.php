@@ -13,9 +13,9 @@
             </svg>
         </div>
         <!-- Modal Title & Text -->
-        <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Reject Cutting Permit Application?</h2>
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Reject Tree Registration?</h2>
         <p class="text-center text-gray-600 mb-4">
-            Are you sure you want to <span class="text-red-500 font-semibold">reject</span> cutting permit application?
+            Are you sure you want to <span class="text-red-500 font-semibold">reject</span> tree rejistration?
             This action cannot be undone.
         </p>
         <!-- Rejection Reason Field -->
@@ -44,8 +44,8 @@
         <!-- Action Buttons -->
         <div class="flex space-x-4 justify-center">
             <button class="px-5 py-2 bg-red-600 text-white rounded hover:bg-red-700 font-semibold transition"
-                id="reject-btn" value="{{ $cutting_permit->id }}">
-                Yes
+                id="reject-btn" value="{{ $tree->id }}">
+                Yes, Reject
             </button>
             <button
                 class="close-modal px-5 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 font-semibold transition"

@@ -1,5 +1,6 @@
-@extends('components.layout.applicant-layout')
-@section('applicant-content')
+@extends('components.layout.dashboard-layout')
+
+@section('content')
 <div class="min-h-screen">
   <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -14,9 +15,6 @@
           <h3 class="text-sm font-medium text-yellow-800">
             Registration Status: <span class="font-bold">Pending Review</span>
           </h3>
-          <div class="mt-2 text-sm text-yellow-700">
-            <p>Your tree registration is currently being reviewed by our environmental team.</p>
-          </div>
         </div>
       </div>
     </div>
@@ -103,8 +101,17 @@
                   {{$tree->location}}
                 </dd>
               </div>
-              
+
               <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt class="text-sm font-medium text-gray-500">
+                  Land Mark
+                </dt>
+                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                  {{$tree->land_mark}}
+                </dd>
+              </div>
+              
+              <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="text-sm font-medium text-gray-500">
                   Description
                 </dt>
@@ -161,38 +168,27 @@
             </h3>
           </div>
           <div class="border-t border-gray-200 p-4 space-y-3">
-            <a href="/applicant/trees" class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-              <i class="fas fa-arrow-left mr-2"></i>
-              Back to Trees
-            </a>
             
             @if($tree->status == 0)
-            <a href="/applicant/trees/edit/{{$tree->id}}" id="submit-btn" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-              <i class="fas fa-edit mr-2"></i>
-              Update Tree
-            </a>
+            <button type="button" value="approve-modal" class="modal-btn w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+              <i class="fas fa-check mr-2"></i>
+              Approve Tree Registration
+            </button>
             
-            <button type="button" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" onclick="openModal()">
+            <button type="button" value="reject-modal" class="modal-btn w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
               <i class="fas fa-times-circle mr-2"></i>
-              Cancel Registration
+              Reject Registration
             </button>
             @else
-            <a href="/applicant/trees/edit/{{$tree->id}}" id="submit-btn" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-300 cursor-not-allowed" disabled>
+            <button type="button" disabled class="cursor-not-allowed w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
               <i class="fas fa-edit mr-2"></i>
-              Update Tree
-            </a>
-            
-            <button type="button" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-300 cursor-not-allowed" disabled>
-              <i class="fas fa-times-circle mr-2"></i>
-              Cancel Registration
+              Approve Tree Registration
             </button>
-            @endif
             
-            @if($tree->status == 1) <!-- Show apply for cutting only if approved -->
-            <a href="/applicant/cutting-permit/create/{{$tree->id}}" class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              <i class="fas fa-cut mr-2"></i>
-              Apply for Cutting
-            </a>
+            <button type="button" disabled class="cursor-not-allowed opacity-60 w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              <i class="fas fa-times-circle mr-2"></i>
+              Reject Registration
+            </button>
             @endif
           </div>
         </div>
@@ -282,9 +278,10 @@
   </main>
 </div>
 
-@include('Pages.Applicant.tree-registration.cancel-modal')
+@include('Pages.Admin.trees.reject-modal')
+@include('Pages.Admin.trees.approve-modal')
 @push('scripts')
-<script src="{{asset('./assets/js/features/tree.js')}}" type="module"></script>
-<script src="{{ asset('./assets/js/domain/map-view.js') }}"></script>
+  <script src="{{asset('./assets/js/features/admin/admin-tree.js')}}" type="module"></script>
+  <script src="{{ asset('./assets/js/domain/map-view.js') }}"></script>
 @endpush
 @endsection

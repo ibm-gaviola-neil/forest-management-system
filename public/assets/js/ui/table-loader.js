@@ -33,6 +33,8 @@ export function getStatusBadge(status) {
             return `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">Rejected</span>`;
         case 3:
             return `<span class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs font-semibold">Cancelled</span>`;
+        case 4:
+            return `<span class="bg-blue-200 text-blue-700 px-2 py-1 rounded text-xs font-semibold">For Cutting</span>`;
         default:
             return `<span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Pending</span>`;
     }

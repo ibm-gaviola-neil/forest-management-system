@@ -97,4 +97,55 @@ class BloodTypeDomain {
         "Firearms_License"   => "Firearms License (PNP)",
         "Seamans_Book"       => "Seaman's Book / Seafarer's ID",
     ];
+
+    const REASONS_FOR_REJECTION = [
+        [
+            'itemId' => 1,
+            'reason' => 'Incomplete documentation. Missing required harvesting plan details.'
+        ],
+        [
+            'itemId' => 2,
+            'reason' => 'Forest management guidelines not followed in proposed cutting area.'
+        ],
+        [
+            'itemId' => 3,
+            'reason' => 'Environmental impact assessment failed to address protected species in the area.'
+        ],
+        [
+            'itemId' => 4,
+            'reason' => 'Proposed cutting volume exceeds allowable limits for the specified zone.'
+        ],
+        [
+            'itemId' => 5,
+            'reason' => 'Application conflicts with existing land use designations or protected areas.'
+        ],
+        [
+            'itemId' => 6,
+            'reason' => 'Insufficient reforestation plan for post-harvest restoration.'
+        ],
+        [
+            'itemId' => 7,
+            'reason' => 'Improper road access planning that could cause erosion or habitat disruption.'
+        ],
+        [
+            'itemId' => 8,
+            'reason' => 'Cutting timeframe conflicts with breeding seasons of local wildlife.'
+        ],
+        [
+            'itemId' => 9,
+            'reason' => 'Inadequate buffer zones proposed for riparian areas or water bodies.'
+        ],
+        [
+            'itemId' => 10,
+            'reason' => 'Application contains inaccurate GPS coordinates or boundary markers.'
+        ],
+        [
+            'itemId' => 11,
+            'reason' => 'Proposed methods violate sustainable forestry practices guidelines.'
+        ],
+        [
+            'itemId' => 12,
+            'reason' => 'Failure to include required consultation with indigenous communities.'
+        ]
+    ];
 }

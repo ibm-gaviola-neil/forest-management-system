@@ -24,6 +24,7 @@ class CuttingPermitService {
     public function getSelectableData()
     {
         $registeredTrees = Tree::select('id', 'treeId', 'treeType')
+            ->where('user_id', auth()->id())
             ->where('status', 1)
             ->orderBy('treeId', 'ASC')->get();
         

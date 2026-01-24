@@ -159,6 +159,7 @@
                                             </span>
                                             <div>
                                             <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
+                                            <p class="text-sm text-gray-500">{{$cutting_permit->approved_at->format('F j, Y \a\t g:i A');}}</p>
                                             <p class="text-sm text-gray-500">Approved</p>
                                             </div>
                                         @break
@@ -168,6 +169,7 @@
                                             </span>
                                             <div>
                                             <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
+                                            <p class="text-sm text-gray-500">{{$cutting_permit->rejected_at->format('F j, Y \a\t g:i A');}}</p>
                                             <p class="text-sm text-gray-500">Rejected</p>
                                             </div>
                                         @break

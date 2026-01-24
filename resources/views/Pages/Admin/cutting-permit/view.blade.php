@@ -110,19 +110,19 @@
                             </h3>
                         </div>
                         <div class="border-t border-gray-200 p-4 space-y-3">            
-                            <button value="reject-modal" class="modal-btn w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                            @if ($cutting_permit->status !== 0)
+                            <button value="reject-modal" class="modal-btn w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 @if ($cutting_permit->status !== 0) cursor-not-allowed opacity-60 @endif"
+                                @if ($cutting_permit->status !== 0)
                                 disabled
-                            @endif>
+                                @endif>
                                 <i class="fas fa-times-circle mr-2"></i>
                                 Reject Application
                             </button>
-
-                            <button class="w-full modal-btn inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                            value="approve-modal"
-                            @if ($cutting_permit->status !== 0)
+                            
+                            <button class="w-full modal-btn inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 @if ($cutting_permit->status !== 0) cursor-not-allowed opacity-60 @endif"
+                                value="approve-modal"
+                                @if ($cutting_permit->status !== 0)
                                 disabled
-                            @endif>
+                                @endif>
                                 <i class="fas fa-check mr-2"></i>
                                 Approve Application
                             </button>
@@ -164,6 +164,7 @@
                                             </span>
                                             <div>
                                             <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
+                                            <p class="text-sm text-gray-500">{{$cutting_permit->approved_at->format('F j, Y \a\t g:i A');}}</p>
                                             <p class="text-sm text-gray-500">Approved</p>
                                             </div>
                                         @break
@@ -173,6 +174,7 @@
                                             </span>
                                             <div>
                                             <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
+                                            <p class="text-sm text-gray-500">{{$cutting_permit->rejected_at->format('F j, Y \a\t g:i A');}}</p>
                                             <p class="text-sm text-gray-500">Rejected</p>
                                             </div>
                                         @break
@@ -290,6 +292,40 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg mt-8" id="view-map-section">
+                <div class="px-4 py-5 sm:px-6 bg-gray-50">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                    <i class="fas fa-map-marker-alt mr-2 text-green-600"></i>
+                    Tree Location
+                    </h3>
+                    <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                    Geographic location of the registered tree.
+                    </p>
+                </div>
+                <div class="border-t border-gray-200">
+                    <div class="p-4">
+                    <!-- The map container -->
+                    <div id="view-map-container" class="w-full h-[400px] rounded-lg border border-gray-200"></div>
+                    
+                    <!-- Coordinates display -->
+                    <div class="mt-4 flex flex-wrap gap-4 text-sm">
+                        <div class="flex items-center space-x-2">
+                        <span class="font-medium text-gray-500">Latitude:</span>
+                        <span class="font-mono">{{ $cutting_permit->tree->lattitude ?? 'Not recorded' }}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                        <span class="font-medium text-gray-500">Longitude:</span>
+                        <span class="font-mono">{{ $cutting_permit->tree->longitude ?? 'Not recorded' }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden inputs for the viewer function -->
+                    <input type="hidden" id="map-latitude" value="{{ $cutting_permit->tree->lattitude }}">
+                    <input type="hidden" id="map-longitude" value="{{ $cutting_permit->tree->longitude }}">
+                    </div>
                 </div>
             </div>
         </main>

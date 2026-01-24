@@ -150,26 +150,11 @@
     </div>
     
     <div class="mt-5 flex justify-between items-center">
-      <div class="flex items-center space-x-4">
-        <button class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-          </svg>
-          Delete Selected
-        </button>
-        <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-          </svg>
-          Export to Excel
-        </button>
+      <div class="flex items-center space-x-4 mt-4">
+    
       </div>
       <div class="flex items-center space-x-2">
-        <a href="#" class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50">&laquo;</a>
-        <a href="#" class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50">1</a>
-        <a href="#" class="px-3 py-1 text-sm bg-green-600 text-white border border-green-600 rounded">2</a>
-        <a href="#" class="px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50">3</a>
-        <a href="#" class="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50">&raquo;</a>
+        <div id="pendingtreeTablePagination"></div>
       </div>
     </div>
   </div>

@@ -30,9 +30,20 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
             Route::get('/number-donors', 'getNumberOfDonors');
         });
 
-        Route::prefix('admin')->controller(\App\Http\Controllers\Admin\AdminCuttingPermitController::class)->group(function(){
-            // Route::get('/', 'index');
-            Route::get('/permit/view/{cuttingPermit}', 'show');
+        Route::prefix('admin/permit')->controller(\App\Http\Controllers\Admin\AdminCuttingPermitController::class)->group(function(){
+            Route::get('/', 'index');
+            Route::get('/view/{cuttingPermit}', 'show');
+            Route::post('/reject/{cuttingPermit}', 'reject');
+            Route::post('/approve/{cuttingPermit}', 'approve');
+        });
+
+        Route::prefix('admin/trees')->controller(\App\Http\Controllers\Admin\AdminTreeController::class)->group(function(){
+            Route::get('/', 'treesList');
+            Route::get('/registered', 'index');
+            Route::get('/coordinates', 'coordinates');
+            Route::get('/view/{tree}', 'show');
+            Route::post('/reject/{tree}', 'reject');
+            Route::post('/approve/{tree}', 'approve');
         });
     });
 

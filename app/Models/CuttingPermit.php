@@ -13,6 +13,7 @@ class CuttingPermit extends Model
     protected $fillable = [
         'user_id',
         'tree_id',
+        'permit_id',
         'reason',
         'document_path',
         'document_original_name',
@@ -130,9 +131,10 @@ class CuttingPermit extends Model
     }
 
     // Method to approve the permit
-    public function approve($approvedBy = null, $expiresAt = null): void
+    public function approve($approvedBy = null, $permitId = null, $expiresAt = null): void
     {
         $this->update([
+            'permit_id' => $permitId,
             'status' => self::STATUS_APPROVED,
             'approved_at' => now(),
             'approved_by' => $approvedBy,
@@ -199,16 +201,16 @@ class CuttingPermit extends Model
     }
 
     // Boot method to handle automatic expiry checking
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::retrieved(function ($permit) {
-            if ($permit->isApproved()) {
-                $permit->checkIfExpired();
-            }
-        });
-    }
+    //     static::retrieved(function ($permit) {
+    //         if ($permit->isApproved()) {
+    //             $permit->checkIfExpired();
+    //         }
+    //     });
+    // }
 
     public function requirements()
     {

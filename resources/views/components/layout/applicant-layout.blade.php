@@ -140,6 +140,20 @@
             animation: fadeOutRight 0.4s forwards;
         }
     </style>
+    <!-- Required Leaflet CSS and JS (you already have these) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Leaflet Locate Control -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"></script>
+
+    <!-- Leaflet Geocoder for searching locations -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <!-- Leaflet.Measure plugin -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-measure@3.1.0/dist/leaflet-measure.css" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-measure@3.1.0/dist/leaflet-measure.min.js"></script>
 </head>
 
 <body class="bg-gray-100 font-sans">
@@ -250,32 +264,39 @@
         <!-- Main content -->
         <main class="flex-1 overflow-y-auto relative w-full lg:ml-0 mb-5">
             <!-- Top navigation bar -->
-            <div class="fixed top-0 left-1 right-0 bg-white shadow-md p-3 z-10 lg:absolute lg:bg-transparent lg:shadow-none lg:top-4 lg:right-4 lg:left-auto flex justify-between items-center">
-              <div class="lg:hidden flex items-center mt-1 ml-2">
-                <!-- Logo for mobile top nav -->
-                <img src="{{ asset('./assets/images/img2.jpeg') }}" alt="Logo" class="w-10 h-10 rounded-full object-cover ml-10">
-                <span class="ml-2 font-semibold text-sm text-green-900">Forest Monitoring and Permitting System</span>
-              </div>
-              
-              <!-- Right side icons -->
-              <div class="flex space-x-2 md:space-x-6">
-                <a href="notification.html" class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
-                    <img src="{{ asset('./assets/images/notif.png') }}" alt="Notification" class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
-                </a>
-                <a href="/applicant/settings" class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
-                    <img src="{{ asset('./assets/images/settings.png') }}" alt="Settings" class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
-                </a>
-              </div>
+            <div
+                class="fixed top-0 left-1 right-0 bg-white shadow-md p-3 z-10 lg:absolute lg:bg-transparent lg:shadow-none lg:top-4 lg:right-4 lg:left-auto flex justify-between items-center">
+                <div class="lg:hidden flex items-center mt-1 ml-2">
+                    <!-- Logo for mobile top nav -->
+                    <img src="{{ asset('./assets/images/img2.jpeg') }}" alt="Logo"
+                        class="w-10 h-10 rounded-full object-cover ml-10">
+                    <span class="ml-2 font-semibold text-sm text-green-900">Forest Monitoring and Permitting
+                        System</span>
+                </div>
+
+                <!-- Right side icons -->
+                <div class="flex space-x-2 md:space-x-6">
+                    <a href="notification.html"
+                        class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
+                        <img src="{{ asset('./assets/images/notif.png') }}" alt="Notification"
+                            class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
+                    </a>
+                    <a href="/applicant/settings"
+                        class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
+                        <img src="{{ asset('./assets/images/settings.png') }}" alt="Settings"
+                            class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
+                    </a>
+                </div>
             </div>
-            
+
             <!-- This div creates space for the fixed navbar on mobile -->
             <div class="h-16 lg:h-0"></div>
-            
+
             <!-- Main content area with proper padding -->
             <div class="md:p-8 lg:p-12">
-              @yield('applicant-content')
+                @yield('applicant-content')
             </div>
-          </main>
+        </main>
     </div>
 
     <!-- Overlay for mobile sidebar -->
