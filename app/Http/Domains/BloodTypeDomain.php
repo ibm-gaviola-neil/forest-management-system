@@ -157,6 +157,69 @@ class BloodTypeDomain
         ]
     ];
 
+    const REASONS_FOR_CUTTING = [
+        [
+            'itemId' => 1,
+            'reason' => 'Tree is dead or dying and poses a safety risk.'
+        ],
+        [
+            'itemId' => 2,
+            'reason' => 'Tree is diseased and could spread infection to healthy trees in the vicinity.'
+        ],
+        [
+            'itemId' => 3,
+            'reason' => 'Tree is structurally unsound and at risk of falling.'
+        ],
+        [
+            'itemId' => 4,
+            'reason' => 'Tree roots are damaging foundations, pavements, or underground utilities.'
+        ],
+        [
+            'itemId' => 5,
+            'reason' => 'Tree interferes with power lines and creates hazardous conditions.'
+        ],
+        [
+            'itemId' => 6,
+            'reason' => 'Tree blocks essential sunlight for agricultural crops or solar panels.'
+        ],
+        [
+            'itemId' => 7,
+            'reason' => 'Tree species is invasive and threatens native ecosystem balance.'
+        ],
+        [
+            'itemId' => 8,
+            'reason' => 'Tree is part of a planned sustainable forest management program.'
+        ],
+        [
+            'itemId' => 9,
+            'reason' => 'Tree is being removed for approved construction or development.'
+        ],
+        [
+            'itemId' => 10,
+            'reason' => 'Tree is causing significant allergenic problems for nearby residents.'
+        ],
+        [
+            'itemId' => 11,
+            'reason' => 'Tree is overcrowded and requires thinning for forest health.'
+        ],
+        [
+            'itemId' => 12,
+            'reason' => 'Tree is obstructing critical traffic visibility at intersections.'
+        ],
+        [
+            'itemId' => 13,
+            'reason' => 'Tree produces excessive debris/fruits that create maintenance issues.'
+        ],
+        [
+            'itemId' => 14,
+            'reason' => 'Tree harvesting for timber as part of permitted commercial operations.'
+        ],
+        [
+            'itemId' => 15,
+            'reason' => 'Tree needs to be removed for fire hazard reduction in high-risk areas.'
+        ]
+    ];
+
 
     const REASONS_FOR_CHAINSAW_REJECT = [
         [
