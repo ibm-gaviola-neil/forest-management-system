@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Domains\NotificationDomain;
 use App\Http\Requests\ChainsawRequest;
 use App\Http\Requests\TreeRequest;
+use App\Http\Services\NotificationService;
 use App\Http\Services\TreesService;
 use App\Models\Tree;
 use Illuminate\Http\Request;
@@ -24,12 +26,23 @@ class TreeController extends Controller
         return response()->json($data);
     }
 
-    public function store(TreeRequest $request)
+    public function store(TreeRequest $request, NotificationService $notificationService)
     {
         $payload = $request->validated();
         $payload['user_id'] = auth()->user()->id;
         
         $save = Tree::create($payload);
+
+        if($save) {
+            $notificationService->saveNotification([
+                'type' => NotificationDomain::TREES,
+                'message' => 'New Pending Registration of Tree by ' . auth()->user()->last_name . ', ' . auth()->user()->first_name,
+                'related_id' => $save->id,
+                'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::TREES],
+                'is_read' => false,
+                'created_by' => auth()->user()->id,
+            ]);
+        }
         
         if ($save) {
             return response()->json([

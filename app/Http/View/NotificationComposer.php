@@ -38,9 +38,14 @@ class NotificationComposer
         $userRole = auth()->user()->role;
         $specificRelatedId = auth()->user()->donor_id;
 
-        $nofications = Notification::where('is_read', false)
-            ->whereIn('type', NotificationDomain::NOTIFICATION_ACCESS[$userRole])
-            ->orderBy('created_at', 'DESC')->get();
+        $query = Notification::where('is_read', false)
+            ->whereIn('type', NotificationDomain::NOTIFICATION_ACCESS[$userRole]);
+
+        if($userRole === 'applicant') {
+            $query->where('reciever_id', auth()->user()->id);
+        }
+
+        $nofications = $query->orderBy('created_at', 'DESC')->get();
 
         foreach ($nofications as $key => $notification) {
             // Check for donor_request type and related_id

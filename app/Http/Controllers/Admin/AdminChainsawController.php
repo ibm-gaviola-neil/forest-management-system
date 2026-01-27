@@ -3,13 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\NotificationController;
 use App\Http\Domains\BloodTypeDomain;
+use App\Http\Domains\NotificationDomain;
 use App\Http\Services\ChainsawService;
 use App\Models\ChainsawRequest;
 use Illuminate\Http\Request;
+use App\Http\Services\NotificationService;
 
 class AdminChainsawController extends Controller
 {
+    private $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
 
     public function index() 
     {
@@ -39,6 +48,15 @@ class AdminChainsawController extends Controller
     {
         try {
             $chainsaw->reject($request->reason);
+            $this->notificationService->saveNotification([
+                'type' => NotificationDomain::CHAINSAW_APPLICANT,
+                'message' => 'Chainsaw Registration Rejected.',
+                'related_id' => $chainsaw->id,
+                'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::CHAINSAW_APPLICANT],
+                'is_read' => false,
+                'created_by' => auth()->user()->id,
+                'reciever_id' => $chainsaw->user_id,
+            ]);
             return response()->json([
                 'status' => 200,
                 'message' => 'Chainsaw registration data rejected successfully.',
@@ -58,6 +76,15 @@ class AdminChainsawController extends Controller
     {
         try {
             $chainsaw->approve();
+            $this->notificationService->saveNotification([
+                'type' => NotificationDomain::CHAINSAW_APPLICANT,
+                'message' => 'Chainsaw Registration Approved.',
+                'related_id' => $chainsaw->id,
+                'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::CHAINSAW_APPLICANT],
+                'is_read' => false,
+                'created_by' => auth()->user()->id,
+                'reciever_id' => $chainsaw->user_id,
+            ]);
             return response()->json([
                 'status' => 200,
                 'message' => 'Chainsaw registration application data approved successfully.',

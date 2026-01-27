@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Domains\NotificationDomain;
 use App\Http\Requests\CuttingPermitRequest;
 use App\Http\Services\CuttingPermitService;
+use App\Http\Services\NotificationService;
 use App\Models\CuttingPermit;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\QueryException;
@@ -40,7 +42,7 @@ class CuttingPermitController extends Controller
         return view('Pages.Applicant.cutting-permit.create', $data);
     }
 
-    public function store(CuttingPermitRequest $request)
+    public function store(CuttingPermitRequest $request, NotificationService $notificationService)
     {
         DB::beginTransaction();
         
@@ -61,6 +63,15 @@ class CuttingPermitController extends Controller
             Log::info('Cutting permit created successfully', [
                 'permit_id' => $cuttingPermit->id,
                 'user_id' => auth()->id()
+            ]);
+
+            $notificationService->saveNotification([
+                'type' => NotificationDomain::PERMIT,
+                'message' => 'New Pending for review of cutting permit application by ' . auth()->user()->last_name . ', ' . auth()->user()->first_name,
+                'related_id' => $cuttingPermit->id,
+                'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::PERMIT],
+                'is_read' => false,
+                'created_by' => auth()->user()->id,
             ]);
             
             return response()->json([

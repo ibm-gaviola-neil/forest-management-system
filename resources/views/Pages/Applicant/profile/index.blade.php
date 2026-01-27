@@ -40,7 +40,7 @@
               </div>
               
               <!-- Mobile Navigation (visible only on small screens) -->
-              <div class="fixed inset-x-0 bottom-0 bg-white shadow-lg border-t border-gray-200 flex lg:hidden z-10">
+              <div class="fixed inset-x-0 bottom-0 bg-white shadow-lg border-t border-gray-200 flex lg:hidden">
                 <a href="?tab=account-settings" class="flex flex-1 flex-col items-center py-2 px-2
                   @if($tab === 'account-settings') text-blue-600 @else text-gray-700 @endif">
                   <i class="fas fa-user text-lg"></i>

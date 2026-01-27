@@ -23,6 +23,7 @@ class NotificationService
             'related_table'  => $data['related_table'] ?? null,
             'is_read'        => $data['is_read'] ?? false,
             'created_by'     => $data['created_by'] ?? null,
+            'reciever_id'    => $data['reciever_id'] ?? null,
         ]);
     }
 

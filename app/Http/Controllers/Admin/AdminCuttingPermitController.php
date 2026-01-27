@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Domains\BloodTypeDomain;
+use App\Http\Domains\NotificationDomain;
 use App\Http\Domains\PermitIdGenerator;
 use App\Http\Services\CuttingPermitService;
+use App\Http\Services\NotificationService;
 use App\Models\CuttingPermit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,11 +16,13 @@ class AdminCuttingPermitController extends Controller
 {
     private $cuttingPermitService;
     private $permitIdGenerator;
+    private $notificationService;
 
-    public function __construct(CuttingPermitService $cuttingPermitService, PermitIdGenerator $permitIdGenerator)
+    public function __construct(CuttingPermitService $cuttingPermitService, PermitIdGenerator $permitIdGenerator, NotificationService $notificationService)
     {
         $this->cuttingPermitService = $cuttingPermitService;
         $this->permitIdGenerator = $permitIdGenerator;
+        $this->notificationService = $notificationService;
     }
 
     public function index() 
@@ -33,6 +37,7 @@ class AdminCuttingPermitController extends Controller
         $data['cutting_permit'] = $cuttingPermit;
         $data['requirements'] = $cuttingPermit->requirements;
         $data['rejectionReasons'] = BloodTypeDomain::REASONS_FOR_REJECTION;
+        $data['pageTitle'] = 'Cutting Permits Application';
         return view('Pages.Admin.cutting-permit.view', $data);
     }
 
@@ -41,6 +46,15 @@ class AdminCuttingPermitController extends Controller
         try {
             $approvedBy = auth()->id();
             $cuttingPermit->reject($approvedBy, $request->reason);
+            $this->notificationService->saveNotification([
+                'type' => NotificationDomain::PERMIT_APPLICANT,
+                'message' => 'Cutting Permit Application Rejected.',
+                'related_id' => $cuttingPermit->id,
+                'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::PERMIT_APPLICANT],
+                'is_read' => false,
+                'created_by' => auth()->user()->id,
+                'reciever_id' => $cuttingPermit->user_id,
+            ]);
             return response()->json([
                 'status' => 200,
                 'message' => 'Cutting permit application data rejected successfully.',
@@ -70,6 +84,16 @@ class AdminCuttingPermitController extends Controller
                 if ($tree) {
                     $tree->markAsCut();
                 }
+
+                $this->notificationService->saveNotification([
+                    'type' => NotificationDomain::PERMIT_APPLICANT,
+                    'message' => 'Cutting Permit Application Approved.',
+                    'related_id' => $cuttingPermit->id,
+                    'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::PERMIT_APPLICANT],
+                    'is_read' => false,
+                    'created_by' => auth()->user()->id,
+                    'reciever_id' => $cuttingPermit->user_id,
+                ]);
             });
             return response()->json([
                 'status' => 200,

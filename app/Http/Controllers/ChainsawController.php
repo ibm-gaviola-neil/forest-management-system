@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Domains\NotificationDomain;
 use App\Http\Requests\ChainsawRequest;
 use App\Http\Services\ChainsawService;
+use App\Http\Services\NotificationService;
 use App\Models\ChainsawRequest as ModelsChainsawRequest;
 use App\Models\ChainsawRequirement;
 use Illuminate\Http\Request;
@@ -33,7 +35,7 @@ class ChainsawController extends Controller
         return view('Pages.Applicant.chainsaw-registration.create');
     }
 
-    public function store(ChainsawRequest $request, ChainsawService $chainsawService)
+    public function store(ChainsawRequest $request, ChainsawService $chainsawService, NotificationService $notificationService)
     {
         DB::beginTransaction();
         
@@ -55,6 +57,17 @@ class ChainsawController extends Controller
                 'permit_id' => $chainsaw->id,
                 'user_id' => auth()->id()
             ]);
+
+            if($chainsaw) {
+                $notificationService->saveNotification([
+                    'type' => NotificationDomain::CHAINSAW,
+                    'message' => 'New Pending Registration of chainsaw registration by ' . auth()->user()->last_name . ', ' . auth()->user()->first_name,
+                    'related_id' => $chainsaw->id,
+                    'related_table' => NotificationDomain::RELATED_TABLES[NotificationDomain::CHAINSAW],
+                    'is_read' => false,
+                    'created_by' => auth()->user()->id,
+                ]);
+            }
             
             return response()->json([
                 'status' => 'success',

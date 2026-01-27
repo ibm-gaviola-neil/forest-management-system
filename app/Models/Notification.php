@@ -16,5 +16,6 @@ class Notification extends Model
         'related_table',
         'is_read',
         'created_by',
+        'reciever_id'
     ];
 }

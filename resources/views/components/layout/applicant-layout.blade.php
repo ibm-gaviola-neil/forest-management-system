@@ -145,7 +145,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <!-- Leaflet Locate Control -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"></script>
 
     <!-- Leaflet Geocoder for searching locations -->
@@ -276,11 +277,85 @@
 
                 <!-- Right side icons -->
                 <div class="flex space-x-2 md:space-x-6">
-                    <a href="notification.html"
-                        class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
-                        <img src="{{ asset('./assets/images/notif.png') }}" alt="Notification"
-                            class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
-                    </a>
+
+
+                    <div class="relative" id="notification-dropdown">
+                        <button id="notification-button"
+                            class="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 relative">
+                            <img src="{{ asset('./assets/images/notif.png') }}" alt="Notification"
+                                class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 object-contain" />
+                            <span
+                                class="absolute top-0 right-0 h-5 w-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">{{ count($nofications) }}</span>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div id="notification-panel"
+                            class="hidden origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                            <div class="py-1 max-h-96 overflow-y-auto">
+                                <div
+                                    class="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                                    Notifications
+                                </div>
+
+                                @forelse($nofications as $notification)
+                                    <a href="{{ $notification->route }}"
+                                        class="block px-4 py-3 hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100 {{ $notification->read_at ? '' : 'bg-blue-50' }}">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0">
+                                                @if ($notification->type == 'approval')
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                                                        <i class="fas fa-check-circle"></i>
+                                                    </div>
+                                                @elseif($notification->type == 'rejection')
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center text-red-500">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </div>
+                                                @elseif($notification->type == 'warning')
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500">
+                                                        <i class="fas fa-exclamation-circle"></i>
+                                                    </div>
+                                                @elseif($notification->type == 'tree')
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-500">
+                                                        <i class="fas fa-tree"></i>
+                                                    </div>
+                                                @else
+                                                    <div
+                                                        class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500">
+                                                        <i class="fas fa-info-circle"></i>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="ml-3 w-0 flex-1">
+                                                <div class="text-sm font-medium text-gray-900 mb-1">
+                                                    {{ $notification->title }}
+                                                    @unless ($notification->read_at)
+                                                        <span
+                                                            class="ml-2 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-blue-600"></span>
+                                                    @endunless
+                                                </div>
+                                                <p class="text-xs text-gray-500 truncate">{{ $notification->message }}
+                                                </p>
+                                                <p class="text-xs text-gray-400 mt-1">
+                                                    {{ $notification->created_at->diffForHumans() }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @empty
+                                    <div class="px-4 py-6 text-center text-sm text-gray-500">
+                                        <i class="fas fa-bell-slash text-gray-400 text-2xl mb-2"></i>
+                                        <p>No notifications</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <a href="/applicant/settings"
                         class="flex items-center justify-center hover:text-green-800 px-2 py-1 md:px-3 md:py-2 rounded-lg hover:bg-white transition-all duration-200">
                         <img src="{{ asset('./assets/images/settings.png') }}" alt="Settings"
@@ -422,7 +497,72 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notificationButton = document.getElementById('notification-button');
+            const notificationPanel = document.getElementById('notification-panel');
+            const notificationDropdown = document.getElementById('notification-dropdown');
+
+            // Optional: Add fade-in animation with CSS classes
+            // Replace your existing notification button click handler with this one:
+            notificationButton.addEventListener('click', function(event) {
+                // Stop the event from propagating to the document
+                event.stopPropagation();
+
+                // Toggle the dropdown
+                if (notificationPanel.classList.contains('hidden')) {
+                    notificationPanel.classList.remove('hidden');
+                    notificationPanel.classList.add('animate-fade-notif-in');
+                    setTimeout(() => {
+                        notificationPanel.classList.remove('animate-fade-notif-in');
+                    }, 300);
+                } else {
+                    notificationPanel.classList.add('animate-fade-notif-out');
+                    setTimeout(() => {
+                        notificationPanel.classList.add('hidden');
+                        notificationPanel.classList.remove('animate-fade-notif-out');
+                    }, 300);
+                }
+            });
+        });
+    </script>
     @stack('scripts')
+
+    <style>
+        .animate-fade-notif-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .animate-fade-notif-out {
+            animation: fadeOut 0.3s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+        }
+    </style>
+
 </body>
 
 </html>

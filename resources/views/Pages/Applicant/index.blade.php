@@ -13,7 +13,7 @@
       <div class="absolute top-0 right-0 w-32 h-32 bg-green-400 rounded-full opacity-20 -mr-10 -mt-10"></div>
       <div class="absolute bottom-0 left-0 w-24 h-24 bg-green-400 rounded-full opacity-20 -ml-10 -mb-10"></div>
       
-      <div class="p-6 sm:p-8 flex flex-col h-full relative z-10">
+      <div class="p-6 sm:p-8 flex flex-col h-full relative">
         <div class="flex justify-between items-start mb-auto">
           <div>
             <h2 class="font-bold text-xl sm:text-2xl mb-2">Register a Tree</h2>
@@ -38,7 +38,7 @@
       <div class="absolute top-0 right-0 w-32 h-32 bg-blue-300 rounded-full opacity-20 -mr-10 -mt-10"></div>
       <div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-300 rounded-full opacity-20 -ml-10 -mb-10"></div>
       
-      <div class="p-6 sm:p-8 flex flex-col h-full relative z-10">
+      <div class="p-6 sm:p-8 flex flex-col h-full relative">
         <div class="flex justify-between items-start mb-auto">
           <div>
             <h2 class="font-bold text-xl sm:text-2xl mb-2">Chainsaw Registration</h2>
@@ -63,7 +63,7 @@
       <div class="absolute top-0 right-0 w-32 h-32 bg-red-300 rounded-full opacity-20 -mr-10 -mt-10"></div>
       <div class="absolute bottom-0 left-0 w-24 h-24 bg-red-300 rounded-full opacity-20 -ml-10 -mb-10"></div>
       
-      <div class="p-6 sm:p-8 flex flex-col h-full relative z-10">
+      <div class="p-6 sm:p-8 flex flex-col h-full relative">
         <div class="flex justify-between items-start mb-auto">
           <div>
             <h2 class="font-bold text-xl sm:text-2xl mb-2">Apply for Tree Cutting</h2>
