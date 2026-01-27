@@ -1,1 +1,0 @@
-ALTER TABLE `blood_issuances` ADD `release_date` DATE NOT NULL AFTER `release_by`; 

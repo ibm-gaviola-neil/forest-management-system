@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jul 21, 2025 at 07:00 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: mysql
+-- Generation Time: Jan 27, 2026 at 03:10 PM
+-- Server version: 8.0.32
+-- PHP Version: 8.3.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `blood_registry_v2`
+-- Database: `forest_db`
 --
 
 -- --------------------------------------------------------
@@ -28,13 +28,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `audit_trails` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `blood_issuance_id` int(11) DEFAULT NULL,
-  `type` varchar(255) NOT NULL,
-  `action` varchar(255) NOT NULL,
-  `url` varchar(255) DEFAULT NULL,
-  `message` text DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `blood_issuance_id` int DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `action` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -46,21 +46,167 @@ CREATE TABLE `audit_trails` (
 --
 
 CREATE TABLE `blood_issuances` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `patient_id` bigint(20) UNSIGNED NOT NULL,
-  `requestor_id` bigint(20) NOT NULL,
-  `release_by` bigint(20) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `department_id` int DEFAULT NULL,
+  `issue_to` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `patient_id` bigint UNSIGNED DEFAULT NULL,
+  `requestor_id` bigint NOT NULL,
+  `release_by` bigint NOT NULL,
   `release_date` date NOT NULL,
-  `taken_by` bigint(20) NOT NULL,
+  `taken_by` bigint NOT NULL,
   `expiration_date` date NOT NULL,
-  `date_of_crossmatch` date NOT NULL,
-  `blood_type` varchar(255) NOT NULL,
-  `blood_bag_id` varchar(255) NOT NULL,
-  `time_of_crossmatch` varchar(255) NOT NULL,
+  `date_of_crossmatch` date DEFAULT NULL,
+  `blood_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `blood_bag_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `time_of_crossmatch` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chainsaw_requests`
+--
+
+CREATE TABLE `chainsaw_requests` (
+  `id` bigint UNSIGNED NOT NULL,
+  `serial_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `brand` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bar_length` double(8,2) NOT NULL,
+  `engine_displacement` double(8,2) NOT NULL,
+  `date_acquisition` date NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `status` int NOT NULL DEFAULT '0',
+  `approved_by` int DEFAULT NULL,
+  `approved_at` timestamp NULL DEFAULT NULL,
+  `rejection_reason` text COLLATE utf8mb4_unicode_ci,
+  `rejected_at` timestamp NULL DEFAULT NULL,
+  `rejected_by` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `chainsaw_requests`
+--
+
+INSERT INTO `chainsaw_requests` (`id`, `serial_number`, `brand`, `model`, `bar_length`, `engine_displacement`, `date_acquisition`, `description`, `user_id`, `status`, `approved_by`, `approved_at`, `rejection_reason`, `rejected_at`, `rejected_by`, `created_at`, `updated_at`) VALUES
+(1, '23424', 'fsadf', 'sdfasdf', 2213.00, 23.00, '2025-12-17', NULL, 40, 3, NULL, NULL, NULL, NULL, NULL, '2025-12-03 02:05:58', '2026-01-12 15:42:32'),
+(2, '456456546', 'Sample Brand', 'Sample Model', 34.00, 21.00, '2026-01-20', NULL, 40, 3, NULL, NULL, NULL, NULL, NULL, '2026-01-12 14:55:29', '2026-01-12 15:42:01'),
+(3, '43345345345', 'Sample Brand', 'Sample Model', 3434.00, 233.00, '2026-01-13', NULL, 40, 2, NULL, NULL, NULL, NULL, NULL, '2026-01-17 22:17:32', '2026-01-25 17:47:10'),
+(4, '090909090', 'xdfdsdfs', 'Sample Model', 3434.00, 21.00, '2026-01-13', NULL, 40, 1, 1, '2026-01-25 17:51:45', NULL, NULL, NULL, '2026-01-17 22:19:16', '2026-01-25 17:51:45'),
+(5, '43345345345', 'Sample Brand', 'Sample Model', 34.00, 23.00, '2026-01-14', NULL, 39, 2, NULL, NULL, 'Chainsaw serial number does not match the documentation provided.', '2026-01-25 17:49:29', 1, '2026-01-20 09:21:45', '2026-01-25 17:49:29'),
+(6, '43345345345', 'Sample Brand', 'Sample Model', 34.00, 21.00, '2026-01-11', NULL, 45, 2, NULL, NULL, NULL, NULL, NULL, '2026-01-25 16:56:55', '2026-01-25 17:48:01'),
+(7, '43345345345', 'Sample Brand', 'Sample Model', 23.00, 21.00, '2026-01-11', NULL, 45, 2, NULL, NULL, 'Chainsaw serial number does not match the documentation provided.', '2026-01-25 17:56:24', 1, '2026-01-25 17:54:16', '2026-01-25 17:56:24'),
+(12, '4334534534534354', 'Sample Brand', 'Sample Model', 34.00, 90.00, '2026-01-12', NULL, 45, 3, NULL, NULL, NULL, NULL, NULL, '2026-01-25 18:48:25', '2026-01-25 19:34:33'),
+(13, 'oio098098900', 'xdfdsdfs', 'Sample Model', 34.00, 21.00, '2026-01-05', NULL, 45, 3, NULL, NULL, NULL, NULL, NULL, '2026-01-25 18:57:56', '2026-01-25 19:32:43'),
+(14, '90809890809', 'Sample Brand', 'Sample Model', 34.00, 23.00, '2026-01-05', NULL, 45, 3, NULL, NULL, NULL, NULL, NULL, '2026-01-25 19:39:33', '2026-01-25 19:39:41'),
+(15, '43345345345', 'Sample Brand', 'Sample Model', 34.00, 23.00, '2026-01-12', NULL, 43, 1, 1, '2026-01-27 21:06:27', NULL, NULL, NULL, '2026-01-27 21:03:12', '2026-01-27 21:06:27'),
+(16, '433453453459009', 'Sample Brand', 'Sample Model', 90.00, 78.00, '2026-01-05', NULL, 39, 1, 1, '2026-01-27 22:21:55', NULL, NULL, NULL, '2026-01-27 21:32:28', '2026-01-27 22:21:55'),
+(17, '43345345345908098098', 'Sample Brand', 'Sample Model', 88.00, 23.00, '2026-01-05', NULL, 39, 1, 1, '2026-01-27 22:46:29', NULL, NULL, NULL, '2026-01-27 22:33:57', '2026-01-27 22:46:29'),
+(18, '12345678765435678', 'Sample Brand', 'Sample Model', 9.00, 7.00, '2026-01-06', NULL, 39, 2, NULL, NULL, 'Chainsaw serial number does not match the documentation provided.', '2026-01-27 22:46:05', 1, '2026-01-27 22:34:19', '2026-01-27 22:46:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chainsaw_requirements`
+--
+
+CREATE TABLE `chainsaw_requirements` (
+  `id` bigint UNSIGNED NOT NULL,
+  `chainsaw_request_id` bigint UNSIGNED NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `original_filename` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_size` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `chainsaw_requirements`
+--
+
+INSERT INTO `chainsaw_requirements` (`id`, `chainsaw_request_id`, `file_name`, `original_filename`, `file_path`, `file_type`, `file_size`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 12, '45_1769338105_background1.png', 'background1.png', 'cutting-permits/2026/01/45_1769338105_background1.png', 'image/png', 21280, '2026-01-25 18:48:25', '2026-01-25 18:48:25', NULL),
+(2, 12, '45_1769338105_goods1.png', 'goods1.png', 'cutting-permits/2026/01/45_1769338105_goods1.png', 'image/png', 17240, '2026-01-25 18:48:25', '2026-01-25 18:48:25', NULL),
+(6, 14, '45_1769341173_background1.png', 'background1.png', 'cutting-permits/2026/01/45_1769341173_background1.png', 'image/png', 21280, '2026-01-25 19:39:33', '2026-01-25 19:39:33', NULL),
+(7, 15, '43_1769518992_background1.png', 'background1.png', 'cutting-permits/2026/01/43_1769518992_background1.png', 'image/png', 21280, '2026-01-27 21:03:12', '2026-01-27 21:03:12', NULL),
+(8, 16, '39_1769520748_background1.png', 'background1.png', 'cutting-permits/2026/01/39_1769520748_background1.png', 'image/png', 21280, '2026-01-27 21:32:28', '2026-01-27 21:32:28', NULL),
+(9, 17, '39_1769524437_background1.png', 'background1.png', 'cutting-permits/2026/01/39_1769524437_background1.png', 'image/png', 21280, '2026-01-27 22:33:57', '2026-01-27 22:33:57', NULL),
+(10, 18, '39_1769524459_background1.png', 'background1.png', 'cutting-permits/2026/01/39_1769524459_background1.png', 'image/png', 21280, '2026-01-27 22:34:19', '2026-01-27 22:34:19', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cutting_permits`
+--
+
+CREATE TABLE `cutting_permits` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `tree_id` bigint UNSIGNED NOT NULL,
+  `permit_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reason` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `document_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `document_original_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` int NOT NULL DEFAULT '0' COMMENT '0=pending, 1=approved, 2=rejected, 3=expired',
+  `rejection_reason` text COLLATE utf8mb4_unicode_ci,
+  `approved_at` timestamp NULL DEFAULT NULL,
+  `rejected_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `approved_by` bigint UNSIGNED DEFAULT NULL,
+  `rejected_by` bigint UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cutting_permits`
+--
+
+INSERT INTO `cutting_permits` (`id`, `user_id`, `tree_id`, `permit_id`, `reason`, `document_path`, `document_original_name`, `status`, `rejection_reason`, `approved_at`, `rejected_at`, `expires_at`, `approved_by`, `rejected_by`, `created_at`, `updated_at`) VALUES
+(20, 45, 46, 'CP-2026-2QCXRU', 'dfasdfas sdfasdf asdfasdf', NULL, NULL, 1, NULL, '2026-01-24 23:38:18', NULL, '2026-07-24 23:38:18', 1, NULL, '2026-01-24 23:25:28', '2026-01-24 23:38:18'),
+(21, 39, 50, 'CP-2026-NQDT7A', 'sdfasdfasdfasdf', NULL, NULL, 1, NULL, '2026-01-27 22:15:05', NULL, '2026-07-27 22:15:05', 1, NULL, '2026-01-27 21:38:28', '2026-01-27 22:15:05'),
+(22, 39, 49, 'CP-2026-0M3M7J', '0987654789087iykj,mn,nm', NULL, NULL, 1, NULL, '2026-01-27 22:45:50', NULL, '2026-07-27 22:45:50', 1, NULL, '2026-01-27 22:34:37', '2026-01-27 22:45:50'),
+(23, 39, 48, NULL, '0987654378907654890', NULL, NULL, 2, 'Incomplete documentation. Missing required harvesting plan details.', NULL, '2026-01-27 22:45:31', NULL, NULL, 1, '2026-01-27 22:34:50', '2026-01-27 22:45:31'),
+(24, 43, 47, NULL, 'Tree is structurally unsound and at risk of falling.', NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, '2026-01-27 23:00:06', '2026-01-27 23:00:06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cutting_permit_requirements`
+--
+
+CREATE TABLE `cutting_permit_requirements` (
+  `id` bigint UNSIGNED NOT NULL,
+  `cutting_permit_id` bigint UNSIGNED NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `original_filename` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_size` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `cutting_permit_requirements`
+--
+
+INSERT INTO `cutting_permit_requirements` (`id`, `cutting_permit_id`, `file_name`, `original_filename`, `file_path`, `file_type`, `file_size`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(16, 20, '45_1769268328_background1.png', 'background1.png', 'cutting-permits/2026/01/45_1769268328_background1.png', 'image/png', 21280, '2026-01-24 23:25:28', '2026-01-24 23:25:28', NULL),
+(17, 21, '39_1769521108_background1.png', 'background1.png', 'cutting-permits/2026/01/39_1769521108_background1.png', 'image/png', 21280, '2026-01-27 21:38:28', '2026-01-27 21:38:28', NULL),
+(18, 22, '39_1769524477_background1.png', 'background1.png', 'cutting-permits/2026/01/39_1769524477_background1.png', 'image/png', 21280, '2026-01-27 22:34:37', '2026-01-27 22:34:37', NULL),
+(19, 23, '39_1769524490_background1.png', 'background1.png', 'cutting-permits/2026/01/39_1769524490_background1.png', 'image/png', 21280, '2026-01-27 22:34:50', '2026-01-27 22:34:50', NULL),
+(20, 24, '43_1769526006_background1.png', 'background1.png', 'cutting-permits/2026/01/43_1769526006_background1.png', 'image/png', 21280, '2026-01-27 23:00:06', '2026-01-27 23:00:06', NULL);
 
 -- --------------------------------------------------------
 
@@ -69,27 +215,30 @@ CREATE TABLE `blood_issuances` (
 --
 
 CREATE TABLE `departments` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `department_name` varchar(255) NOT NULL,
-  `department_head` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `contact_number` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `department_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `department_head` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `departments`
+-- Table structure for table `department_heads`
 --
 
-INSERT INTO `departments` (`id`, `user_id`, `department_name`, `department_head`, `email`, `contact_number`, `created_at`, `updated_at`) VALUES
-(3, 1, 'DILG OFFICE', 'Joycelyn Muntuerto Muralla', 'apriljoypg@gmail.com', '09360944819', '2025-03-22 22:54:49', '2025-03-22 22:54:49'),
-(4, 1, 'Legislative Office', 'Asisclo Gaviola', 'neilbryangaviola25@gmail.com', '09368955412', '2025-03-22 22:55:06', '2025-03-22 22:55:06'),
-(6, 1, 'Amela Collins', 'wijaxok@mailinator.com', 'apriljoypg@gmail.com', '09632555555', '2025-03-22 22:55:55', '2025-03-22 22:55:55'),
-(7, 1, 'qoxufixos@mailinator.com', 'kapof@mailinator.com', 'kicama@mailinator.com', '09866986321', '2025-03-22 22:56:42', '2025-03-22 22:56:42'),
-(10, 1, 'Emergency Department', 'fffffff', 'ffddfd@gmail.com', '09632145896', '2025-03-28 07:53:16', '2025-03-28 07:53:16'),
-(11, 1, 'dfsdfgdg', 'dsfdsfdfg', 'sdfasdfsdf@dfg', '09360988542', '2025-07-10 18:17:41', '2025-07-10 18:17:41');
+CREATE TABLE `department_heads` (
+  `id` bigint UNSIGNED NOT NULL,
+  `department_id` bigint UNSIGNED NOT NULL,
+  `department_head` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -98,21 +247,21 @@ INSERT INTO `departments` (`id`, `user_id`, `department_name`, `department_head`
 --
 
 CREATE TABLE `donation_histories` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `donor_id` bigint(20) UNSIGNED NOT NULL,
-  `staff_id` int(11) NOT NULL,
-  `qnty` int(11) NOT NULL,
-  `blood_bag_id` varchar(255) NOT NULL,
-  `date_process` varchar(255) NOT NULL,
-  `province` varchar(255) NOT NULL,
-  `city` varchar(255) NOT NULL,
-  `barangay` varchar(255) NOT NULL,
-  `donation_type` varchar(255) NOT NULL,
-  `expiration_setting_type` int(2) NOT NULL,
-  `number_of_days` int(50) DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `donor_id` bigint UNSIGNED NOT NULL,
+  `staff_id` int NOT NULL,
+  `qnty` int NOT NULL,
+  `blood_bag_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_process` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `barangay` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `donation_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration_setting_type` int NOT NULL,
+  `number_of_days` int DEFAULT NULL,
   `expiration_date` date DEFAULT NULL,
-  `count` int(1) NOT NULL,
+  `count` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -124,11 +273,11 @@ CREATE TABLE `donation_histories` (
 --
 
 CREATE TABLE `donation_inventories` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `donation_id` bigint(20) UNSIGNED NOT NULL,
-  `blood_type` varchar(255) NOT NULL,
-  `date_donated` varchar(255) NOT NULL,
-  `status` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `donation_id` bigint UNSIGNED NOT NULL,
+  `blood_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date_donated` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -140,23 +289,43 @@ CREATE TABLE `donation_inventories` (
 --
 
 CREATE TABLE `donors` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `middle_name` varchar(255) DEFAULT NULL,
-  `suffix` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `contact_number` varchar(255) NOT NULL,
-  `birth_date` varchar(255) NOT NULL,
-  `gender` varchar(255) NOT NULL,
-  `civil_status` varchar(255) NOT NULL,
-  `province` varchar(255) NOT NULL,
-  `city` varchar(255) NOT NULL,
-  `barangay` varchar(255) NOT NULL,
-  `with_account` int(11) NOT NULL DEFAULT 0,
-  `blood_type` varchar(255) NOT NULL,
-  `status` int(11) NOT NULL DEFAULT 0,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `middle_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `suffix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `birth_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `civil_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `barangay` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `with_account` int NOT NULL DEFAULT '0',
+  `blood_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int NOT NULL DEFAULT '0',
+  `is_approved` int NOT NULL DEFAULT '0',
+  `valid_id_image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `id_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `temp_p` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `email_addresses`
+--
+
+CREATE TABLE `email_addresses` (
+  `id` bigint UNSIGNED NOT NULL,
+  `system_settings_id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -168,24 +337,16 @@ CREATE TABLE `donors` (
 --
 
 CREATE TABLE `events` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content` longtext NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_start_date` date NOT NULL,
   `display_end_date` date NOT NULL,
+  `image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `events`
---
-
-INSERT INTO `events` (`id`, `user_id`, `title`, `content`, `display_start_date`, `display_end_date`, `created_at`, `updated_at`) VALUES
-(8, 1, 'Binalayan West Donation Program', 'AI Overview\r\nLearn more\r\nEvent content should include essential details like the event name, date, time, location, and a brief description, along with any additional relevant information like speakers, agenda, or registration instructions. Effective event content also utilizes visuals, storytelling, and calls to action to attract and engage potential attendees', '2025-04-27', '2025-04-29', '2025-04-26 14:59:11', '2025-05-29 17:27:02'),
-(12, 1, 'Biliran Tulong Para Lahat Program', 'As a refresher, event content includes all the information you should have in your event calendar to entice potential attendees to commit. It\'s much more than just the standard date, time and location; event content also includes things like metadata, event photos, RSVP lists and user reviews', '2025-04-27', '2025-05-09', '2025-04-27 11:02:34', '2025-04-27 11:02:34'),
-(13, 1, 'Test Event', 'Shessh', '2025-06-14', '2025-06-30', '2025-06-14 09:24:37', '2025-06-14 09:24:37');
 
 -- --------------------------------------------------------
 
@@ -194,13 +355,130 @@ INSERT INTO `events` (`id`, `user_id`, `title`, `content`, `display_start_date`,
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) NOT NULL,
-  `connection` text NOT NULL,
-  `queue` text NOT NULL,
-  `payload` longtext NOT NULL,
-  `exception` longtext NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `id` bigint UNSIGNED NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incidents`
+--
+
+CREATE TABLE `incidents` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `reporter_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reporter_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reporter_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_anonymous` tinyint(1) NOT NULL DEFAULT '0',
+  `incident_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `incident_date` timestamp NULL DEFAULT NULL,
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitude` decimal(10,7) DEFAULT NULL,
+  `longitude` decimal(10,7) DEFAULT NULL,
+  `landmark` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` tinyint UNSIGNED NOT NULL DEFAULT '1',
+  `assigned_to` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `admin_notes` text COLLATE utf8mb4_unicode_ci,
+  `resolved_at` timestamp NULL DEFAULT NULL,
+  `has_photos` tinyint(1) NOT NULL DEFAULT '0',
+  `has_videos` tinyint(1) NOT NULL DEFAULT '0',
+  `severity` tinyint UNSIGNED NOT NULL DEFAULT '2',
+  `priority` tinyint UNSIGNED NOT NULL DEFAULT '2',
+  `related_tree_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `related_permit_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reported_from_ip` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `reported_from_device` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `incidents`
+--
+
+INSERT INTO `incidents` (`id`, `user_id`, `reporter_name`, `reporter_email`, `reporter_phone`, `is_anonymous`, `incident_type`, `description`, `incident_date`, `location`, `latitude`, `longitude`, `landmark`, `status`, `assigned_to`, `admin_notes`, `resolved_at`, `has_photos`, `has_videos`, `severity`, `priority`, `related_tree_id`, `related_permit_id`, `reported_from_ip`, `reported_from_device`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(7, 1, 'kjhkjhkjkjkj', 'rohynusa@mailinator.com', '+1 (245) 228-9437', 0, 'forest_fire', 'Ab et ipsum asperio kjkjlkjlkkjlk', '2009-12-09 05:15:00', 'Aliquam nesciunt vo', 10.3642030, 123.9240680, 'Voluptas rerum dolor', 1, NULL, 'Amet expedita esse', NULL, 1, 0, 1, 2, NULL, NULL, NULL, NULL, '2026-01-27 12:20:26', '2026-01-27 12:20:26', NULL),
+(8, 1, 'Anonymous', NULL, NULL, 1, 'unauthorized_cutting', ',mkhkhkj khkjhkjhjk kjhkj', '2026-01-07 12:21:00', 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 10.3641140, 123.9242610, 'jkhkjhjkhj', 1, NULL, NULL, NULL, 1, 0, 2, 2, NULL, NULL, NULL, NULL, '2026-01-27 12:23:13', '2026-01-27 12:23:13', NULL),
+(9, 1, 'Anonymous hhh', 'bumuk@mailinator.com', '+1 (132) 693-5603', 0, 'encroachment', 'Possimus commodo do', '2005-06-27 08:19:00', 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 10.3645300, 123.9238290, 'Perspiciatis perspi', 3, 'denr', 'Odit omnis duis iust', NULL, 1, 0, 3, 3, NULL, NULL, NULL, NULL, '2026-01-27 12:36:55', '2026-01-27 16:06:34', NULL),
+(10, 1, 'Anonymous', NULL, NULL, 1, 'illegal_logging', 'ksdjfhkjasdf skdfhaskjdfh sdkfjha', '2026-01-07 13:57:00', 'Talamban, Cebu City, Central Visayas, 6014, Philippines', 10.3644900, 123.9230610, NULL, 1, 'denr', 'dfgdsfg dfgsdfg dfgsdfg', NULL, 1, 0, 3, 3, NULL, NULL, NULL, NULL, '2026-01-27 13:57:44', '2026-01-27 13:57:44', NULL),
+(11, 1, 'Anonymous hhh', 'qyja@mailinator.com', '+1 (732) 902-5234', 0, 'forest_fire', 'Aut exercitationem a', '2005-10-07 08:08:00', 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 10.3643460, 123.9239810, 'Dolor impedit est', 5, 'denr', 'A dolor amet iusto', NULL, 1, 0, 4, 2, '42', '20', NULL, NULL, '2026-01-27 14:29:31', '2026-01-27 15:50:00', NULL),
+(12, 1, 'Neil Bryan', 'qyja@maili222nator.com', '+1 (732) 902-52345', 0, 'wildlife_poaching', 'Aut exercitationem a sdfasdfsadf', '2005-10-07 08:08:00', 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 10.3642740, 123.9240440, 'Dolor impedit est', 3, 'denr', 'A dolor amet iusto kjkjkk', NULL, 1, 0, 2, 3, NULL, NULL, NULL, NULL, '2026-01-27 15:42:30', '2026-01-27 16:22:21', NULL),
+(16, 1, 'Anonymous', NULL, NULL, 1, 'illegal_logging', 'kjhkjh kjhjkh', '2025-12-31 15:57:00', 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 10.3643870, 123.9239660, 'ljhljjkhjk', 1, NULL, NULL, NULL, 1, 0, 2, 2, '41', NULL, NULL, NULL, '2026-01-27 15:57:50', '2026-01-27 15:57:50', NULL),
+(17, 1, 'Anonymous', 'Reuben@gmail.com', '+1 (732) 902-5234', 0, 'illegal_logging', 'kjhkjh kjhjkh', '2025-12-31 15:57:00', 'Jalan Dukuh Pinggir V, RW 06, Kebon Melati, Tanah Abang, Central Jakarta, Special Capital Region of Jakarta, Java, 10230, Indonesia', -6.1983310, 106.8153690, 'ljhljjkhjk', 1, NULL, NULL, NULL, 1, 0, 2, 2, '41', '20', NULL, NULL, '2026-01-27 15:58:11', '2026-01-27 16:18:58', NULL),
+(18, 1, 'Anonymous hhh', 'Reuben@gmail.com', '+1 (732) 902-5234', 0, 'illegal_logging', 'kjhkjh kjhjkh', '2025-12-31 15:57:00', 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 10.3644510, 123.9239220, 'ljhljjkhjk', 3, NULL, NULL, NULL, 1, 0, 2, 2, '41', '20', NULL, NULL, '2026-01-27 15:58:36', '2026-01-27 18:12:42', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incident_attachments`
+--
+
+CREATE TABLE `incident_attachments` (
+  `id` bigint UNSIGNED NOT NULL,
+  `incident_id` bigint UNSIGNED NOT NULL,
+  `file_path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_size` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_extension` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_image` tinyint(1) NOT NULL DEFAULT '0',
+  `is_video` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `incident_attachments`
+--
+
+INSERT INTO `incident_attachments` (`id`, `incident_id`, `file_path`, `file_name`, `file_type`, `file_size`, `file_extension`, `is_image`, `is_video`, `created_at`, `updated_at`) VALUES
+(2, 7, 'incidents/2026/01/1_20260127122026311_background1.png', '1_20260127122026311_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 12:20:26', '2026-01-27 12:20:26'),
+(3, 8, 'incidents/2026/01/1_20260127122313954_goods1.png', '1_20260127122313954_goods1.png', 'image/png', '17240', 'png', 1, 0, '2026-01-27 12:23:13', '2026-01-27 12:23:13'),
+(5, 10, 'incidents/2026/01/1_20260127135744848_background1.png', '1_20260127135744848_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 13:57:44', '2026-01-27 13:57:44'),
+(6, 11, 'incidents/2026/01/1_20260127142931021_background1.png', '1_20260127142931021_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 14:29:31', '2026-01-27 14:29:31'),
+(7, 12, 'incidents/2026/01/1_20260127154230465_background1.png', '1_20260127154230465_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 15:42:30', '2026-01-27 15:42:30'),
+(8, 12, 'incidents/2026/01/1_20260127155216699_goods1.png', '1_20260127155216699_goods1.png', 'image/png', '17240', 'png', 1, 0, '2026-01-27 15:52:16', '2026-01-27 15:52:16'),
+(9, 16, 'incidents/2026/01/1_20260127155750093_background1.png', '1_20260127155750093_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 15:57:50', '2026-01-27 15:57:50'),
+(10, 17, 'incidents/2026/01/1_20260127155811480_background1.png', '1_20260127155811480_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 15:58:11', '2026-01-27 15:58:11'),
+(11, 18, 'incidents/2026/01/1_20260127155836814_background1.png', '1_20260127155836814_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 15:58:36', '2026-01-27 15:58:36'),
+(14, 9, 'incidents/2026/01/1_20260127160634875_background1.png', '1_20260127160634875_background1.png', 'image/png', '21280', 'png', 1, 0, '2026-01-27 16:06:34', '2026-01-27 16:06:34');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incident_status_histories`
+--
+
+CREATE TABLE `incident_status_histories` (
+  `id` bigint UNSIGNED NOT NULL,
+  `incident_id` bigint UNSIGNED NOT NULL,
+  `updated_by` bigint UNSIGNED DEFAULT NULL,
+  `from_status` tinyint UNSIGNED NOT NULL,
+  `to_status` tinyint UNSIGNED NOT NULL,
+  `notes` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loans_reports`
+--
+
+CREATE TABLE `loans_reports` (
+  `id` bigint UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -210,30 +488,30 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `members` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `middle_name` varchar(255) DEFAULT NULL,
-  `suffix` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `contact_number` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `middle_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `suffix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `birth_date` date NOT NULL,
-  `gender` varchar(255) NOT NULL,
-  `civil_status` varchar(255) NOT NULL,
-  `province` varchar(255) NOT NULL,
-  `city` varchar(255) NOT NULL,
-  `barangay` varchar(255) NOT NULL,
-  `name_of_spouse` varchar(255) NOT NULL,
-  `place_of_birth` varchar(255) NOT NULL,
-  `father` varchar(255) NOT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `civil_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `barangay` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name_of_spouse` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `place_of_birth` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `father` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `father_birth_date` date NOT NULL,
-  `mother` varchar(255) NOT NULL,
+  `mother` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `mother_birth_date` date NOT NULL,
-  `department` varchar(255) NOT NULL,
-  `status_employment` varchar(255) NOT NULL,
-  `position` varchar(255) NOT NULL,
-  `years_of_service` int(11) NOT NULL,
-  `function_admin` varchar(255) DEFAULT NULL,
+  `department` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_employment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `position` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `years_of_service` int NOT NULL,
+  `function_admin` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_of_appointment` date NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -246,9 +524,9 @@ CREATE TABLE `members` (
 --
 
 CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) NOT NULL,
-  `batch` int(11) NOT NULL
+  `id` int UNSIGNED NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -268,7 +546,64 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (10, '2025_05_25_070201_create_patients_table', 7),
 (11, '2025_06_01_070542_create_blood_issuances_table', 8),
 (12, '2025_06_16_123347_create_audit_trails_table', 9),
-(13, '2025_07_19_151736_create_members_table', 10);
+(13, '2025_07_19_151736_create_members_table', 10),
+(14, '2025_07_21_164836_create_loans_reports_table', 11),
+(15, '2025_10_19_090658_create_system_settings_table', 11),
+(16, '2025_11_10_141621_create_notifications_table', 12),
+(17, '2025_11_17_070312_create_email_addresses_table', 13),
+(18, '2025_11_23_142127_create_department_heads_table', 14),
+(19, '2025_11_26_221617_create_request_messages_table', 15),
+(20, '2025_12_03_012440_create_trees_table', 15),
+(21, '2025_12_03_020018_create_chainsaw_requests_table', 16),
+(22, '2026_01_14_221317_create_cutting_permits_table', 17),
+(23, '2026_01_17_214103_create_cutting_permit_requirements_table', 18),
+(24, '2026_01_25_183622_create_chainsaw_requirements_table', 19),
+(25, '2026_01_27_101738_create_incidents_table', 20),
+(26, '2026_01_27_102702_create_incident_attachments_table', 20),
+(27, '2026_01_27_102809_create_incident_status_histories_table', 21);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` bigint UNSIGNED NOT NULL,
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `related_id` bigint UNSIGNED DEFAULT NULL,
+  `related_table` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT '0',
+  `reciever_id` int DEFAULT NULL,
+  `created_by` bigint UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `type`, `message`, `related_id`, `related_table`, `is_read`, `reciever_id`, `created_by`, `created_at`, `updated_at`) VALUES
+(24, 'trees', 'New Pending Registration of Tree by asdfasdf, sdfasf', 50, 'trees', 0, NULL, 39, '2026-01-27 21:22:43', '2026-01-27 21:22:43'),
+(25, 'chainsaw_requests', 'New Pending Registration of chainsaw registration by asdfasdf, sdfasf', 16, 'chainsaw_requests', 1, NULL, 39, '2026-01-27 21:32:28', '2026-01-27 21:56:34'),
+(26, 'cutting_permits', 'New Pending for review of cutting permit application by asdfasdf, sdfasf', 21, 'cutting_permits', 1, NULL, 39, '2026-01-27 21:38:28', '2026-01-27 21:56:30'),
+(27, 'trees_applicant', 'Tree registration approved!.', 49, 'trees_applicant', 1, 39, 1, '2026-01-27 22:15:39', '2026-01-27 22:29:42'),
+(28, 'trees_applicant', 'Tree registration approved!.', 48, 'trees_applicant', 1, 39, 1, '2026-01-27 22:21:17', '2026-01-27 22:29:33'),
+(29, 'trees', 'New Pending Registration of Tree by asdfasdf, sdfasf', 51, 'trees', 0, NULL, 39, '2026-01-27 22:32:56', '2026-01-27 22:32:56'),
+(30, 'trees', 'New Pending Registration of Tree by asdfasdf, sdfasf', 52, 'trees', 0, NULL, 39, '2026-01-27 22:33:23', '2026-01-27 22:33:23'),
+(31, 'chainsaw_requests', 'New Pending Registration of chainsaw registration by asdfasdf, sdfasf', 17, 'chainsaw_requests', 1, NULL, 39, '2026-01-27 22:33:57', '2026-01-27 22:46:11'),
+(32, 'chainsaw_requests', 'New Pending Registration of chainsaw registration by asdfasdf, sdfasf', 18, 'chainsaw_requests', 1, NULL, 39, '2026-01-27 22:34:19', '2026-01-27 22:45:58'),
+(33, 'cutting_permits', 'New Pending for review of cutting permit application by asdfasdf, sdfasf', 22, 'cutting_permits', 1, NULL, 39, '2026-01-27 22:34:37', '2026-01-27 22:45:45'),
+(34, 'cutting_permits', 'New Pending for review of cutting permit application by asdfasdf, sdfasf', 23, 'cutting_permits', 1, NULL, 39, '2026-01-27 22:34:50', '2026-01-27 22:45:40'),
+(35, 'permit_applicant', 'Cutting Permit Application Rejected.', 23, 'permit_applicant', 0, 39, 1, '2026-01-27 22:45:31', '2026-01-27 22:45:31'),
+(36, 'permit_applicant', 'Cutting Permit Application Approved.', 22, 'permit_applicant', 0, 39, 1, '2026-01-27 22:45:50', '2026-01-27 22:45:50'),
+(37, 'chainsaw_applicant', 'Chainsaw Registration Rejected.', 18, 'chainsaw_applicant', 0, 39, 1, '2026-01-27 22:46:05', '2026-01-27 22:46:05'),
+(38, 'chainsaw_applicant', 'Chainsaw Registration Approved.', 17, 'chainsaw_applicant', 0, 39, 1, '2026-01-27 22:46:29', '2026-01-27 22:46:29'),
+(39, 'trees_applicant', 'Tree registration approved!.', 52, 'trees_applicant', 0, 39, 1, '2026-01-27 22:47:09', '2026-01-27 22:47:09'),
+(40, 'trees_applicant', 'Tree registration rejected.', 51, 'trees_applicant', 1, 39, 1, '2026-01-27 22:47:27', '2026-01-27 22:50:02'),
+(41, 'cutting_permits', 'New Pending for review of cutting permit application by Gaviola, Neil Bryan', 24, 'cutting_permits', 1, NULL, 43, '2026-01-27 23:00:06', '2026-01-27 23:00:37');
 
 -- --------------------------------------------------------
 
@@ -277,8 +612,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -289,22 +624,22 @@ CREATE TABLE `password_reset_tokens` (
 --
 
 CREATE TABLE `patients` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `middle_name` varchar(255) DEFAULT NULL,
-  `suffix` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `contact_number` varchar(255) NOT NULL,
-  `birth_date` varchar(255) NOT NULL,
-  `gender` varchar(255) NOT NULL,
-  `civil_status` varchar(255) NOT NULL,
-  `province` varchar(255) NOT NULL,
-  `city` varchar(255) NOT NULL,
-  `barangay` varchar(255) NOT NULL,
-  `with_account` int(11) NOT NULL DEFAULT 0,
-  `status` int(11) NOT NULL DEFAULT 0,
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED DEFAULT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `middle_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `suffix` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contact_number` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `birth_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `civil_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `province` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `barangay` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `with_account` int NOT NULL DEFAULT '0',
+  `status` int NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -316,12 +651,12 @@ CREATE TABLE `patients` (
 --
 
 CREATE TABLE `personal_access_tokens` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) NOT NULL,
-  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `abilities` text DEFAULT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint UNSIGNED NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -335,13 +670,13 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `refbrgy` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `brgyCode` varchar(255) DEFAULT NULL,
-  `brgyDesc` text DEFAULT NULL,
+  `brgyDesc` text,
   `regCode` varchar(255) DEFAULT NULL,
   `provCode` varchar(255) DEFAULT NULL,
   `citymunCode` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `refbrgy`
@@ -42433,13 +42768,13 @@ INSERT INTO `refbrgy` (`id`, `brgyCode`, `brgyDesc`, `regCode`, `provCode`, `cit
 --
 
 CREATE TABLE `refcitymun` (
-  `id` int(255) NOT NULL,
+  `id` int NOT NULL,
   `psgcCode` varchar(255) DEFAULT NULL,
-  `citymunDesc` text DEFAULT NULL,
+  `citymunDesc` text,
   `regDesc` varchar(255) DEFAULT NULL,
   `provCode` varchar(255) DEFAULT NULL,
   `citymunCode` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `refcitymun`
@@ -44102,12 +44437,12 @@ INSERT INTO `refcitymun` (`id`, `psgcCode`, `citymunDesc`, `regDesc`, `provCode`
 --
 
 CREATE TABLE `refprovince` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `psgcCode` varchar(255) DEFAULT NULL,
-  `provDesc` text DEFAULT NULL,
+  `provDesc` text,
   `regCode` varchar(255) DEFAULT NULL,
   `provCode` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 --
 -- Dumping data for table `refprovince`
@@ -44206,25 +44541,113 @@ INSERT INTO `refprovince` (`id`, `psgcCode`, `provDesc`, `regCode`, `provCode`) 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `request_messages`
+--
+
+CREATE TABLE `request_messages` (
+  `id` bigint UNSIGNED NOT NULL,
+  `notification_id` bigint UNSIGNED NOT NULL,
+  `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `donor_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `system_settings`
+--
+
+CREATE TABLE `system_settings` (
+  `id` bigint UNSIGNED NOT NULL,
+  `is_enable` int NOT NULL DEFAULT '1',
+  `display_start_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `display_end_date` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `navbar_logo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trees`
+--
+
+CREATE TABLE `trees` (
+  `id` bigint UNSIGNED NOT NULL,
+  `user_id` bigint UNSIGNED NOT NULL,
+  `treeId` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `treeType` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `datePlanted` date NOT NULL,
+  `height` double(8,2) NOT NULL,
+  `diameter` double(8,2) NOT NULL,
+  `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `land_mark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `status` int NOT NULL DEFAULT '0',
+  `date_of_cut` date DEFAULT NULL,
+  `lattitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rejected_by` int DEFAULT NULL,
+  `rejected_at` timestamp NULL DEFAULT NULL,
+  `rejection_reason` text COLLATE utf8mb4_unicode_ci,
+  `approved_by` int DEFAULT NULL,
+  `approved_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `trees`
+--
+
+INSERT INTO `trees` (`id`, `user_id`, `treeId`, `treeType`, `datePlanted`, `height`, `diameter`, `location`, `land_mark`, `description`, `status`, `date_of_cut`, `lattitude`, `longitude`, `rejected_by`, `rejected_at`, `rejection_reason`, `approved_by`, `approved_at`, `created_at`, `updated_at`) VALUES
+(41, 44, '43234234243344', 'Timber', '2026-01-15', 23.00, 23.00, 'Canduman, Mandaue, Central Visayas, 6014, Philippines', 'Test', 'sdfasdfasdfasdf', 1, NULL, '10.363676', '123.925577', NULL, NULL, NULL, NULL, NULL, '2026-01-24 14:00:25', '2026-01-24 22:12:25'),
+(42, 44, '9090wewrwr', 'Ornamental', '2026-01-14', 23.00, 23.00, '10.364386, 123.924014', 'Venezuela', 'Test', 1, NULL, '10.365106', '123.925138', NULL, NULL, NULL, NULL, NULL, '2026-01-24 14:13:23', '2026-01-24 22:12:42'),
+(43, 44, '09809890809098', 'Timber', '2025-12-31', 90.00, 89.00, 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 'Test', NULL, 2, NULL, '10.364297', '123.924039', 1, '2026-01-24 22:08:29', 'Environmental impact assessment failed to address protected species in the area.', NULL, NULL, '2026-01-24 14:33:54', '2026-01-24 22:08:29'),
+(44, 44, '080989080980000', 'Medicinal', '2026-01-21', 45.00, 90.00, 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 'Test', NULL, 2, NULL, '10.363898', '123.923590', 1, '2026-01-24 22:08:08', 'Forest management guidelines not followed in proposed cutting area.', NULL, NULL, '2026-01-24 14:34:43', '2026-01-24 22:08:08'),
+(45, 45, '0000000', 'Medicinal', '2026-01-08', 88.00, 0.00, 'Cabancalan, Cebu City, Central Visayas, 6014, Philippines', 'Test', NULL, 3, NULL, '10.364658', '123.923040', NULL, NULL, NULL, NULL, NULL, '2026-01-24 16:19:52', '2026-01-24 21:55:26'),
+(46, 45, '9090909090', 'Timber', '2026-01-22', 90.00, 89.00, 'M. Cuenco Avenue, Tigbao, Talamban, Cebu City, Central Visayas, 6000, Philippines', 'Test', 'Test', 4, NULL, '10.371175', '123.920181', NULL, NULL, NULL, NULL, NULL, '2026-01-24 23:24:17', '2026-01-24 23:38:18'),
+(47, 43, 'sdfw342424', 'Timber', '2026-01-13', 9.00, 9.00, 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 'jhkjkjhkjhjkj', NULL, 1, NULL, '10.364183', '123.924180', NULL, NULL, NULL, NULL, NULL, '2026-01-27 21:02:46', '2026-01-27 21:03:56'),
+(48, 39, '9097098089', 'Timber', '2026-01-06', 90.00, 78.00, 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 'lkjljlk', NULL, 1, NULL, '10.364349', '123.924007', NULL, NULL, NULL, NULL, NULL, '2026-01-27 21:22:03', '2026-01-27 22:21:17'),
+(49, 39, '909709808990', 'Timber', '2026-01-06', 90.00, 78.00, 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 'lkjljlk', NULL, 4, NULL, '10.364349', '123.924007', NULL, NULL, NULL, NULL, NULL, '2026-01-27 21:22:17', '2026-01-27 22:45:50'),
+(50, 39, '909709808990232323', 'Timber', '2026-01-06', 90.00, 78.00, 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 'lkjljlk', NULL, 4, NULL, '10.364349', '123.924007', NULL, NULL, NULL, NULL, NULL, '2026-01-27 21:22:43', '2026-01-27 22:15:05'),
+(51, 39, '908090980980980809', 'Fruit-Bearing', '2026-01-13', 90.00, 99.00, 'Cabancalan, Mandaue, Central Visayas, 6014, Philippines', 'ljlkjkljlkjlk', NULL, 2, NULL, '10.364214', '123.924008', 1, '2026-01-27 22:47:27', 'Incomplete documentation. Missing required harvesting plan details.', NULL, NULL, '2026-01-27 22:32:56', '2026-01-27 22:47:27'),
+(52, 39, '0908976754547890', 'Fruit-Bearing', '2026-01-06', 9.00, 9.00, 'RW 05, Kebon Melati, Tanah Abang, Central Jakarta, Special Capital Region of Jakarta, Java, 10230, Indonesia', 'nlkjkljkl', NULL, 1, NULL, '-6.200390', '106.817531', NULL, NULL, NULL, NULL, NULL, '2026-01-27 22:33:23', '2026-01-27 22:47:09');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `department_id` int(20) DEFAULT NULL,
-  `donor_id` int(11) DEFAULT NULL,
-  `last_name` varchar(255) NOT NULL,
-  `first_name` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `role` varchar(255) NOT NULL,
-  `designation` varchar(50) DEFAULT NULL,
-  `status` varchar(255) NOT NULL DEFAULT 'active',
-  `added_by` int(50) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `google_id` text COLLATE utf8mb4_unicode_ci,
+  `department_id` int DEFAULT NULL,
+  `donor_id` int DEFAULT NULL,
+  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `middle_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `username` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `designation` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
+  `added_by` int DEFAULT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `profile_image` text DEFAULT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `profile_image` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account_status` int NOT NULL DEFAULT '1',
+  `contact_number` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `birth_date` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -44233,13 +44656,19 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `department_id`, `donor_id`, `last_name`, `first_name`, `username`, `role`, `designation`, `status`, `added_by`, `email`, `email_verified_at`, `password`, `profile_image`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, 'Juan', 'Dela Cruze', 'just@admin', 'general_admin', '0', 'active', NULL, 'sdf111asdf@gai.com', NULL, '$2y$10$q9SAflvIxaUvj6lhL7E61O66CiBcMaXi8ZpDKeBx/oQXu2hsKAWl.', NULL, NULL, NULL, '2025-07-21 20:19:31'),
-(6, 4, NULL, 'loqiloxuc', 'rofotezaha', 'goduvi333', 'staff', 'zypynod', 'active', 1, 'gejibypi@mailinator.com', NULL, '$2y$12$mBIw0ZBkURT9zMNQlfSfVue.uPKzVQr.qViMyP9bm9R1jhLNY4BB2', NULL, NULL, '2025-03-22 07:43:01', '2025-03-23 03:25:01'),
-(12, 7, NULL, 'kexehoj', 'cofyl', 'leropaneva', 'staff', 'sukelo', 'active', 1, 'dusohidole@mailinator.com', NULL, '$2y$12$gu7rokn7tMndOwSd9/v4OuR308PkU.roYCjr3a5LrQ12njmtxd3Xy', NULL, NULL, '2025-03-22 07:44:41', '2025-03-23 03:25:13'),
-(14, 0, NULL, 'mipevi', 'lecucejul', 'vacegyp', 'staff', 'mutarorit', 'active', 1, 'ryducug@mailinator.com', NULL, '$2y$12$pbACPqUoYFfqOMEbFFOMDutLaVfKygYYFfWist0C7PKaHU9aylvh2', NULL, NULL, '2025-03-22 07:45:10', '2025-03-22 07:45:10'),
-(18, 3, NULL, 'jemox', 'sywypamybu', 'dafowug', 'staff', 'saboqimesi', 'active', 1, 'ryxunufap@33mailinator.com', NULL, '$2y$12$Jjl38Vh8Q0CyZ3TMb9DFiuVOklsK/4AeymmH/uvo5l5by/kPnmKzC', NULL, NULL, '2025-03-23 03:11:36', '2025-07-21 20:34:51'),
-(19, 3, NULL, 'sdfasdf', 'ddsfasdf', 'eriuier', 'staff', 'sdfsdf', 'active', 1, 'neiei@gmail.com', NULL, '$2y$12$0gx.Peadx87cSDMgvFAmxO9EvSagbYMSeBxCXb1c3FJUj82sgfaq2', NULL, NULL, '2025-03-31 18:16:25', '2025-03-31 18:16:25');
+INSERT INTO `users` (`id`, `google_id`, `department_id`, `donor_id`, `last_name`, `first_name`, `middle_name`, `username`, `role`, `designation`, `status`, `added_by`, `email`, `email_verified_at`, `password`, `profile_image`, `remember_token`, `account_status`, `contact_number`, `birth_date`, `address`, `created_at`, `updated_at`) VALUES
+(1, NULL, NULL, NULL, 'Juan', 'Dela Cruz', NULL, 'just@admin', 'general_admin', '0', 'active', NULL, 'admin@gmail.com', NULL, '$2y$10$q9SAflvIxaUvj6lhL7E61O66CiBcMaXi8ZpDKeBx/oQXu2hsKAWl.', 'profile_1_1769523881.png', NULL, 1, NULL, NULL, NULL, NULL, '2026-01-27 22:24:41'),
+(39, NULL, NULL, NULL, 'asdfasdf', 'sdfasf', NULL, 'Reuben@gmail.com', 'applicant', NULL, 'active', NULL, 'Reuben@gmail.com', NULL, '$2y$12$4USvY1MRmQF9lpjq.ek1L.UmZq2JTYwaj48FzZw.S7KzPe8YeA5Ri', 'profile_39_1769508327.png', NULL, 1, NULL, NULL, NULL, '2025-12-02 21:52:20', '2026-01-27 18:05:27'),
+(40, NULL, NULL, NULL, 'Keane', 'Ashton', NULL, '1Reuben@gmail.com', 'applicant', NULL, 'active', NULL, '1Reuben@gmail.com', NULL, '$2y$12$E5r6ZFLPiJ8vqhhqKqiHae/jXkjkB.5gOQAnXjULr.U8xWlBV.03.', NULL, NULL, 1, NULL, NULL, NULL, '2025-12-02 21:54:57', '2025-12-02 21:54:57'),
+(41, NULL, NULL, NULL, 'Keane', 'Ashton', 'Morillo', 'Reuben1@gmail.com', 'applicant', NULL, 'active', NULL, 'Reuben1@gmail.com', NULL, '$2y$12$tR/J3wwq8ABdkM879.cQgeaPjdVwJiWPo8OKX9AXEahNOr1n2BPQ.', 'profile_41_1768957734.png', NULL, 1, '09898989898', '2025-12-30', 'Binalayan West, Maripipi, Biliran', '2025-12-26 09:01:19', '2026-01-21 09:08:54'),
+(42, '101923449689942538940', NULL, NULL, 'Gaviola', 'Neil Bryan', 'Morillo', 'gaviolaneilbryan005@gmail.com', 'applicant', NULL, 'active', NULL, 'gaviolaneilbryan005@gmail.com', NULL, '$2y$12$Frt0FRS20WC8UDiZkRQNLeuTArSbV4LFQnHb2Vpi4PvvXq9WnpdTe', NULL, NULL, 1, '09898989898', '2026-01-05', 'Binalayan West, Maripipi, Biliran', '2026-01-21 10:02:04', '2026-01-21 10:03:41'),
+(43, '104932138472111004043', NULL, NULL, 'Gaviola', 'Neil Bryan', NULL, 'Gaviola.Neil.Bryan@ibm.com', 'applicant', NULL, 'active', NULL, 'Gaviola.Neil.Bryan@ibm.com', NULL, '$2y$12$3NjQBW5zQOSEtNBcRqzVZOrMNY.K1gBUfvaNtaQ.n.DZbkPL3jGGa', NULL, NULL, 1, NULL, NULL, NULL, '2026-01-21 10:11:12', '2026-01-21 10:11:12'),
+(44, NULL, NULL, NULL, 'Keane', 'Ashton', 'Keelie', '12Reuben@gmail.com', 'applicant', NULL, 'active', NULL, '12Reuben@gmail.com', NULL, '$2y$12$qsL003dlc/LdO5Ac5xxzRemCd/l/knNFC/kEkkUoyxtI/Ih3q99l6', NULL, NULL, 1, '09360944819', '2026-01-13', 'Ashton', '2026-01-24 12:34:41', '2026-01-24 12:34:41'),
+(45, NULL, NULL, NULL, 'Gavqqqq', 'qqqJose Rizal', 'Keelieqqqq', '90Reuben@gmail.com', 'applicant', NULL, 'active', NULL, '90Reuben@gmail.com', NULL, '$2y$12$0HkFo97pfKBusH3xkcY5e.b/WH5aZS6rHpzFzUxH8Td4D6B18b.0.', NULL, NULL, 1, '09360944819', '2026-01-06', 'Ashton', '2026-01-24 16:16:29', '2026-01-27 18:50:01'),
+(46, NULL, NULL, NULL, 'Alford', 'Brent', 'Kyra Hoover', 'hyfiwix', 'admin', NULL, 'active', NULL, 'Reuben@gmail7887.com', NULL, '$2y$12$RQJ4nEnPi6xKJipm0urqKO1yij7BLBIk2Kb8ols0puDusDPtQnsmG', NULL, NULL, 1, '09360944819', '1974-07-31', 'Ashton', '2026-01-27 19:49:54', '2026-01-27 19:49:54'),
+(47, NULL, NULL, NULL, 'Malone', 'Jack', 'Colby Pope', 'ludaq', 'denr', NULL, 'active', NULL, '11111Reuben@gmail.com', NULL, '$2y$12$zofX7kVGG6hP1ara0eCjSuC/RTlqHf3ybEL2pPQzS.4ullnWXAtx6', NULL, NULL, 1, '09360944819', '1974-01-04', 'Ashton', '2026-01-27 19:55:47', '2026-01-27 19:55:47'),
+(48, NULL, NULL, NULL, 'Goodman', 'Xerxes', 'Rowan Hobbs', 'hijynifeq', 'denr', NULL, 'active', NULL, 'gasyjat@mailinator.com', NULL, '$2y$12$AN2aKVHmVL5EgfAFEhzbeeI5SyqfXX9c8pruLAPcVvANwySSUNPK6', NULL, NULL, 1, '09360944819', '1978-04-23', 'Qui Nam sunt consequ', '2026-01-27 20:40:53', '2026-01-27 20:40:53'),
+(49, NULL, NULL, NULL, 'Pacheco', 'Lillian', 'Hadley Fletcher', 'nudakibe', 'admin', NULL, 'active', NULL, 'lacexoco@mailinator.com', NULL, '$2y$12$bVdBmwrn8u.7FIPSct6kWOhulQ1iCrEye7KmT4xwYoYl/FKVnTUQG', 'profile_49_1769518748.png', NULL, 1, '09340955891', '2012-05-25', 'Ut omnis voluptate f', '2026-01-27 20:48:32', '2026-01-27 20:59:08');
 
 --
 -- Indexes for dumped tables
@@ -44261,11 +44690,49 @@ ALTER TABLE `blood_issuances`
   ADD KEY `blood_issuances_patient_id_foreign` (`patient_id`);
 
 --
+-- Indexes for table `chainsaw_requests`
+--
+ALTER TABLE `chainsaw_requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `chainsaw_requests_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `chainsaw_requirements`
+--
+ALTER TABLE `chainsaw_requirements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `chainsaw_requirements_chainsaw_request_id_foreign` (`chainsaw_request_id`);
+
+--
+-- Indexes for table `cutting_permits`
+--
+ALTER TABLE `cutting_permits`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cutting_permits_user_id_foreign` (`user_id`),
+  ADD KEY `cutting_permits_tree_id_foreign` (`tree_id`),
+  ADD KEY `cutting_permits_approved_by_foreign` (`approved_by`),
+  ADD KEY `cutting_permits_rejected_by_foreign` (`rejected_by`);
+
+--
+-- Indexes for table `cutting_permit_requirements`
+--
+ALTER TABLE `cutting_permit_requirements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `cutting_permit_requirements_cutting_permit_id_foreign` (`cutting_permit_id`);
+
+--
 -- Indexes for table `departments`
 --
 ALTER TABLE `departments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `departments_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `department_heads`
+--
+ALTER TABLE `department_heads`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `department_heads_department_id_foreign` (`department_id`);
 
 --
 -- Indexes for table `donation_histories`
@@ -44290,6 +44757,14 @@ ALTER TABLE `donors`
   ADD KEY `donors_user_id_foreign` (`user_id`);
 
 --
+-- Indexes for table `email_addresses`
+--
+ALTER TABLE `email_addresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `email_addresses_system_settings_id_foreign` (`system_settings_id`),
+  ADD KEY `email_addresses_user_id_foreign` (`user_id`);
+
+--
 -- Indexes for table `events`
 --
 ALTER TABLE `events`
@@ -44304,6 +44779,34 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
+-- Indexes for table `incidents`
+--
+ALTER TABLE `incidents`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `incidents_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `incident_attachments`
+--
+ALTER TABLE `incident_attachments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `incident_attachments_incident_id_foreign` (`incident_id`);
+
+--
+-- Indexes for table `incident_status_histories`
+--
+ALTER TABLE `incident_status_histories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `incident_status_histories_incident_id_foreign` (`incident_id`),
+  ADD KEY `incident_status_histories_updated_by_foreign` (`updated_by`);
+
+--
+-- Indexes for table `loans_reports`
+--
+ALTER TABLE `loans_reports`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `members`
 --
 ALTER TABLE `members`
@@ -44314,6 +44817,12 @@ ALTER TABLE `members`
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -44357,6 +44866,26 @@ ALTER TABLE `refprovince`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `request_messages`
+--
+ALTER TABLE `request_messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `request_messages_notification_id_foreign` (`notification_id`);
+
+--
+-- Indexes for table `system_settings`
+--
+ALTER TABLE `system_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `trees`
+--
+ALTER TABLE `trees`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `trees_user_id_foreign` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -44371,97 +44900,181 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `audit_trails`
 --
 ALTER TABLE `audit_trails`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 
 --
 -- AUTO_INCREMENT for table `blood_issuances`
 --
 ALTER TABLE `blood_issuances`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT for table `chainsaw_requests`
+--
+ALTER TABLE `chainsaw_requests`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `chainsaw_requirements`
+--
+ALTER TABLE `chainsaw_requirements`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `cutting_permits`
+--
+ALTER TABLE `cutting_permits`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `cutting_permit_requirements`
+--
+ALTER TABLE `cutting_permit_requirements`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `departments`
 --
 ALTER TABLE `departments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `department_heads`
+--
+ALTER TABLE `department_heads`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `donation_histories`
 --
 ALTER TABLE `donation_histories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT for table `donation_inventories`
 --
 ALTER TABLE `donation_inventories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `donors`
 --
 ALTER TABLE `donors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `email_addresses`
+--
+ALTER TABLE `email_addresses`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `events`
 --
 ALTER TABLE `events`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `incidents`
+--
+ALTER TABLE `incidents`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `incident_attachments`
+--
+ALTER TABLE `incident_attachments`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `incident_status_histories`
+--
+ALTER TABLE `incident_status_histories`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `loans_reports`
+--
+ALTER TABLE `loans_reports`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `members`
 --
 ALTER TABLE `members`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `refbrgy`
 --
 ALTER TABLE `refbrgy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42030;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42030;
 
 --
 -- AUTO_INCREMENT for table `refcitymun`
 --
 ALTER TABLE `refcitymun`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1648;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1648;
 
 --
 -- AUTO_INCREMENT for table `refprovince`
 --
 ALTER TABLE `refprovince`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+
+--
+-- AUTO_INCREMENT for table `request_messages`
+--
+ALTER TABLE `request_messages`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `system_settings`
+--
+ALTER TABLE `system_settings`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `trees`
+--
+ALTER TABLE `trees`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- Constraints for dumped tables
@@ -44481,10 +45094,43 @@ ALTER TABLE `blood_issuances`
   ADD CONSTRAINT `blood_issuances_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `chainsaw_requests`
+--
+ALTER TABLE `chainsaw_requests`
+  ADD CONSTRAINT `chainsaw_requests_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `chainsaw_requirements`
+--
+ALTER TABLE `chainsaw_requirements`
+  ADD CONSTRAINT `chainsaw_requirements_chainsaw_request_id_foreign` FOREIGN KEY (`chainsaw_request_id`) REFERENCES `chainsaw_requests` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `cutting_permits`
+--
+ALTER TABLE `cutting_permits`
+  ADD CONSTRAINT `cutting_permits_approved_by_foreign` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `cutting_permits_rejected_by_foreign` FOREIGN KEY (`rejected_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `cutting_permits_tree_id_foreign` FOREIGN KEY (`tree_id`) REFERENCES `trees` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cutting_permits_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `cutting_permit_requirements`
+--
+ALTER TABLE `cutting_permit_requirements`
+  ADD CONSTRAINT `cutting_permit_requirements_cutting_permit_id_foreign` FOREIGN KEY (`cutting_permit_id`) REFERENCES `cutting_permits` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `departments`
 --
 ALTER TABLE `departments`
   ADD CONSTRAINT `departments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `department_heads`
+--
+ALTER TABLE `department_heads`
+  ADD CONSTRAINT `department_heads_department_id_foreign` FOREIGN KEY (`department_id`) REFERENCES `departments` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `donation_histories`
@@ -44500,16 +45146,54 @@ ALTER TABLE `donors`
   ADD CONSTRAINT `donors_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `email_addresses`
+--
+ALTER TABLE `email_addresses`
+  ADD CONSTRAINT `email_addresses_system_settings_id_foreign` FOREIGN KEY (`system_settings_id`) REFERENCES `system_settings` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `email_addresses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `events`
 --
 ALTER TABLE `events`
   ADD CONSTRAINT `events_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `incidents`
+--
+ALTER TABLE `incidents`
+  ADD CONSTRAINT `incidents_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `incident_attachments`
+--
+ALTER TABLE `incident_attachments`
+  ADD CONSTRAINT `incident_attachments_incident_id_foreign` FOREIGN KEY (`incident_id`) REFERENCES `incidents` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `incident_status_histories`
+--
+ALTER TABLE `incident_status_histories`
+  ADD CONSTRAINT `incident_status_histories_incident_id_foreign` FOREIGN KEY (`incident_id`) REFERENCES `incidents` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `incident_status_histories_updated_by_foreign` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
 -- Constraints for table `patients`
 --
 ALTER TABLE `patients`
   ADD CONSTRAINT `patients_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `request_messages`
+--
+ALTER TABLE `request_messages`
+  ADD CONSTRAINT `request_messages_notification_id_foreign` FOREIGN KEY (`notification_id`) REFERENCES `notifications` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `trees`
+--
+ALTER TABLE `trees`
+  ADD CONSTRAINT `trees_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
