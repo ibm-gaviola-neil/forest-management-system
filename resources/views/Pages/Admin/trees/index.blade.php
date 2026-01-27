@@ -42,7 +42,7 @@
           </div>
         </div>
         
-        <div class="overflow-x-auto rounded-lg border border-gray-200 max-h-[420px]">
+        <div class="overflow-x-auto rounded-lg border border-gray-200">
           <table id="treesTable" class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50 sticky top-0 z-10">
               <tr>

@@ -1,5 +1,5 @@
-@extends('components.layout.applicant-layout')
-@section('applicant-content')
+@extends('components.layout.dashboard-layout')
+@section('content')
     <div class="min-h-screen">
         <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -14,100 +14,89 @@
                             <h3 class="text-sm font-medium text-yellow-800">
                                 Registration Status: <span class="font-bold">Pending Review</span>
                             </h3>
-                            <div class="mt-2 text-sm text-yellow-700">
-                                <p>Your chainsaw registration is currently being reviewed.</p>
-                            </div>
                         </div>
                     </div>
                 </div>
             @endif
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Left Column: Chainsaw Information -->
+                <!-- Left Column: Basic Information -->
                 <div class="md:col-span-2">
                     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                         <div class="px-4 py-5 sm:px-6 bg-gray-50">
-                            <div class="flex items-center justify-between" id="status-badge">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                                    <i class="fas fa-chainsaw mr-2 text-green-600"></i>
-                                    Chainsaw Information
-                                </h3>
-
-                                <!-- Status Badge -->
-                                @switch($chainsaw->status)
-                                    @case(1)
-                                        <span
-                                            class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Approved</span>
-                                    @break
-
-                                    @case(2)
-                                        <span
-                                            class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">Rejected</span>
-                                    @break
-
-                                    @case(3)
-                                        <span
-                                            class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs font-semibold">Cancelled</span>
-                                    @break
-
-                                    @default
-                                        <span
-                                            class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Pending</span>
-                                @endswitch
-                            </div>
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 flex items-center">
+                                <i class="fas fa-chainsaw mr-2 text-green-600"></i>
+                                Chainsaw Registration Information
+                            </h3>
                             <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                                Details and specifications of your registered chainsaw.
+                                Details and specifications of the registered chainsaw.
                             </p>
                         </div>
-
                         <div class="border-t border-gray-200">
                             <dl>
                                 <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">
-                                        Serial Number
+                                        Registration ID
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        {{ $chainsaw->serial_number }}
+                                        {{ $chainsaw->id ?? 'N/A' }}
                                     </dd>
                                 </div>
 
                                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">
-                                        Brand
+                                        Registration Date
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        {{ $chainsaw->brand }}
+                                        {{ $chainsaw->created_at?->format('M d, Y') ?? 'N/A' }}
                                     </dd>
                                 </div>
 
                                 <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">
-                                        Model
+                                        Chainsaw Details
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        {{ $chainsaw->model }}
-                                    </dd>
-                                </div>
-
-                                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                    <dt class="text-sm font-medium text-gray-500">
-                                        Specifications
-                                    </dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        <div>Bar Length: {{ $chainsaw->bar_length }}</div>
+                                        <div class="font-medium">{{ $chainsaw->brand }} {{ $chainsaw->model }}</div>
+                                        <div class="mt-1">Serial Number: {{ $chainsaw->serial_number }}</div>
+                                        <div class="mt-1">Bar Length: {{ $chainsaw->bar_length }}</div>
                                         <div class="mt-1">Engine Displacement: {{ $chainsaw->engine_displacement }}</div>
+                                        <div class="mt-1">Date of Acquisition: {{ $chainsaw->date_acquisition }}</div>
+                                        <div class="mt-2 flex items-center">
+                                            @switch($chainsaw->status)
+                                                @case(1)
+                                                    <span
+                                                        class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">Approved</span>
+                                                @break
+
+                                                @case(2)
+                                                    <span
+                                                        class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">Rejected</span>
+                                                @break
+
+                                                @case(3)
+                                                    <span
+                                                        class="bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs font-semibold">Cancelled</span>
+                                                @break
+
+                                                @default
+                                                    <span
+                                                        class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Pending</span>
+                                            @endswitch
+                                        </div>
                                     </dd>
                                 </div>
 
                                 <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">
-                                        Date of Acquisition
+                                        Applicant Information
                                     </dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        {{ $chainsaw->date_acquisition }}
+                                        <div>{{ $chainsaw->user->last_name }} {{ $chainsaw->user->first_name }}</div>
+                                        <div class="mt-1">{{ $chainsaw->user->email }}</div>
                                     </dd>
                                 </div>
-                                @if ($chainsaw->rejection_reason)
+                                @if($chainsaw->rejection_reason) 
                                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                         <dt class="text-sm text-red-500 font-medium text-gray-500">
                                             Reason of Rejection
@@ -122,7 +111,7 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Actions and Timeline -->
+                <!-- Right Column: Timeline and Actions -->
                 <div class="md:col-span-1">
                     <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
                         <div class="px-4 py-5 sm:px-6 bg-gray-50">
@@ -132,39 +121,19 @@
                             </h3>
                         </div>
                         <div class="border-t border-gray-200 p-4 space-y-3">
-                            <a href="/applicant/chainsaw"
-                                class="w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                <i class="fas fa-arrow-left mr-2"></i>
-                                Back to Chainsaws
-                            </a>
+                            <button value="reject-modal"
+                                class="modal-btn w-full inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 @if ($chainsaw->status !== 0) cursor-not-allowed opacity-60 @endif"
+                                @if ($chainsaw->status !== 0) disabled @endif>
+                                <i class="fas fa-times-circle mr-2"></i>
+                                Reject Registration
+                            </button>
 
-                            @if ($chainsaw->status == 0)
-                                <a href="/applicant/chainsaw/edit/{{ $chainsaw->id }}" id="submit-btn"
-                                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                    <i class="fas fa-edit mr-2"></i>
-                                    Update Chainsaw
-                                </a>
-
-                                <button type="button"
-                                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                                    onclick="openModal()">
-                                    <i class="fas fa-times-circle mr-2"></i>
-                                    Cancel Registration
-                                </button>
-                            @else
-                                <button
-                                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-300 cursor-not-allowed"
-                                    disabled>
-                                    <i class="fas fa-edit mr-2"></i>
-                                    Update Chainsaw
-                                </button>
-
-                                <button type="button" disabled
-                                    class="w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-300 cursor-not-allowed">
-                                    <i class="fas fa-times-circle mr-2"></i>
-                                    Cancel Registration
-                                </button>
-                            @endif
+                            <button
+                                class="w-full modal-btn inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 @if ($chainsaw->status !== 0) cursor-not-allowed opacity-60 @endif"
+                                value="approve-modal" @if ($chainsaw->status !== 0) disabled @endif>
+                                <i class="fas fa-check mr-2"></i>
+                                Approve Registration
+                            </button>
                         </div>
                     </div>
 
@@ -205,44 +174,45 @@
                                     @switch($chainsaw->status)
                                         @case(1)
                                             <span
-                                                class="flex items-center justify-center w-6 h-6 bg-green-100 rounded-full -ml-10 ring-8 ring-white">
-                                                <i class="fas fa-check text-green-800"></i>
+                                                class="flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -ml-10 ring-8 ring-white">
+                                                <i class="fas fa-check text-green-500"></i>
                                             </span>
                                             <div>
-                                                <h3 class="font-medium leading-tight">Registration Approved</h3>
+                                                <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
                                                 <p class="text-sm text-gray-500">
                                                     {{ $chainsaw->updated_at->format('F j, Y \a\t g:i A') }}</p>
+                                                <p class="text-sm text-gray-500">Approved</p>
                                             </div>
                                         @break
 
                                         @case(2)
                                             <span
-                                                class="flex items-center justify-center w-6 h-6 bg-red-100 rounded-full -ml-10 ring-8 ring-white">
-                                                <i class="fas fa-times text-red-800"></i>
+                                                class="flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -ml-10 ring-8 ring-white">
+                                                <i class="fas fa-times text-red-500"></i>
                                             </span>
                                             <div>
-                                                <h3 class="font-medium leading-tight">Registration Rejected</h3>
+                                                <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
                                                 <p class="text-sm text-gray-500">
                                                     {{ $chainsaw->updated_at->format('F j, Y \a\t g:i A') }}</p>
+                                                <p class="text-sm text-gray-500">Rejected</p>
                                             </div>
                                         @break
 
                                         @case(3)
                                             <span
                                                 class="flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -ml-10 ring-8 ring-white">
-                                                <i class="fas fa-ban text-gray-800"></i>
+                                                <i class="fas fa-ban text-yellow-500"></i>
                                             </span>
                                             <div>
-                                                <h3 class="font-medium leading-tight">Registration Cancelled</h3>
-                                                <p class="text-sm text-gray-500">
-                                                    {{ $chainsaw->updated_at->format('F j, Y \a\t g:i A') }}</p>
+                                                <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
+                                                <p class="text-sm text-gray-500">Cancelled</p>
                                             </div>
                                         @break
 
                                         @default
                                             <span
                                                 class="flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -ml-10 ring-8 ring-white">
-                                                <i class="fas fa-clock text-gray-800"></i>
+                                                <i class="fas fa-clock text-gray-500"></i>
                                             </span>
                                             <div>
                                                 <h3 class="font-medium leading-tight text-gray-500">Final Decision</h3>
@@ -256,49 +226,6 @@
                 </div>
             </div>
 
-            @if (session('error'))
-                <div id="error-alert"
-                    class="mb-4 border-l-4 border-red-500 bg-red-50 p-4 shadow-md transition-all duration-500">
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-exclamation-circle text-red-500"></i>
-                        </div>
-                        <div class="ml-3">
-                            <p class="text-sm text-red-700">
-                                {{ session('error') }}
-                            </p>
-                        </div>
-                        <div class="ml-auto pl-3">
-                            <div class="-mx-1.5 -my-1.5">
-                                <button type="button" onclick="dismissAlert('error-alert')"
-                                    class="inline-flex rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                                    <span class="sr-only">Dismiss</span>
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    // Auto dismiss after 5 seconds
-                    setTimeout(() => {
-                        dismissAlert('error-alert');
-                    }, 5000);
-
-                    function dismissAlert(id) {
-                        const alert = document.getElementById(id);
-                        if (alert) {
-                            alert.style.opacity = '0';
-                            setTimeout(() => {
-                                alert.remove();
-                            }, 300);
-                        }
-                    }
-                </script>
-            @endif
-
-            <!-- Supporting Documents Section -->
             <div class="mt-8 bg-white shadow overflow-hidden sm:rounded-lg">
                 <div class="px-4 py-5 sm:px-6 bg-gray-50 flex justify-between items-center">
                     <div>
@@ -389,14 +316,6 @@
                                             class="text-green-600 hover:text-green-900">
                                             <i class="fas fa-download"></i> Download
                                         </a>
-
-                                        @if ($chainsaw->status === 0)
-                                            <button type="button" onclick="deleteFile('{{ $requirement->id }}')"
-                                                class="text-red-600 hover:text-red-900"
-                                                data-file-id="{{ $requirement->id }}">
-                                                <i class="fas fa-trash-alt"></i> Delete
-                                            </button>
-                                        @endif
                                     </td>
                                 </tr>
                             @empty
@@ -412,38 +331,10 @@
             </div>
         </main>
     </div>
+    @include('Pages.Admin.chainsaw.reject-modal')
+    @include('Pages.Admin.chainsaw.approve-modal')
 
-    @include('Pages.Applicant.chainsaw-registration.cancel-modal')
     @push('scripts')
-        <script src="{{ asset('./assets/js/features/chainsaw-registration.js') }}" type="module"></script>
-        <script>
-            function deleteFile(fileId) {
-                if (confirm('Are you sure you want to delete this file? This action cannot be undone.')) {
-                    // Create a form dynamically
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '{{ route('requirements.delete', '') }}/' + fileId;
-
-                    // Add CSRF token
-                    const csrfToken = document.createElement('input');
-                    csrfToken.type = 'hidden';
-                    csrfToken.name = '_token';
-                    csrfToken.value = '{{ csrf_token() }}';
-                    form.appendChild(csrfToken);
-
-                    // Add method spoofing for DELETE
-                    const methodField = document.createElement('input');
-                    methodField.type = 'hidden';
-                    methodField.name = '_method';
-                    methodField.value = 'DELETE';
-                    form.appendChild(methodField);
-
-                    // Append form to body, submit it, and remove it
-                    document.body.appendChild(form);
-                    form.submit();
-                    document.body.removeChild(form);
-                }
-            }
-        </script>
+        <script src="{{ asset('./assets/js/features/admin/chainsaw.js') }}" type="module"></script>
     @endpush
 @endsection

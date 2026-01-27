@@ -45,6 +45,15 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
             Route::post('/reject/{tree}', 'reject');
             Route::post('/approve/{tree}', 'approve');
         });
+
+        Route::prefix('admin/chainsaw')->controller(\App\Http\Controllers\Admin\AdminChainsawController::class)->group(function(){
+            Route::get('/', 'list');
+            Route::get('/registered', 'index');
+            // Route::get('/coordinates', 'coordinates');
+            Route::get('/view/{chainsaw}', 'show');
+            Route::post('/reject/{chainsaw}', 'reject');
+            Route::post('/approve/{chainsaw}', 'approve');
+        });
     });
 
     Route::prefix('users')->controller(\App\Http\Controllers\Admin\UsersController::class)->group(function(){
@@ -122,6 +131,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
 
     Route::prefix('/admin/reports')->controller(\App\Http\Controllers\Admin\ReportController::class)->group(function(){
         Route::get('/', 'index');
+        Route::get('/data', 'getReportData');
         Route::get('/export', 'export');
     });
 
@@ -169,6 +179,7 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/store', 'store');
         Route::post('/update/{chainsaw}', 'update');
         Route::post('/cancel/{chainsaw}', 'cancel');
+        Route::delete('/delete-file/{requirement}', 'deleteFile')->name('requirements.delete');
     });
 
     Route::prefix('/applicant/cutting-permit')->controller(\App\Http\Controllers\CuttingPermitController::class)->group(function(){

@@ -6,7 +6,7 @@
       <h2 class="text-3xl font-bold mb-6 text-center">Chainsaw Registration</h2>
       <input type="hidden" value="{{$chainsaw->id}}" id="chainsaw-id">
   
-      <form class="grid grid-cols-1 sm:grid-cols-2 gap-6" id="EditChainsawForm">
+      <form class="" id="EditChainsawForm">
         @include('Pages.Applicant.chainsaw-registration.form')
         <div id="loginResponse"></div>
         <div class="col-span-2 text-right flex justify-between gap-2">

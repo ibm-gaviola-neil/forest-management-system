@@ -28,6 +28,12 @@
               <span class="font-medium group-hover:text-green-800">Cutting Permits</span>
           </a>
       </li>
+      <li data-page="registered-chainsaws" class="sidebar-item">
+          <a href="/admin/chainsaw/registered" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
+              <i class="fas fa-cog mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i>
+              <span class="font-medium group-hover:text-green-800">Registered Chainsaws</span>
+          </a>
+      </li>
       <li data-page="review" class="sidebar-item">
         <a href="/admin/app-review" class="sidebar-link flex items-center p-3 rounded-lg text-gray-700 hover:bg-green-200 hover:shadow-md hover:-translate-y-0.5 active:bg-green-300 transition-all duration-200 group">
           <i class="fas fa-users mr-3 w-5 text-center text-green-600 group-hover:text-green-800"></i> 

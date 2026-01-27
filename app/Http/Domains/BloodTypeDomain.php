@@ -2,9 +2,17 @@
 
 namespace App\Http\Domains;
 
-class BloodTypeDomain {
+class BloodTypeDomain
+{
     const BLOOD_TYPE = [
-        'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'
+        'A+',
+        'A-',
+        'B+',
+        'B-',
+        'AB+',
+        'AB-',
+        'O+',
+        'O-'
     ];
 
     const BLOOD_TYPES = [
@@ -70,7 +78,7 @@ class BloodTypeDomain {
         'Donation Date',
         'Date Added',
     ];
-    
+
     const PHILIPPINE_GOVT_IDS = [
         "PhilID"             => "Philippine Identification (PhilID) Card / ePhilID",
         "Passport"           => "Passport",
@@ -146,6 +154,90 @@ class BloodTypeDomain {
         [
             'itemId' => 12,
             'reason' => 'Failure to include required consultation with indigenous communities.'
+        ]
+    ];
+
+
+    const REASONS_FOR_CHAINSAW_REJECT = [
+        [
+            'itemId' => 1,
+            'reason' => 'Chainsaw serial number does not match the documentation provided.'
+        ],
+        [
+            'itemId' => 2,
+            'reason' => 'Missing or invalid Official Receipt for chainsaw purchase.'
+        ],
+        [
+            'itemId' => 3,
+            'reason' => 'Chainsaw specifications exceed allowable limits for personal use.'
+        ],
+        [
+            'itemId' => 4,
+            'reason' => 'Applicant has outstanding violations related to forestry regulations.'
+        ],
+        [
+            'itemId' => 5,
+            'reason' => 'Incomplete or unclear chainsaw identification markings.'
+        ],
+        [
+            'itemId' => 6,
+            'reason' => 'Documentation provided contains inconsistencies or contradictory information.'
+        ],
+        [
+            'itemId' => 7,
+            'reason' => 'Chainsaw brand/model is not approved for use in protected areas.'
+        ],
+        [
+            'itemId' => 8,
+            'reason' => 'Applicant lacks required training certification for operating professional-grade chainsaws.'
+        ],
+        [
+            'itemId' => 9,
+            'reason' => 'Chainsaw appears to be modified from manufacturer specifications.'
+        ],
+        [
+            'itemId' => 10,
+            'reason' => 'Supporting documents expired or not currently valid.'
+        ],
+        [
+            'itemId' => 11,
+            'reason' => 'Photos submitted do not clearly show the chainsaw serial number.'
+        ],
+        [
+            'itemId' => 12,
+            'reason' => 'Chainsaw is already registered under a different name or organization.'
+        ],
+        [
+            'itemId' => 13,
+            'reason' => 'Application contains false or misleading information about chainsaw specifications.'
+        ],
+        [
+            'itemId' => 14,
+            'reason' => 'Insufficient proof of legal acquisition of the chainsaw.'
+        ],
+        [
+            'itemId' => 15,
+            'reason' => 'Engine displacement exceeds the allowed limit for the requested purpose.'
+        ],
+        [
+            'itemId' => 16,
+            'reason' => 'Registration request submitted in wrong jurisdiction or administrative area.'
+        ],
+        [
+            'itemId' => 17,
+            'reason' => 'Chainsaw appears to be illegally imported without proper documentation.'
+        ],
+        [
+            'itemId' => 18,
+            'reason' => 'Verification failed: Physical inspection revealed discrepancies with submitted information.'
+        ],
+        [
+            'itemId' => 19,
+            'reason' => 'Previous registration for the same chainsaw was revoked due to violations.'
+        ],
+        [
+            'itemId' => 20,
+            'reason' => 'Required government-issued ID or documents missing or invalid.'
         ]
     ];
 }

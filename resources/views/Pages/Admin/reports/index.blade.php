@@ -1,86 +1,114 @@
 @extends('components.layout.dashboard-layout')
-
 @section('content')
-  <div class="header">
-    <div>
-      <h1>Reports</h1>
-      <div class="text-muted">Overview of permits, incidents, and analytics</div>
-    </div>
-    <div style="display:flex; gap:12px; align-items:center;">
-      <i class="fas fa-user-circle fa-2x" style="color:#1b8b63"></i>
-    </div>
-  </div>
-
-  <div class="report-container">
-    <!-- Cards -->
-    <div class="card w-4">
-      <h2>Total Permits</h2>
-      <p style="font-size:28px; margin:6px 0; font-weight:700;" id="totalPermits">0</p>
-      <div class="text-muted">Issued this month</div>
-    </div>
-    <div class="card w-4">
-      <h2>Active Alerts</h2>
-      <p style="font-size:28px; margin:6px 0; font-weight:700; color:#b71c1c;" id="activeAlerts">0</p>
-      <div class="text-muted">Possible illegal activities</div>
-    </div>
-    <div class="card w-4">
-      <h2>Avg Processing Time</h2>
-      <p style="font-size:28px; margin:6px 0; font-weight:700; color:#154360;" id="avgTime">0 days</p>
-      <div class="text-muted">From submission to approval</div>
-    </div>
-
-    <!-- Chart -->
-    <div class="card w-8">
-      <h2>Monthly Permit Trends</h2>
-      <div class="chart-wrap">
-        <canvas id="permitsChart"></canvas>
-      </div>
-    </div>
-
-    <!-- Incidents Table -->
-    <div class="card w-4">
-      <h2>Recent Incidents</h2>
-      <table>
-        <thead>
-          <tr><th>Report</th><th>Status</th><th>Date</th></tr>
-        </thead>
-        <tbody id="incidentsBody"></tbody>
-      </table>
-      <div style="margin-top:10px; display:flex; justify-content:flex-end;">
-        <button class="btn ghost" id="archiveSelected">Archive Selected</button>
-      </div>
-    </div>
-
-    <!-- Applications Table -->
-    <div class="card w-12">
-      <h2>All Applications</h2>
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <div class="controls">
-          <label class="text-muted">Filter:</label>
-          <select id="filterStatus" class="search">
-            <option value="all">All</option>
-            <option value="issued">Issued</option>
-            <option value="pending">Pending</option>
-            <option value="rejected">Rejected</option>
-          </select>
+<div class="py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-900 flex items-center">
+                <i class="fas fa-chart-bar text-green-600 mr-3"></i>
+                Forest Monitoring Reports
+            </h1>
+            <p class="mt-1 text-sm text-gray-500">
+                Overview of system activities and environmental monitoring data
+            </p>
         </div>
-        <div class="text-muted">Showing <span id="rowCount">0</span> records</div>
-      </div>
-      <div style="overflow:auto; max-height:420px;">
-        <table id="applicationsTable">
-          <thead>
-            <tr>
-              <th><input type="checkbox" id="checkAll"></th>
-              <th>Applicant</th>
-              <th>Permit Type</th>
-              <th>Status</th>
-              <th>Submitted</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="appsBody"></tbody>
-        </table>
-      </div>
+
+        <!-- Date Range Filter -->
+        @include('Pages.Admin.reports.filter')
+
+        <!-- Summary Cards -->
+        @include('Pages.Admin.reports.summary-cards')
+
+        <!-- Charts Section -->
+        @include('Pages.Admin.reports.charts')
+
+        <!-- Recent Activity Table -->
+        @include('Pages.Admin.reports.activity-table')
     </div>
-  </div>
+</div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{asset('./assets/js/features/admin/reports.js')}}" type="module"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const comparisonChartCanvas = document.getElementById('comparison-chart');
+        
+        if (comparisonChartCanvas) {
+            const chartData = @json($reportData['charts']['comparison']);
+            
+            new Chart(comparisonChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: chartData.months,
+                    datasets: [
+                        {
+                            label: 'Tree Registrations',
+                            data: chartData.trees,
+                            backgroundColor: 'rgba(16, 185, 129, 0.8)', // Green
+                            borderColor: 'rgb(16, 185, 129)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Cutting Permits',
+                            data: chartData.permits,
+                            backgroundColor: 'rgba(239, 68, 68, 0.8)', // Red
+                            borderColor: 'rgb(239, 68, 68)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Chainsaw Registrations',
+                            data: chartData.chainsaws,
+                            backgroundColor: 'rgba(59, 130, 246, 0.8)', // Blue
+                            borderColor: 'rgb(59, 130, 246)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                boxWidth: 8
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+@endpush
 @endsection

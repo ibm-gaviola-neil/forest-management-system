@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tree::class);
     }
+
+    public function chainsaw()
+    {
+        return $this->hasMany(ChainsawRequest::class);
+    }
 }

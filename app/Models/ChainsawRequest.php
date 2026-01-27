@@ -19,5 +19,39 @@ class ChainsawRequest extends Model
         'description',
         'user_id',
         'status',
+        'rejected_at',
+        'rejected_by',
+        'rejection_reason',
+        'approved_at',
+        'approved_by',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reject($reason = null): void
+    {
+        $this->update([
+            'status' => 2,
+            'rejected_at' => now(),
+            'rejected_by' => auth()->user()->id,
+            'rejection_reason' => $reason,
+        ]);
+    }
+
+    public function approve(): void
+    {
+        $this->update([
+            'status' => 1,
+            'approved_at' => now(),
+            'approved_by' => auth()->user()->id,
+        ]);
+    }
+
+    public function requirements()
+    {
+        return $this->hasMany(ChainsawRequirement::class);
+    }
 }
