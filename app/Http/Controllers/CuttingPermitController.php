@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Domains\BloodTypeDomain;
 use App\Http\Domains\NotificationDomain;
 use App\Http\Requests\CuttingPermitRequest;
 use App\Http\Services\CuttingPermitService;
@@ -39,6 +40,7 @@ class CuttingPermitController extends Controller
     public function create()
     {
         $data['selectableData'] = $this->cuttingPermitService->getSelectableData();
+        $data['reason_for_cutting'] = BloodTypeDomain::REASONS_FOR_CUTTING;
         return view('Pages.Applicant.cutting-permit.create', $data);
     }
 
