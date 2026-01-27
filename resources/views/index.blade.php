@@ -68,13 +68,13 @@
           <button type="button" onclick="togglePassword()" class="absolute right-3 top-8 text-gray-500 text-sm"></button>
         </div>
 
-        <div class="flex items-center justify-between mb-4 text-sm">
+        {{-- <div class="flex items-center justify-between mb-4 text-sm">
           <label class="flex items-center">
             <input type="checkbox" class="mr-2">
             Remember me
           </label>
           <a href="#" onclick="handleForgotPassword()" class="text-green-600 hover:underline">Forgot Password?</a>
-        </div>
+        </div> --}}
 
         <button id="login-btn" type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
           Log In
