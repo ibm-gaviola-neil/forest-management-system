@@ -216,4 +216,9 @@ class CuttingPermit extends Model
     {
         return $this->hasMany(CuttingPermitRequirement::class);
     }
+
+    public function incident()
+    {
+        return $this->hasMany(Incident::class);
+    }
 }

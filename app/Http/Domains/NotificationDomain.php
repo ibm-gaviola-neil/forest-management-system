@@ -36,6 +36,8 @@ class NotificationDomain {
         'applicant'              => ['event', 'donor_request'],
         'general_admin'      => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
         'staff'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
+        'admin'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
+        'denr'               => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'],
     ];
 
     const NOTIFICATION_ROUTE = [

@@ -46,13 +46,37 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
             Route::post('/approve/{tree}', 'approve');
         });
 
+        Route::prefix('admin/applicants')->controller(\App\Http\Controllers\Admin\AdminApplicantController::class)->group(function(){
+            Route::get('/', 'index')->name('admin.applicants');
+            Route::get('/list', 'list');
+            Route::get('/view/{user}', 'show')->name('applicants.show');
+            Route::get('/edit/{user}', 'edit')->name('admin.applicants.edit')->middleware('gen_admin');
+            Route::post('/update/{user}', 'update')->middleware('gen_admin');
+        });
+
+        Route::middleware('gen_admin')->prefix('admin/users')->controller(\App\Http\Controllers\Admin\AdminUserController::class)->group(function(){
+            Route::get('/', 'index')->name('admin.users');
+            Route::get('/create', 'create')->name('admin.user.create');
+            Route::get('/list', 'list');
+            Route::get('/view/{user}', 'show')->name('users.show');
+            Route::get('/edit/{user}', 'edit')->name('admin.users.edit');
+            Route::post('/update/{user}', 'update');
+            Route::post('/store', 'store');
+        });
+
         Route::prefix('admin/chainsaw')->controller(\App\Http\Controllers\Admin\AdminChainsawController::class)->group(function(){
             Route::get('/', 'list');
             Route::get('/registered', 'index');
-            // Route::get('/coordinates', 'coordinates');
             Route::get('/view/{chainsaw}', 'show');
             Route::post('/reject/{chainsaw}', 'reject');
             Route::post('/approve/{chainsaw}', 'approve');
+        });
+
+        Route::prefix('/admin/profile')->controller(\App\Http\Controllers\AdminProfileSettingController::class)->group(function(){
+            Route::get('/', 'index');
+            Route::post('/change-password', 'changePassword');
+            Route::post('/update', 'update');
+            Route::post('/update-image', 'updateProfileImage');
         });
     });
 
@@ -64,23 +88,6 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
         Route::post('/deactivate/{user}', 'deactivate');
         Route::get('/edit/{user}', 'editUser');
         Route::post('/update/{user}', 'update');
-    });
-
-    Route::prefix('/admin/applicants')->controller(\App\Http\Controllers\Admin\DonorController::class)->group(function(){
-        Route::get('/', 'index');
-        Route::get('/register', 'addDonor');
-        Route::get('/{donor}/edit', 'edit');
-        Route::get('/{donor}/donate-page', 'donatePage');
-        Route::post('/{donor}/edit-confirm', 'editConfirm');
-        Route::post('/{donor}/update', 'update');
-        Route::delete('/{donor}/delete', 'delete');
-        Route::delete('/{donor}/approved', 'approved');
-        Route::get('/{donor}/view', 'donor');
-        Route::get('/{donor}/show', 'show');
-        Route::get('/{donation_id}/donation', 'getDonationHistory');
-        Route::post('/{donor}/confirm-donate', 'confirmDondate');
-        Route::post('/store', 'store');
-        Route::post('/store-confirm', 'confirm');
     });
 
     Route::prefix('donor-page')->controller(\App\Http\Controllers\Admin\DonorController::class)->group(function(){
@@ -132,7 +139,23 @@ Route::middleware(['auth', 'PreventBackHistory'])->group(function(){
     Route::prefix('/admin/reports')->controller(\App\Http\Controllers\Admin\ReportController::class)->group(function(){
         Route::get('/', 'index');
         Route::get('/data', 'getReportData');
-        Route::get('/export', 'export');
+        Route::get('/export', 'exportReport');
+        Route::get('/activities', 'getActivityData');
+    });
+
+    // admin/incidents routes
+    Route::prefix('/admin/incidents')->controller(\App\Http\Controllers\Admin\IncidentController::class)->group(function(){
+        Route::get('/', 'index')->name('admin.incidents');
+        Route::get('/create', 'create')->name('admin.incidents.create');
+        Route::get('/edit/{incident}', 'edit')->name('admin.incidents.edit');
+        Route::post('/update/{incident}', 'update');
+        Route::get('/list', 'list');
+        Route::post('/store', 'store')->name('admin.incidents.store');
+        Route::get('/data', 'getIncidentsData')->name('admin.incidents.data');
+        Route::get('/export', 'exportIncidents')->name('admin.incidents.export');
+        Route::get('/{incident}', 'show')->name('admin.incidents.show');
+        Route::put('/{incident}/status', 'updateStatus')->name('admin.incidents.update-status');
+        Route::post('/attachments/delete/{attachment}', 'deleteAttachment')->name('admin.incidents.delete-attachments');
     });
 
     Route::prefix('notifications')->controller(\App\Http\Controllers\NotificationController::class)->group(function(){

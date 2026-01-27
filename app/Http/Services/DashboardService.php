@@ -31,8 +31,10 @@ class DashboardService {
         return [
             'blood_types' => $this->inventory_service
                 ->getBloodTypeCount($request, $this->donor_service->getDonorRequestAddress($request)),
-            'peapleCounts' => $this->dashboard_repository->counts(),
+            'counts' => $this->dashboard_repository->counts(),
             'events' => $this->event_repository->getEvents(),
+            'pageTitle' => 'Dashboard',
+            'pageSubTitle' => 'Data Requests and Overview'
         ];
     }
 

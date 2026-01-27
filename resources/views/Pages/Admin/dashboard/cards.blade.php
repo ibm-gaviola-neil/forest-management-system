@@ -4,7 +4,7 @@
       <div class="flex justify-between items-start">
         <div>
           <h2 class="text-gray-600 text-sm font-semibold uppercase tracking-wider mb-2">Registered Trees</h2>
-          <p class="text-3xl font-bold text-gray-800" id="registeredTrees">0</p>
+          <p class="text-3xl font-bold text-gray-800" id="registeredTrees">{{$counts['trees']}}</p>
           <div class="text-xs text-gray-500 mt-2 flex items-center">
             <span class="inline-block mr-1"><i class="fas fa-tree"></i></span>
             Total documented species
@@ -23,7 +23,7 @@
       <div class="flex justify-between items-start">
         <div>
           <h2 class="text-gray-600 text-sm font-semibold uppercase tracking-wider mb-2">Registered Chainsaws</h2>
-          <p class="text-3xl font-bold text-gray-800" id="registeredChainsaws">0</p>
+          <p class="text-3xl font-bold text-gray-800" id="registeredChainsaws">{{$counts['chainsaw']}}</p>
           <div class="text-xs text-gray-500 mt-2 flex items-center">
             <span class="inline-block mr-1"><i class="fas fa-cog"></i></span>
             Active equipment licenses
@@ -43,7 +43,7 @@
       <div class="flex justify-between items-start">
         <div>
           <h2 class="text-gray-600 text-sm font-semibold uppercase tracking-wider mb-2">Cutting Permit Applications</h2>
-          <p class="text-3xl font-bold text-gray-800" id="cuttingPermits">0</p>
+          <p class="text-3xl font-bold text-gray-800" id="cuttingPermits">{{$counts['permits']}}</p>
           <div class="text-xs text-gray-500 mt-2 flex items-center">
             <span class="inline-block mr-1"><i class="fas fa-file-alt"></i></span>
             Pending approval
@@ -62,10 +62,10 @@
       <div class="flex justify-between items-start">
         <div>
           <h2 class="text-gray-600 text-sm font-semibold uppercase tracking-wider mb-2">Reported Incidents</h2>
-          <p class="text-3xl font-bold text-rose-700" id="reportedIncidents">0</p>
+          <p class="text-3xl font-bold text-rose-700" id="reportedIncidents">{{$counts['incidents']}}</p>
           <div class="text-xs text-gray-500 mt-2 flex items-center">
             <span class="inline-block mr-1"><i class="fas fa-flag"></i></span>
-            Cases under investigation
+            Total Reported Cases
           </div>
         </div>
         <div class="rounded-full bg-rose-100 p-3">

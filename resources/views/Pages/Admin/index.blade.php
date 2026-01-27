@@ -4,8 +4,6 @@
   <div class="w-full">
       <!-- Cards -->
       @include('Pages.Admin.dashboard.cards')
-      <!-- Incidents Table -->
-      @include('Pages.Admin.dashboard.incidents')
       <!-- Applications Table -->
       @include('Pages.Admin.dashboard.permits')
       @include('Pages.Admin.dashboard.tree')

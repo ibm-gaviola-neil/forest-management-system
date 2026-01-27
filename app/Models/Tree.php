@@ -66,4 +66,9 @@ class Tree extends Model
             'approved_by' => auth()->user()->id,
         ]);
     }
+
+    public function incident()
+    {
+        return $this->hasMany(Incident::class);
+    }
 }

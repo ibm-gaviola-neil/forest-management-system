@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Report — Web-Based Forest Monitoring</title>
+    <title>{{$pageTitle ?? ''}} - Web-Based Forest Monitoring</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="{{ asset('./assets/js/features/chart.min.js') }}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -55,6 +55,12 @@
 
     <!-- Custom CSS for clusters and popups -->
     <style>
+        .error {
+            color: red !important;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
         .custom-cluster-icon {
             background-color: rgba(76, 175, 80, 0.6);
             border: 2px solid #4CAF50;

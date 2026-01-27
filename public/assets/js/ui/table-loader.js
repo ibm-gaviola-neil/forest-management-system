@@ -40,6 +40,42 @@ export function getStatusBadge(status) {
     }
 }
 
+export function getIncidentTypeBadge(type) {
+    switch (type) {
+        case 'illegal_logging':
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Illegal Logging</span>`;
+        case 'unauthorized_cutting':
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Unauthorized Cutting</span>`;
+        case 'forest_fire':
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Forest Fire</span>`;
+        case 'wildlife_poaching':
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">Wildlife Poaching</span>`;
+        case 'encroachment':
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Encroachment</span>`;
+        case 'other':
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Other</span>`;
+        default:
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Unknown</span>`;
+    }
+}
+
+export function getIncidentStatusBadge(status) {
+    switch (status) {
+        case 1:
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New/Unverified</span>`;
+        case 2:
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Under Investigation</span>`;
+        case 3:
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Resolved</span>`;
+        case 4:
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Closed</span>`;
+        case 5:
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">False Report</span>`;
+        default:
+            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">New/Unverified</span>`;
+    }
+}
+
 function buildPagination({ current_page, last_page }, bgColor = 'blue') {
     let html = '<nav class="flex justify-center mt-4 gap-1">';
     // Previous Button
@@ -146,6 +182,8 @@ export async function renderPaginatedTable({
         }, 50);
     } catch (e) {
         tbody.innerHTML = `<tr><td colspan="${columns}" class="py-8 text-center text-red-500">Error loading data.</td></tr>`;
+        console.log(e);
+        
         if (pagination) pagination.innerHTML = "";
         setTimeout(() => {
             tbody.classList.remove("opacity-0");

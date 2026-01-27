@@ -22,80 +22,80 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialize the incidents chart
  */
 function initIncidentsChart() {
-    const incidentsChartCanvas = document.getElementById('incidents-chart');
+    // const incidentsChartCanvas = document.getElementById('incidents-chart');
     
-    if (!incidentsChartCanvas) return;
+    // if (!incidentsChartCanvas) return;
     
-    // Sample data
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const incidentsData = [8, 12, 9, 14, 10, 7, 11, 15, 16, 17, 13, 10];
+    // // Sample data
+    // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    // const incidentsData = [8, 12, 9, 14, 10, 7, 11, 15, 16, 17, 13, 10];
     
-    // Create the chart
-    new Chart(incidentsChartCanvas, {
-        type: 'line',
-        data: {
-            labels: months,
-            datasets: [{
-                label: 'Reported Incidents',
-                data: incidentsData,
-                backgroundColor: 'rgba(245, 158, 11, 0.2)',
-                borderColor: 'rgb(245, 158, 11)',
-                borderWidth: 2,
-                tension: 0.3,
-                fill: true,
-                pointBackgroundColor: 'rgb(245, 158, 11)',
-                pointRadius: 4,
-                pointHoverRadius: 6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        usePointStyle: true,
-                        boxWidth: 6
-                    }
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    titleFont: {
-                        size: 14,
-                        weight: 'bold'
-                    },
-                    bodyFont: {
-                        size: 13
-                    },
-                    padding: 10,
-                    displayColors: false,
-                    callbacks: {
-                        label: function(context) {
-                            return `Incidents: ${context.parsed.y}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        drawBorder: false,
-                        color: 'rgba(0, 0, 0, 0.05)'
-                    },
-                    ticks: {
-                        precision: 0
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    }
-                }
-            }
-        }
-    });
+    // // Create the chart
+    // new Chart(incidentsChartCanvas, {
+    //     type: 'line',
+    //     data: {
+    //         labels: months,
+    //         datasets: [{
+    //             label: 'Reported Incidents',
+    //             data: incidentsData,
+    //             backgroundColor: 'rgba(245, 158, 11, 0.2)',
+    //             borderColor: 'rgb(245, 158, 11)',
+    //             borderWidth: 2,
+    //             tension: 0.3,
+    //             fill: true,
+    //             pointBackgroundColor: 'rgb(245, 158, 11)',
+    //             pointRadius: 4,
+    //             pointHoverRadius: 6
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         maintainAspectRatio: false,
+    //         plugins: {
+    //             legend: {
+    //                 position: 'top',
+    //                 labels: {
+    //                     usePointStyle: true,
+    //                     boxWidth: 6
+    //                 }
+    //             },
+    //             tooltip: {
+    //                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    //                 titleFont: {
+    //                     size: 14,
+    //                     weight: 'bold'
+    //                 },
+    //                 bodyFont: {
+    //                     size: 13
+    //                 },
+    //                 padding: 10,
+    //                 displayColors: false,
+    //                 callbacks: {
+    //                     label: function(context) {
+    //                         return `Incidents: ${context.parsed.y}`;
+    //                     }
+    //                 }
+    //             }
+    //         },
+    //         scales: {
+    //             y: {
+    //                 beginAtZero: true,
+    //                 grid: {
+    //                     drawBorder: false,
+    //                     color: 'rgba(0, 0, 0, 0.05)'
+    //                 },
+    //                 ticks: {
+    //                     precision: 0
+    //                 }
+    //             },
+    //             x: {
+    //                 grid: {
+    //                     display: false
+    //                 }
+    //             }
+    //         }
+    //     }
+    // });
 }
 
 /**
@@ -196,6 +196,8 @@ function updateSummaryCards(summaryData) {
     
     // Update chainsaws card
     updateCard('chainsaws', summaryData.chainsaws);
+
+    updateCard('incidents', summaryData.incidents);
 }
 
 
@@ -320,6 +322,430 @@ function hideLoadingState() {
     }
 }
 
+/**
+ * Handle activity table pagination
+ */
+function setupActivityPagination() {
+    // Delegate event handler for pagination links
+    document.getElementById('activity-pagination')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const target = e.target.closest('.paginate-link');
+        if (!target) return;
+        
+        const page = target.dataset.page;
+        if (!page) return;
+        
+        loadActivityPage(page);
+    });
+}
+
+/**
+ * Load a specific page of activities
+ * @param {number} page - The page number to load
+ */
+function loadActivityPage(page) {
+    // Get current filters
+    const dateRange = document.getElementById('date-range')?.value || 'this_month';
+    let filters = { date_range: dateRange, page };
+    
+    // If custom range, add start and end dates
+    if (dateRange === 'custom') {
+        const startDate = document.getElementById('start-date')?.value;
+        const endDate = document.getElementById('end-date')?.value;
+        
+        if (startDate && endDate) {
+            filters.start_date = startDate;
+            filters.end_date = endDate;
+        }
+    }
+    
+    // Show loading state in the table
+    showActivityLoading();
+    
+    // Convert filters to query string
+    const queryString = new URLSearchParams(filters).toString();
+    
+    // Fetch the data
+    fetch(`/admin/reports/activities?${queryString}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            updateActivityTable(data);
+        })
+        .catch(error => {
+            console.error('Error loading activities:', error);
+            showActivityError();
+        });
+}
+
+
+/**
+ * Show loading state in the activity table
+ */
+function showActivityLoading() {
+    const tableBody = document.getElementById('activity-table-body');
+    if (tableBody) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center">
+                    <div class="flex justify-center items-center space-x-2">
+                        <svg class="animate-spin h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Loading activities...</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+/**
+ * Show error message in the activity table
+ */
+function showActivityError() {
+    const tableBody = document.getElementById('activity-table-body');
+    if (tableBody) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-red-500">
+                    <div class="flex justify-center items-center space-x-2">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Error loading activities. Please try again.</span>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+}
+
+/**
+ * Update the activity table with new data
+ * @param {Object} data - The activity data and pagination information
+ */
+function updateActivityTable(data) {
+    const tableBody = document.getElementById('activity-table-body');
+    const pagination = document.getElementById('activity-pagination');
+    
+    if (!tableBody || !pagination || !data) return;
+    
+    // Clear existing content
+    tableBody.innerHTML = '';
+    
+    // Check if we have data to show
+    if (data.data.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                    No activity found in this time period.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    // Add new rows
+    data.data.forEach(activity => {
+        // Create the status class based on status code
+        let statusClass = '';
+        switch (activity.status) {
+            case 0:
+                statusClass = 'bg-yellow-100 text-yellow-800';
+                break;
+            case 1:
+                statusClass = 'bg-green-100 text-green-800';
+                break;
+            case 2:
+                statusClass = 'bg-red-100 text-red-800';
+                break;
+            case 3:
+                statusClass = 'bg-gray-100 text-gray-800';
+                break;
+            case 4:
+                statusClass = 'bg-blue-100 text-blue-800';
+                break;
+            default:
+                statusClass = 'bg-gray-100 text-gray-800';
+        }
+        
+        // Create the type class and icon
+        let typeClass = '', typeIcon = '';
+        switch (activity.type) {
+            case 'tree':
+                typeClass = 'bg-green-100 text-green-800';
+                typeIcon = 'fa-tree';
+                break;
+            case 'permit':
+                typeClass = 'bg-red-100 text-red-800';
+                typeIcon = 'fa-cut';
+                break;
+            case 'chainsaw':
+                typeClass = 'bg-blue-100 text-blue-800';
+                typeIcon = 'fa-chainsaw';
+                break;
+            default:
+                typeClass = 'bg-gray-100 text-gray-800';
+                typeIcon = 'fa-file-alt';
+        }
+        
+        // Format the date
+        const date = new Date(activity.date);
+        const formattedDate = date.toLocaleDateString('en-US', { 
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        
+        // Create the table row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                ${activity.id}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${typeClass}">
+                    <i class="fas ${typeIcon} mr-1"></i> ${activity.type_name}
+                </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
+                ${activity.description}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                ${activity.user_name}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                ${formattedDate}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusClass}">
+                    ${activity.status_name}
+                </span>
+            </td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+    
+    // Update pagination
+    updateActivityPagination(data.pagination);
+}
+
+/**
+ * Update the pagination controls for the activity table
+ * @param {Object} paginationData - The pagination information
+ */
+function updateActivityPagination(paginationData) {
+    const paginationContainer = document.getElementById('activity-pagination');
+    if (!paginationContainer || !paginationData) return;
+    
+    const currentPage = paginationData.current_page;
+    const lastPage = paginationData.last_page;
+    
+    // Build the pagination controls HTML
+    let html = '';
+    
+    // Previous button
+    if (currentPage > 1) {
+        html += `
+            <a href="#" 
+               class="paginate-link relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+               data-page="${currentPage - 1}">
+                <span class="sr-only">Previous</span>
+                <i class="fas fa-chevron-left"></i>
+            </a>
+        `;
+    } else {
+        html += `
+            <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                <span class="sr-only">Previous</span>
+                <i class="fas fa-chevron-left"></i>
+            </span>
+        `;
+    }
+    
+    // Calculate page range to show
+    const start = Math.max(1, currentPage - 2);
+    const end = Math.min(lastPage, currentPage + 2);
+    
+    // First page + ellipsis if needed
+    if (start > 1) {
+        html += `
+            <a href="#" 
+               class="paginate-link relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+               data-page="1">
+                1
+            </a>
+        `;
+        
+        if (start > 2) {
+            html += `
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                    ...
+                </span>
+            `;
+        }
+    }
+    
+    // Page numbers
+    for (let i = start; i <= end; i++) {
+        if (i === currentPage) {
+            html += `
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600">
+                    ${i}
+                </span>
+            `;
+        } else {
+            html += `
+                <a href="#" 
+                   class="paginate-link relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+                   data-page="${i}">
+                    ${i}
+                </a>
+            `;
+        }
+    }
+    
+    // Last page + ellipsis if needed
+    if (end < lastPage) {
+        if (end < lastPage - 1) {
+            html += `
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                    ...
+                </span>
+            `;
+        }
+        
+        html += `
+            <a href="#" 
+               class="paginate-link relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+               data-page="${lastPage}">
+                ${lastPage}
+            </a>
+        `;
+    }
+    
+    // Next button
+    if (currentPage < lastPage) {
+        html += `
+            <a href="#" 
+               class="paginate-link relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+               data-page="${currentPage + 1}">
+                <span class="sr-only">Next</span>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        `;
+    } else {
+        html += `
+            <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                <span class="sr-only">Next</span>
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        `;
+    }
+    
+    // Update the HTML
+    paginationContainer.innerHTML = html;
+    
+    // Update "Showing X to Y of Z results" text
+    const paginationInfo = document.querySelector('.text-sm.text-gray-700');
+    if (paginationInfo) {
+        paginationInfo.innerHTML = `
+            Showing 
+            <span class="font-medium">${paginationData.from || 0}</span> 
+            to 
+            <span class="font-medium">${paginationData.to || 0}</span> 
+            of 
+            <span class="font-medium">${paginationData.total || 0}</span> 
+            results
+        `;
+    }
+    
+    // Re-attach event listeners for new pagination links
+    setupActivityPagination();
+}
+
+/**
+ * Update the activity section when filters change
+ */
+function updateActivityWithFilters() {
+    // Reset to first page when filters change
+    loadActivityPage(1);
+}
+
+// Add to the document ready event listener
+document.addEventListener('DOMContentLoaded', function() {
+    // ... existing code ...
+    
+    // Setup activity pagination
+    setupActivityPagination();
+    
+    // Add filter form submission handler for activity updates
+    const filterForm = document.getElementById('filter-form');
+    if (filterForm) {
+        filterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateReport();
+            updateActivityWithFilters();
+        });
+    }
+    
+    // Setup export button
+    const exportButton = document.getElementById('export-report');
+    if (exportButton) {
+        exportButton.addEventListener('click', function() {
+            exportReportData();
+        });
+    }
+});
+
+/**
+ * Export report data to Excel or CSV
+ * @param {string} format - The export format ('xlsx' or 'csv')
+ */
+function exportReportData(format = 'xlsx') {
+    // Show loading state
+    const exportButton = document.getElementById('export-report');
+    if (exportButton) {
+        exportButton.disabled = true;
+        exportButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Exporting...';
+    }
+    
+    // Get current filters
+    const dateRange = document.getElementById('date-range')?.value || 'this_month';
+    let filters = { date_range: dateRange, format: format };
+    
+    // If custom range, add start and end dates
+    if (dateRange === 'custom') {
+        const startDate = document.getElementById('start-date')?.value;
+        const endDate = document.getElementById('end-date')?.value;
+        
+        if (startDate && endDate) {
+            filters.start_date = startDate;
+            filters.end_date = endDate;
+        }
+    }
+    
+    // Convert filters to query string
+    const queryString = new URLSearchParams(filters).toString();
+    
+    // Trigger download
+    window.location.href = `/admin/reports/export?${queryString}`;
+    
+    // Reset button after a delay
+    setTimeout(() => {
+        if (exportButton) {
+            exportButton.disabled = false;
+            exportButton.innerHTML = '<i class="fas fa-download mr-2"></i> Export Report';
+        }
+    }, 2000);
+}
+
 // Set up event listeners when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Filter form submission
@@ -328,6 +754,32 @@ document.addEventListener('DOMContentLoaded', function() {
         filterForm.addEventListener('submit', function(e) {
             e.preventDefault();
             updateReport();
+        });
+    }
+
+    // Export button dropdown toggle
+    const exportButton = document.getElementById('export-button');
+    const exportFormatDropdown = document.getElementById('export-format-dropdown');
+    
+    if (exportButton && exportFormatDropdown) {
+        exportButton.addEventListener('click', function() {
+            exportFormatDropdown.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!exportButton.contains(e.target) && !exportFormatDropdown.contains(e.target)) {
+                exportFormatDropdown.classList.add('hidden');
+            }
+        });
+        
+        // Format selection
+        document.querySelectorAll('.export-format').forEach(button => {
+            button.addEventListener('click', function() {
+                const format = this.getAttribute('data-format');
+                exportReportData(format);
+                exportFormatDropdown.classList.add('hidden');
+            });
         });
     }
 });

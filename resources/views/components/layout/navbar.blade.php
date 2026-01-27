@@ -4,7 +4,7 @@
         <!-- Page Title Section -->
         <div>
           <h1 class="text-xl font-semibold text-gray-800">{{isset($pageTitle) ? $pageTitle : 'Reports'}}</h1>
-          <div class="text-sm text-gray-500">{{isset($pageSubTitle) ? $pageSubTitle : 'Overview of permits, incidents, and analytics'}}</div>
+          {{-- <div class="text-sm text-gray-500">{{isset($pageSubTitle) ? $pageSubTitle : 'Overview of permits, incidents, and analytics'}}</div> --}}
         </div>
         
         <!-- Right Navigation Items -->
@@ -46,16 +46,13 @@
               <div class="py-1">
                 <!-- Profile Section -->
                 <div class="px-4 py-3 border-b border-gray-100">
-                  <p class="text-sm font-medium text-gray-800">Admin User</p>
-                  <p class="text-xs text-gray-500 truncate">admin@forestmonitoring.gov</p>
+                  <p class="text-sm font-medium text-gray-800">{{auth()->user()->last_name}} {{auth()->user()->first_name}}</p>
+                  <p class="text-xs text-gray-500 truncate">{{auth()->user()->email}}</p>
                 </div>
                 
                 <!-- Menu Items -->
-                <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
+                <a href="/admin/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
                   <i class="fas fa-user mr-2 text-gray-500"></i> My Profile
-                </a>
-                <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-150">
-                  <i class="fas fa-cog mr-2 text-gray-500"></i> Settings
                 </a>
                 <div class="border-t border-gray-100 my-1"></div>
                 <form action="/logout" method="POST" class="block w-full">

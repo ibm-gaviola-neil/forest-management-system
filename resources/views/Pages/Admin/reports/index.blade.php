@@ -33,6 +33,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const comparisonChartCanvas = document.getElementById('comparison-chart');
+        const incidentsChartCanvas = document.getElementById('incidents-chart');
         
         if (comparisonChartCanvas) {
             const chartData = @json($reportData['charts']['comparison']);
@@ -108,6 +109,83 @@
                 }
             });
         }
+    
+        if (incidentsChartCanvas) {
+
+            // Sample data
+            const chartData = @json($reportData['charts']['incidents']);
+            // const months = ;
+            const incidentsData = [8, 12, 9, 14, 10, 7, 11, 15, 16, 17, 13, 10];
+            
+            // Create the chart
+            new Chart(incidentsChartCanvas, {
+                type: 'line',
+                data: {
+                    labels: chartData.months,
+                    datasets: [{
+                        label: 'Reported Incidents',
+                        data: chartData.incidents,
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        borderColor: 'rgb(245, 158, 11)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: 'rgb(245, 158, 11)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 13
+                            },
+                            padding: 10,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Incidents: ${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+        
     });
 </script>
 @endpush
