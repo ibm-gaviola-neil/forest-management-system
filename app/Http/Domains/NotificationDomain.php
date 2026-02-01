@@ -46,7 +46,7 @@ class NotificationDomain {
 
     const NOTIFICATION_ACCESS = [
         'applicant'          => ['event', 'donor_request', 'trees_applicant', 'permit_applicant', 'chainsaw_applicant'],
-        'general_admin'      => ['donor_registration', 'event', 'low_stock', 'blood_donor_request'. 'trees', 'chainsaw_requests', 'cutting_permits'],
+        'general_admin'      => ['donor_registration', 'event', 'low_stock', 'blood_donor_request', 'trees', 'chainsaw_requests', 'cutting_permits'],
         'staff'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request', 'trees'],
         'admin'              => ['donor_registration', 'event', 'low_stock', 'blood_donor_request', 'trees', 'chainsaw_requests', 'cutting_permits'],
         'denr'               => ['donor_registration', 'event', 'low_stock', 'blood_donor_request', 'trees', 'chainsaw_requests', 'cutting_permits'],
